@@ -1,0 +1,21 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginApiController;
+use App\Http\Controllers\Auth\RegisterApiController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 'store'])->name('logout');
+Route::post('/login', [LoginApiController::class, 'store'])->name('login');
+Route::post('/register', [RegisterApiController::class, 'store'])->name('registerapi');
