@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\RegisterApiController;
 |
 */
 
+
 Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 'store'])->name('logout');
 Route::post('/login', [LoginApiController::class, 'store'])->name('login');
 Route::post('/register', [RegisterApiController::class, 'store'])->name('registerapi');
