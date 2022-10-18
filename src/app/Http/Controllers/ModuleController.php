@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Module;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
@@ -13,7 +14,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        //
+        return Module::all();
     }
 
     /**
@@ -24,7 +25,17 @@ class ModuleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            "title" => "required",
+            "description" => "required"
+        ]);
+
+        $module = Module::create([
+            "title" => $request->title,
+            "description" => $request->description
+        ]);
+
+        return $module;
     }
 
     /**
@@ -35,7 +46,7 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        //
+        return Module::find($id);
     }
 
     /**
@@ -47,7 +58,10 @@ class ModuleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $module=Module::find($id);
+        if(!$module){
+            
+        }
     }
 
     /**
