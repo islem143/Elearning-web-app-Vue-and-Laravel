@@ -17,4 +17,7 @@ class Module extends Model
     {
         return $this->hasMany(Course::class);
     }
+    public function modules(){
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
@@ -14,7 +15,8 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        return Module::all();
+        //return Module::all();
+        dd(Auth::user()->modules);
     }
 
     /**

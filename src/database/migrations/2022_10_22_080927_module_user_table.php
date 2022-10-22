@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateModuleCoursesTable extends Migration
+class ModuleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateModuleCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::create('module_courses', function (Blueprint $table) {
-           
+        Schema::create('module_user', function (Blueprint $table) {
+    
             $table->foreignId("module_id")->constrained()->onDelete("cascade");
-            $table->foreignId("course_id")->constrained()->onDelete("cascade");
-            $table->primary(["module_id","course_id"]);
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
+    
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateModuleCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('module_courses');
+        Schema::dropIfExists("module_user");
     }
 }
