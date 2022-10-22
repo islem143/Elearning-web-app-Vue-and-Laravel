@@ -46,4 +46,10 @@ class User extends Authenticatable
     public function modules(){
         return $this->belongsToMany(Module::class)->withTimestamps();
     }
+    public function quizzes(){
+        return $this->belongsToMany(Quiz::class)->withTimestamps();
+    }
+    public function choices(){
+        return $this->belongsToMany(Choice::class)->withTimestamps();
+    }
 }
