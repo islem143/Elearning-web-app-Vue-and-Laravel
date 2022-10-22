@@ -20,7 +20,7 @@ class ModulePermissionSeeder extends Seeder
         Permission::create(["name" => "delete-module"]);
         Permission::create(["name" => "view-module"]);
         $teacherRole = Role::where('name', 'teacher')->first();
-        $studentRole = Role::where('name', 'teacher')->first();
+        $studentRole = Role::where('name', 'student')->first();
         $teacherRole->givePermissionTo(["add-module", "edit-module", "delete-module", "view-module"]);
         $studentRole->givePermissionTo(["view-module"]);
     }

@@ -12,7 +12,7 @@ class Module extends Model
 {
     use HasFactory;
 
-
+    protected $fillable=["title","descprtion"];
     public function courses()
     {
         return $this->hasMany(Course::class);

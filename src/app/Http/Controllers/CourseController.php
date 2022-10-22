@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Module;
 use Illuminate\Http\Request;
 
-class ModuleController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        return Module::all();
+        return Course::all();
     }
 
     /**
@@ -23,20 +24,21 @@ class ModuleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request,$id1)
+    {   
+        $module=Module::findOrFail($id1);
+        
         $this->validate($request, [
             "title" => "required",
-            "descprtion" => "required"
+            "description" => "required"
         ]);
 
-        $module = Module::create([
+        $course = Course::create([
             "title" => $request->title,
-            "descprtion" => $request->descprtion
+            "description" => $request->description,
+            "module_id"=>$module->id
         ]);
-        return $module;
-
-
+        return $course;
     }
 
     /**
@@ -47,7 +49,7 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        return Module::findOrFail($id);
+         return Course::findOrFail($id);
     }
 
     /**
@@ -57,11 +59,12 @@ class ModuleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $module=Module::findOrFail($id);
-        $module->update($request->all());
-        return response()->json(["module updated succesfully"]);
+    public function update(Request $request, $id1,$id2)
+
+    {   Module::findOrFail($id1);
+        $course=Course::findOrFail($id2);
+        $course->update($request->all());
+        return response()->json(["course updated succesfully"]);
     }
 
     /**
@@ -70,11 +73,10 @@ class ModuleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id1,$id2)
     {
-        $module=Module::findOrFail($id);
-        $module->delete();
-        return response()->json(["module deleted succesfully"]);
-
+        $course=Course::findOrFail($id2);
+        $course->delete();
+        return response()->json(["course deleted succesfully"]);
     }
 }
