@@ -25,6 +25,7 @@ Route::prefix("module")->middleware("auth:sanctum")->group(function(){
     Route::middleware("permission:delete-module")->delete("/{id}",[ModuleController::class,"destroy"])->name("module.delete");
     Route::middleware("permission:view-module")->get("/{id}",[ModuleController::class,"show"])->name("module.showone");
     Route::middleware("permission:view-module")->get("/",[ModuleController::class,"index"])->name("module.showall");
+    Route::middleware("permission:join-module")->post("/{id}/join",[ModuleController::class,"joinModule"])->name("module.join");
 
 
 });

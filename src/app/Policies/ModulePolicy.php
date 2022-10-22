@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ModulePolicy
 {
@@ -43,6 +44,17 @@ class ModulePolicy
     {
         return $user->role = "teacher" ? true : false;
     }
+    public function joinModule(User $user,Module $module)
+    {
+      
+        $res=$user->modules()->where("id",$module->id)->first();
+ 
+        if($res){
+            return Response::deny("You already entrolled in this course",403);
+        }
+        return Response::allow();
+    }
+
 
     /**
      * Determine whether the user can update the model.
