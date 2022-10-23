@@ -10,9 +10,9 @@ class LogoutApiController extends Controller
 {
     public function store(Request $request){
         
-        auth()->user()->tokens()->delete();
-
-         return['message'=>"Loged Out"];
+        
+         $request->user()->currentAccessToken()->delete();
+         return response()->json(['message'=>"Loged Out"]);
 
 
          

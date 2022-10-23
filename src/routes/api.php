@@ -3,9 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginApiController;
+use App\Http\Controllers\Auth\LogoutApiController;
 use App\Http\Controllers\Auth\RegisterApiController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\QuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +32,6 @@ Route::prefix("module")->middleware("auth:sanctum")->group(function(){
 
 });
 
-
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function(){
    
     Route::middleware("permission:view-course")->get("/",[CourseController::class,"index"])->name("course.showall");
@@ -42,7 +43,18 @@ Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function
 
 });
 
+Route::prefix("course/{id1}/quiz")->middleware("auth:sanctum")->group(function(){
+   
+    Route::middleware("permission:view-quiz")->get("/",[QuizController::class,"index"])->name("quiz.showall");
+    Route::middleware("permission:view-quiz")->get("/{id2}",[QuizController::class,"show"])->name("quiz.showone");
+    Route::middleware("permission:add-quiz")->post("/",[QuizController::class,"store"])->name("quiz.create");
+    Route::middleware("permission:edit-quiz")->put("/{id2}",[QuizController::class,"update"])->name("quiz.update");
+    Route::middleware("permission:delete-quiz")->delete("/{id2}",[QuizController::class,"destroy"])->name("quiz.delete");
+
+
+});
+
+
 Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 'store'])->name('logout');
 Route::post('/login', [LoginApiController::class, 'store'])->name('login');
 Route::post('/register', [RegisterApiController::class, 'store'])->name('registerapi');
-
