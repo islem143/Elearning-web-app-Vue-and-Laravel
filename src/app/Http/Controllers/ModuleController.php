@@ -64,7 +64,7 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        return Module::findOrFail($id);
+        return Module::findOrFail($id)->with("courses")->get();
     }
 
     /**

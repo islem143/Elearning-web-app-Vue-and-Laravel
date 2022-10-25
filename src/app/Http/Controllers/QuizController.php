@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,10 @@ class QuizController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($courseId)
     {
-        return Quiz::all();
+        return Quiz::where(["course_id"=>$courseId])->get();
+
     }
 
     /**
@@ -23,9 +25,22 @@ class QuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$courseId)
     {
-        //
+        Course::FindOrFail($courseId);
+        $this->validate($request,
+        [
+            "title"=>"required",
+            "duration"=>"required|integer"
+        ]);
+        $quiz=Quiz::create(
+        ["title"=>$request->title,
+        "duration"=>$request->duration,
+        "description"=>$request->description,
+        "course_id"=>$courseId]);
+
+        return $quiz;
+
     }
 
     /**
@@ -34,9 +49,10 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($courseId,$quizId)
     {
-        //
+        $quiz=Quiz::FindOrFail($quizId);
+        return $quiz;
     }
 
     /**
@@ -46,9 +62,11 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$courseId, $quizId)
     {
-        //
+        $quiz=Quiz::findOrFail($quizId);
+        $quiz->update($request->all());
+        return response()->json(["quiz updated succesfully"]);
     }
 
     /**
@@ -57,8 +75,10 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($courseId,$quizId)
     {
-        //
+        $quiz=Quiz::findOrFail($quizId);
+        $quiz->delete();
+        return response()->json(["quiz deleted succesfully"]);
     }
 }

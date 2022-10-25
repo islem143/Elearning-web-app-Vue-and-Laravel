@@ -14,5 +14,8 @@ class Course extends Model
     {
         return $this->belongsTo(Module::class);
     }
+    public function quizzes(){
+        return $this->hasMany(Quiz::class);
+    }
     
 }

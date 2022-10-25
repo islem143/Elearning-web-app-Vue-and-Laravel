@@ -13,9 +13,9 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id1)
     {
-        return Course::all();
+        return Course::where(["module_id"=>$id1])->get();
     }
 
     /**
@@ -49,7 +49,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-         return Course::findOrFail($id);
+         return Course::findOrFail($id)->with("quizzes")->get();
     }
 
     /**

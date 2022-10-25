@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LogoutApiController;
 use App\Http\Controllers\Auth\RegisterApiController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 
 /*
@@ -43,14 +44,23 @@ Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function
 
 });
 
-Route::prefix("course/{id1}/quiz")->middleware("auth:sanctum")->group(function(){
+Route::prefix("course/{courseId}/quiz")->middleware("auth:sanctum")->group(function(){
    
     Route::middleware("permission:view-quiz")->get("/",[QuizController::class,"index"])->name("quiz.showall");
-    Route::middleware("permission:view-quiz")->get("/{id2}",[QuizController::class,"show"])->name("quiz.showone");
+    Route::middleware("permission:view-quiz")->get("/{quizId}",[QuizController::class,"show"])->name("quiz.showone");
     Route::middleware("permission:add-quiz")->post("/",[QuizController::class,"store"])->name("quiz.create");
-    Route::middleware("permission:edit-quiz")->put("/{id2}",[QuizController::class,"update"])->name("quiz.update");
-    Route::middleware("permission:delete-quiz")->delete("/{id2}",[QuizController::class,"destroy"])->name("quiz.delete");
+    Route::middleware("permission:edit-quiz")->put("/{quizId}",[QuizController::class,"update"])->name("quiz.update");
+    Route::middleware("permission:delete-quiz")->delete("/{quizId}",[QuizController::class,"destroy"])->name("quiz.delete");
 
+});
+
+Route::prefix("quiz/{quizId}/question")->middleware("auth:sanctum")->group(function(){
+   
+    Route::middleware("permission:view-question")->get("/",[QuestionController::class,"index"])->name("question.showall");
+    Route::middleware("permission:view-question")->get("/{questionId}",[QuestionController::class,"show"])->name("question.showone");
+    Route::middleware("permission:add-question")->post("/",[QuestionController::class,"store"])->name("question.create");
+    Route::middleware("permission:edit-question")->put("/{questionId}",[QuestionController::class,"update"])->name("question.update");
+    Route::middleware("permission:delete-question")->delete("/{questionId}",[QuestionController::class,"destroy"])->name("question.delete");
 
 });
 
