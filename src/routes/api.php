@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginApiController;
 use App\Http\Controllers\Auth\LogoutApiController;
 use App\Http\Controllers\Auth\RegisterApiController;
+use App\Http\Controllers\ChoiceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
@@ -64,6 +65,15 @@ Route::prefix("quiz/{quizId}/question")->middleware("auth:sanctum")->group(funct
 
 });
 
+Route::prefix("question/{questionId}/choice")->middleware("auth:sanctum")->group(function(){
+   
+    Route::middleware("permission:view-choice")->get("/",[ChoiceController::class,"index"])->name("choice.showall");
+    Route::middleware("permission:view-choice")->get("/{choiceId}",[ChoiceController::class,"show"])->name("choice.showone");
+    Route::middleware("permission:add-choice")->post("/",[ChoiceController::class,"store"])->name("choice.create");
+    Route::middleware("permission:edit-choice")->put("/{choiceId}",[ChoiceController::class,"update"])->name("choice.update");
+    Route::middleware("permission:delete-choice")->delete("/{choiceId}",[ChoiceController::class,"destroy"])->name("choice.delete");
+
+});
 
 Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 'store'])->name('logout');
 Route::post('/login', [LoginApiController::class, 'store'])->name('login');
