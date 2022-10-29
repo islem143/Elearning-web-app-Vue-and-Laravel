@@ -28,8 +28,8 @@ Route::prefix("module")->middleware("auth:sanctum")->group(function () {
     Route::middleware("permission:add-module")->post("/", [ModuleController::class, "store"])->name("module.create");
     Route::middleware("permission:edit-module")->put("/{id}", [ModuleController::class, "update"])->name("module.update");
     Route::middleware("permission:delete-module")->delete("/{id}", [ModuleController::class, "destroy"])->name("module.delete");
-    Route::middleware("permission:view-module")->get("/{id}", [ModuleController::class, "show"])->name("module.showone");
     Route::middleware("permission:view-module")->get("/", [ModuleController::class, "index"])->name("module.showall");
+    Route::middleware("permission:view-module")->get("/{id}", [ModuleController::class, "show"])->name("module.showone");
     Route::middleware("permission:join-module")->post("/{id}/join", [ModuleController::class, "joinModule"])->name("module.join");
     Route::middleware("permission:add-module")->post("/{moduleId}/image", [ImageController::class, "saveModuleImage"])->name("module.createimage");
 });

@@ -61,7 +61,7 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        return Module::findOrFail($id)->with("courses")->get();
+        return Module::where(["id" => $id])->with("courses")->first();
     }
 
     /**
