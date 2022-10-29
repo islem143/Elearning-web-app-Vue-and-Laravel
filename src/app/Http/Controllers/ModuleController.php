@@ -18,21 +18,19 @@ class ModuleController extends Controller
     public function index()
     {
         return Module::all();
-        
     }
-    
-    public function joinModule($id){
 
-           $module=Module::FindOrFail($id);
-           $response =Gate::inspect('joinModule', $module);
-           if($response->allowed()){
-     
-             Auth::user()->modules()->attach($module->id);
-             return response()->json(["student added to module"]);
-           }
-           return $response->message();
+    public function joinModule($id)
+    {
 
+        $module = Module::FindOrFail($id);
+        $response = Gate::inspect('joinModule', $module);
+        if ($response->allowed()) {
 
+            Auth::user()->modules()->attach($module->id);
+            return response()->json(["student added to module"]);
+        }
+        return $response->message();
     }
     /**
      * Store a newly created resource in storage.
@@ -44,16 +42,15 @@ class ModuleController extends Controller
     {
         $this->validate($request, [
             "title" => "required",
-            "descprtion" => "required"
+            "description" => "required"
+
         ]);
 
         $module = Module::create([
             "title" => $request->title,
-            "descprtion" => $request->descprtion
+            "descprtion" => $request->description
         ]);
         return $module;
-
-
     }
 
     /**
@@ -76,7 +73,7 @@ class ModuleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $module=Module::findOrFail($id);
+        $module = Module::findOrFail($id);
         $module->update($request->all());
         return response()->json(["module updated succesfully"]);
     }
@@ -89,9 +86,8 @@ class ModuleController extends Controller
      */
     public function destroy($id)
     {
-        $module=Module::findOrFail($id);
+        $module = Module::findOrFail($id);
         $module->delete();
         return response()->json(["module deleted succesfully"]);
-
     }
 }

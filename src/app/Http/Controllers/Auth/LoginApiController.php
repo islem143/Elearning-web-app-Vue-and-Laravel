@@ -28,10 +28,12 @@ class LoginApiController extends Controller
         }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
-
+  
         $response = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            "roles"=>$user->getRoleNames()
+       
         ];
         return response($response, 201);
     }
