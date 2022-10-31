@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Media extends Model
 {
     use HasFactory;
+
+
+    protected $fillable = ["name", "type", "url"];
+
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }
