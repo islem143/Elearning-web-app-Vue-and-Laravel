@@ -10,7 +10,7 @@ class Media extends Model
     use HasFactory;
 
 
-    protected $fillable = ["name", "type", "url"];
+    protected $fillable = ["name", "type", "url","course_id"];
 
 
     public function course()

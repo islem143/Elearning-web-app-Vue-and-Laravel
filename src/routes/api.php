@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterApiController;
 use App\Http\Controllers\ChoiceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
@@ -71,6 +72,14 @@ Route::prefix("question/{questionId}/choice")->middleware("auth:sanctum")->group
 });
 
 
+Route::prefix("media")->middleware("auth:sanctum")->group(function () {
+
+    //Route::middleware("permission:view-media")->get("/", [MediaController::class, "index"])->name("media.showall");
+    Route::middleware("permission:view-media")->get("/{courseId}", [MediaController::class, "index"])->name("media.showone");
+    Route::middleware("permission:add-media")->post("/", [MediaController::class, "store"])->name("media.create");
+    Route::middleware("permission:edit-media")->put("/{choiceId}", [MediaController::class, "update"])->name("media.update");
+    Route::middleware("permission:delete-media")->delete("/{choiceId}", [MediaController::class, "destroy"])->name("media.delete");
+});
 
 
 Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 'store'])->name('logout');

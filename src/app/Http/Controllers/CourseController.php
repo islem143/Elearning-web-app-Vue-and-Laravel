@@ -15,7 +15,7 @@ class CourseController extends Controller
      */
     public function index($id1)
     {
-        return Course::where(["module_id"=>$id1])->get();
+        return Course::where(["module_id" => $id1])->get();
     }
 
     /**
@@ -24,10 +24,10 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id1)
-    {   
-        $module=Module::findOrFail($id1);
-        
+    public function store(Request $request, $id1)
+    {
+        $module = Module::findOrFail($id1);
+
         $this->validate($request, [
             "title" => "required",
             "description" => "required"
@@ -36,7 +36,7 @@ class CourseController extends Controller
         $course = Course::create([
             "title" => $request->title,
             "description" => $request->description,
-            "module_id"=>$module->id
+            "module_id" => $module->id
         ]);
         return $course;
     }
@@ -47,9 +47,10 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id1, $id2)
     {
-         return Course::findOrFail($id)->with("quizzes")->get();
+
+        return Course::where(["id" => $id2])->with("quizzes")->first();
     }
 
     /**
@@ -59,10 +60,11 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id1,$id2)
+    public function update(Request $request, $id1, $id2)
 
-    {   Module::findOrFail($id1);
-        $course=Course::findOrFail($id2);
+    {
+        Module::findOrFail($id1);
+        $course = Course::findOrFail($id2);
         $course->update($request->all());
         return response()->json(["course updated succesfully"]);
     }
@@ -73,9 +75,9 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id1,$id2)
+    public function destroy($id1, $id2)
     {
-        $course=Course::findOrFail($id2);
+        $course = Course::findOrFail($id2);
         $course->delete();
         return response()->json(["course deleted succesfully"]);
     }
