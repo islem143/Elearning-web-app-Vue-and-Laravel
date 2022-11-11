@@ -15,8 +15,7 @@ class QuizController extends Controller
      */
     public function index($courseId)
     {
-        return Quiz::where(["course_id"=>$courseId])->get();
-
+        return Quiz::where(["course_id" => $courseId])->get();
     }
 
     /**
@@ -25,22 +24,27 @@ class QuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$courseId)
+    public function store(Request $request, $courseId)
     {
         Course::FindOrFail($courseId);
-        $this->validate($request,
-        [
-            "title"=>"required",
-            "duration"=>"required|integer"
-        ]);
-        $quiz=Quiz::create(
-        ["title"=>$request->title,
-        "duration"=>$request->duration,
-        "description"=>$request->description,
-        "course_id"=>$courseId]);
+        $this->validate(
+            $request,
+            [
+                "title" => "required",
+                // "description" => "required",
+                "duration" => "required|integer"
+            ]
+        );
+        $quiz = Quiz::create(
+            [
+                "title" => $request->title,
+                "duration" => $request->duration,
+                "description" => $request->description,
+                "course_id" => $courseId
+            ]
+        );
 
         return $quiz;
-
     }
 
     /**
@@ -49,9 +53,9 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($courseId,$quizId)
+    public function show($courseId, $quizId)
     {
-        $quiz=Quiz::FindOrFail($quizId);
+        $quiz = Quiz::FindOrFail($quizId);
         return $quiz;
     }
 
@@ -62,9 +66,9 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$courseId, $quizId)
+    public function update(Request $request, $courseId, $quizId)
     {
-        $quiz=Quiz::findOrFail($quizId);
+        $quiz = Quiz::findOrFail($quizId);
         $quiz->update($request->all());
         return response()->json(["quiz updated succesfully"]);
     }
@@ -75,9 +79,9 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($courseId,$quizId)
+    public function destroy($courseId, $quizId)
     {
-        $quiz=Quiz::findOrFail($quizId);
+        $quiz = Quiz::findOrFail($quizId);
         $quiz->delete();
         return response()->json(["quiz deleted succesfully"]);
     }

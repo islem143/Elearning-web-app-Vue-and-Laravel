@@ -15,7 +15,7 @@ class ChoiceController extends Controller
      */
     public function index($questionId)
     {
-        return Choice::where(["question_id"=>$questionId])->get();
+        return Choice::where(["question_id" => $questionId])->get();
     }
 
     /**
@@ -24,24 +24,32 @@ class ChoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$questionId)
+    public function store(Request $request, $questionId)
     {
+
         Question::FindOrFail($questionId);
-        $this->validate($request,
-        [
-            "text"=>"required",
-            "is_correct"=>"required|boolean",
+        $this->validate(
+            $request,
+            [
+                "choices.*.text" => "required",
+                "choices.*.isCorrect" => "required|boolean",
 
-        ]);
-        $choice=Choice::create(
-        [
-        "text"=>$request->text,
-        "is_correct"=>$request->is_correct,
-        "question_id"=>$questionId,
-                  
-    ]);
+            ]
+        );
+        foreach ($request->get("choices") as $choice) {
 
-        return $choice;
+            Choice::create(
+                [
+                    "text" => $choice["text"],
+                    "is_correct" => $choice["isCorrect"],
+                    "question_id" => $questionId,
+
+                ]
+            );
+        }
+
+
+        return response()->json(["choices created"]);
     }
 
     /**
@@ -52,7 +60,7 @@ class ChoiceController extends Controller
      */
     public function show($choiceId)
     {
-        $choice=Choice::FindOrFail($choiceId);
+        $choice = Choice::FindOrFail($choiceId);
         return $choice;
     }
 
@@ -65,7 +73,7 @@ class ChoiceController extends Controller
      */
     public function update(Request $request, $choiceId)
     {
-        $choice=Choice::findOrFail($choiceId);
+        $choice = Choice::findOrFail($choiceId);
         $choice->update($request->all());
         return response()->json(["choice updated succesfully"]);
     }
@@ -78,7 +86,7 @@ class ChoiceController extends Controller
      */
     public function destroy($choiceId)
     {
-        $choice=Choice::findOrFail($choiceId);
+        $choice = Choice::findOrFail($choiceId);
         $choice->delete();
         return response()->json(["choice deleted succesfully"]);
     }
