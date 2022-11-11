@@ -14,7 +14,7 @@ class MediaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $courseId)
-    {  
+    {
         return Media::where(["course_id" => $courseId])->get();
     }
 
@@ -35,7 +35,7 @@ class MediaController extends Controller
 
         $filePath = $request->file('file')->store("public");
 
-        $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => "file", "url" => $filePath]);
+        $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => $request->type, "url" => $filePath]);
         return response()->json(["File uploaded successfuly"], 201);
     }
 
