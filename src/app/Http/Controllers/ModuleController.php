@@ -61,7 +61,8 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        return Module::where(["id" => $id])->with("courses")->first();
+        //return Module::where(["id" => $id])->with("courses")->first();
+        return Module::where(["id" => $id])->first();
     }
 
     /**

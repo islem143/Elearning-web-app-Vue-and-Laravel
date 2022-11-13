@@ -15,7 +15,7 @@ class CourseController extends Controller
      */
     public function index($id1)
     {
-        return Course::where(["module_id" => $id1])->with("media")->get();
+        return Course::where(["module_id" => $id1])->with(["media","quizzes"])->get();
     }
 
     /**
