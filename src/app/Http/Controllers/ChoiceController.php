@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Choice;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChoiceController extends Controller
 {
@@ -17,6 +18,14 @@ class ChoiceController extends Controller
     {
         return Choice::where(["question_id" => $questionId])->get();
     }
+    public function attach(Request $request, $questionId, $choiceId)
+    {
+        $user = Auth::user();
+        $user->choices()->attach($choiceId, [
+            "question_id" => $questionId,
+        ]);
+        return response()->json("yes");
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -24,6 +33,27 @@ class ChoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function storeOne(Request $request, $questionId)
+    {
+        Question::FindOrFail($questionId);
+        $this->validate(
+            $request,
+            [
+                "text" => "required",
+                "isCorrect" => "required|boolean",
+
+            ]
+        );
+        $choice = Choice::create(
+            [
+                "text" => $request->text,
+                "is_correct" => $request->isCorrect,
+                "question_id" => $questionId,
+
+            ]
+        );
+        return $choice;
+    }
     public function store(Request $request, $questionId)
     {
 
