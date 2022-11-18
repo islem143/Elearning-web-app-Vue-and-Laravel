@@ -15,7 +15,7 @@ class QuizController extends Controller
      */
     public function index($courseId)
     {
-        return Quiz::where(["course_id" => $courseId])->get();
+        return Quiz::where(["course_id" => $courseId])->with(["questions", "questions.choices"])->get();
     }
 
     /**
@@ -53,10 +53,9 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($courseId, $quizId)
+    public function show($courseId,$quizId)
     {
-        $quiz = Quiz::FindOrFail($quizId);
-        return $quiz;
+        return Quiz::where(["id"=>$quizId])->with(["questions", "questions.choices"])->first();
     }
 
     /**
