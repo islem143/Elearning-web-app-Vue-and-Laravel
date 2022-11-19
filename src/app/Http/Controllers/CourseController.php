@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Module;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -15,7 +18,14 @@ class CourseController extends Controller
      */
     public function index($id1)
     {
-        return Course::where(["module_id" => $id1])->with(["media","quizzes"])->get();
+        //return Course::where(["module_id" => $id1])->with(["media","quizzes"])->get();
+        $courses = Course::where(["module_id" => $id1])->with(["media"])->get();
+        foreach ($courses as $course) {
+
+            $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
+            $course->quizzes = $quizzes;
+        }
+        return $courses;
     }
 
     /**

@@ -50,6 +50,7 @@ Route::prefix("course/{courseId}/quiz")->middleware("auth:sanctum")->group(funct
     Route::middleware("permission:view-quiz")->get("/{quizId}", [QuizController::class, "show"])->name("quiz.showone");
     Route::middleware("permission:add-quiz")->post("/", [QuizController::class, "store"])->name("quiz.create");
     Route::middleware("permission:edit-quiz")->put("/{quizId}", [QuizController::class, "update"])->name("quiz.update");
+    Route::middleware("permission:edit-quiz")->put("/{quizId}/saveResult", [QuizController::class, "saveResult"])->name("quiz.saveResult");
     Route::middleware("permission:delete-quiz")->delete("/{quizId}", [QuizController::class, "destroy"])->name("quiz.delete");
 });
 

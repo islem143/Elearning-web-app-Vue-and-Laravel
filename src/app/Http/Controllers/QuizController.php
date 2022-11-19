@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -53,11 +54,31 @@ class QuizController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($courseId,$quizId)
+    public function show($courseId, $quizId)
     {
-        return Quiz::where(["id"=>$quizId])->with(["questions", "questions.choices"])->first();
+        return Quiz::where(["id" => $quizId])->with(["questions", "questions.choices"])->first();
     }
+    public function saveResult(Request $request, $courseId, $quizId)
+    {
+        $this->validate(
+            $request,
+            [
+                "mark" => "required",
 
+                "time" => "required|integer"
+            ]
+        );
+        $quiz = Quiz::where(["id" => $quizId])->first();
+        
+        Auth::user()->quizzes()->attach($quizId, [
+            "mark" => $request->mark,
+            "time" => $request->time
+        ]);
+        $quiz->isFinished=true;
+        $quiz->save();
+
+        return response()->json(["quiz saved"], 201);
+    }
     /**
      * Update the specified resource in storage.
      *
