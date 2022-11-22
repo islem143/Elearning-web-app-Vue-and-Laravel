@@ -47,6 +47,7 @@ Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function
 Route::prefix("course/{courseId}/quiz")->middleware("auth:sanctum")->group(function () {
 
     Route::middleware("permission:view-quiz")->get("/", [QuizController::class, "index"])->name("quiz.showall");
+    Route::middleware("permission:view-quiz")->get("/{quizId}/doneQuiz", [QuizController::class, "doneQuiz"])->name("quiz.doneQuiz");
     Route::middleware("permission:view-quiz")->get("/{quizId}", [QuizController::class, "show"])->name("quiz.showone");
     Route::middleware("permission:add-quiz")->post("/", [QuizController::class, "store"])->name("quiz.create");
     Route::middleware("permission:edit-quiz")->put("/{quizId}", [QuizController::class, "update"])->name("quiz.update");

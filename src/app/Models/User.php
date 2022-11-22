@@ -48,7 +48,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Module::class)->withTimestamps();
     }
     public function quizzes(){
-        return $this->belongsToMany(Quiz::class)->withTimestamps();
+        return $this->belongsToMany(Quiz::class)->withTimestamps()->withPivot(["time","mark"]);
     }
     public function choices(){
         return $this->belongsToMany(Choice::class)->withTimestamps();

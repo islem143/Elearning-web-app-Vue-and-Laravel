@@ -58,6 +58,11 @@ class QuizController extends Controller
     {
         return Quiz::where(["id" => $quizId])->with(["questions", "questions.choices"])->first();
     }
+    public function doneQuiz($courseId, $quizId)
+    {
+        return Auth::user()->quizzes()->where(["quiz_id"=>$quizId])->first();
+    }
+
     public function saveResult(Request $request, $courseId, $quizId)
     {
         $this->validate(
@@ -69,12 +74,12 @@ class QuizController extends Controller
             ]
         );
         $quiz = Quiz::where(["id" => $quizId])->first();
-        
+
         Auth::user()->quizzes()->attach($quizId, [
             "mark" => $request->mark,
             "time" => $request->time
         ]);
-        $quiz->isFinished=true;
+        $quiz->isFinished = true;
         $quiz->save();
 
         return response()->json(["quiz saved"], 201);
