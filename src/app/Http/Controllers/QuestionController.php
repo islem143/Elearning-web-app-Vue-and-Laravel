@@ -27,6 +27,7 @@ class QuestionController extends Controller
     public function store(Request $request, $quizId)
     {
         Quiz::FindOrFail($quizId);
+
         $this->validate(
             $request,
             [
@@ -62,10 +63,13 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $questionId)
+    public function update(Request $request, $quizId, $questionId)
     {
         $question = Question::findOrFail($questionId);
-        $question->update($request->all());
+        $question->text = $request->text;
+
+        $question->save();
+
         return response()->json(["question updated succesfully"]);
     }
 

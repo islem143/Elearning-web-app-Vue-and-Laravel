@@ -79,7 +79,7 @@ class QuizController extends Controller
             "mark" => $request->mark,
             "time" => $request->time
         ]);
-        $quiz->isFinished = true;
+     
         $quiz->save();
 
         return response()->json(["quiz saved"], 201);
@@ -92,7 +92,7 @@ class QuizController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $courseId, $quizId)
-    {
+    {  
         $quiz = Quiz::findOrFail($quizId);
         $quiz->update($request->all());
         return response()->json(["quiz updated succesfully"]);

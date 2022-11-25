@@ -69,8 +69,8 @@ Route::prefix("question/{questionId}/choice")->middleware("auth:sanctum")->group
     Route::middleware("permission:view-choice")->get("/", [ChoiceController::class, "index"])->name("choice.showall");
     Route::middleware("permission:view-choice")->get("/{choiceId}", [ChoiceController::class, "show"])->name("choice.showone");
     Route::middleware("permission:add-choice")->post("/", [ChoiceController::class, "store"])->name("choice.create");
+    Route::middleware("permission:edit-choice")->put("/", [ChoiceController::class, "update"])->name("choice.update");
     //Route::middleware("permission:add-choice")->post("/", [ChoiceController::class, "storeOne"])->name("choice.createOne");
-    Route::middleware("permission:edit-choice")->put("/{choiceId}", [ChoiceController::class, "update"])->name("choice.update");
     Route::middleware("permission:edit-choice")->put("/{choiceId}/attach", [ChoiceController::class, "attach"])->name("choice.attach");
 
     Route::middleware("permission:delete-choice")->delete("/{choiceId}", [ChoiceController::class, "destroy"])->name("choice.delete");

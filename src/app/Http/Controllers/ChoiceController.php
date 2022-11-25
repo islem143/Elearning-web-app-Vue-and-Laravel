@@ -62,7 +62,7 @@ class ChoiceController extends Controller
             $request,
             [
                 "choices.*.text" => "required",
-                "choices.*.isCorrect" => "required|boolean",
+                "choices.*.is_correct" => "required|boolean",
 
             ]
         );
@@ -71,7 +71,7 @@ class ChoiceController extends Controller
             Choice::create(
                 [
                     "text" => $choice["text"],
-                    "is_correct" => $choice["isCorrect"],
+                    "is_correct" => $choice["is_correct"],
                     "question_id" => $questionId,
 
                 ]
@@ -101,10 +101,29 @@ class ChoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $choiceId)
+    public function update(Request $request)
     {
-        $choice = Choice::findOrFail($choiceId);
-        $choice->update($request->all());
+
+        $this->validate(
+            $request,
+            [
+                "choices.*.text" => "required",
+                "choices.*.is_correct" => "required|boolean",
+
+            ]
+        );
+        dd($request->get("choices"));
+        foreach ($request->get("choices") as $choice) {
+            $choiceM = Choice::findOrFail($choice["id"]);
+            $choiceM->text = $choice["text"];
+            $choiceM->is_correct = $choice["is_correct"];
+            $choiceM->save();
+        }
+
+
+
+        // $choice = Choice::findOrFail($choiceId);
+        // $choice->update($request->all());
         return response()->json(["choice updated succesfully"]);
     }
 
