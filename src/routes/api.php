@@ -51,7 +51,7 @@ Route::prefix("course/{courseId}/quiz")->middleware("auth:sanctum")->group(funct
     Route::middleware("permission:view-quiz")->get("/{quizId}", [QuizController::class, "show"])->name("quiz.showone");
     Route::middleware("permission:add-quiz")->post("/", [QuizController::class, "store"])->name("quiz.create");
     Route::middleware("permission:edit-quiz")->put("/{quizId}", [QuizController::class, "update"])->name("quiz.update");
-    Route::middleware("permission:edit-quiz")->put("/{quizId}/saveResult", [QuizController::class, "saveResult"])->name("quiz.saveResult");
+    Route::middleware("permission:save-quiz-result")->put("/{quizId}/saveResult", [QuizController::class, "saveResult"])->name("quiz.saveResult");
     Route::middleware("permission:delete-quiz")->delete("/{quizId}", [QuizController::class, "destroy"])->name("quiz.delete");
 });
 
@@ -71,7 +71,7 @@ Route::prefix("question/{questionId}/choice")->middleware("auth:sanctum")->group
     Route::middleware("permission:add-choice")->post("/", [ChoiceController::class, "store"])->name("choice.create");
     Route::middleware("permission:edit-choice")->put("/", [ChoiceController::class, "update"])->name("choice.update");
     //Route::middleware("permission:add-choice")->post("/", [ChoiceController::class, "storeOne"])->name("choice.createOne");
-    Route::middleware("permission:edit-choice")->put("/{choiceId}/attach", [ChoiceController::class, "attach"])->name("choice.attach");
+    Route::middleware("permission:attach-choice")->put("/{choiceId}/attach", [ChoiceController::class, "attach"])->name("choice.attach");
 
     Route::middleware("permission:delete-choice")->delete("/{choiceId}", [ChoiceController::class, "destroy"])->name("choice.delete");
 });
