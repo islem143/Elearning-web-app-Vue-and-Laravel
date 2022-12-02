@@ -23,14 +23,11 @@ class RegisterApiController extends Controller
             'email' => $request->email,
             "name" => $request->name,
             "password" => Hash::make($request->password),
-            "role_id" => 3
+
 
 
         ]);
-        Cart::create([
-            "user_id" => $user->id,
-            "total" => 0
-        ]);
+        $user->assignRole("student");
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
