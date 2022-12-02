@@ -8,10 +8,12 @@ use App\Http\Controllers\Auth\RegisterApiController;
 use App\Http\Controllers\ChoiceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Models\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,9 @@ Route::prefix("module")->middleware("auth:sanctum")->group(function () {
     Route::middleware("permission:view-module")->get("/{id}", [ModuleController::class, "show"])->name("module.showone");
     Route::middleware("permission:join-module")->post("/{id}/join", [ModuleController::class, "joinModule"])->name("module.join");
     Route::middleware("permission:add-module")->post("/{moduleId}/image", [ImageController::class, "saveModuleImage"])->name("module.createimage");
+});
+Route::prefix("logs")->middleware("auth:sanctum")->group(function () {
+    Route::middleware("permission:view-logs")->get("/", [LogController::class, "index"])->name("logs.showall");
 });
 
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
