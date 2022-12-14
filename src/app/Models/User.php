@@ -61,4 +61,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Choice::class)->withTimestamps();
     }
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }    
 }

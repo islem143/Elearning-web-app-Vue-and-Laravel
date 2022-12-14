@@ -95,3 +95,8 @@ Route::prefix("media")->middleware("auth:sanctum")->group(function () {
 Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 'store'])->name('logout');
 Route::post('/login', [LoginApiController::class, 'store'])->name('login');
 Route::post('/register', [RegisterApiController::class, 'store'])->name('registerapi');
+
+
+Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index'])->middleware("auth:sanctum");
+Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages'])->middleware("auth:sanctum");
+Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage'])->middleware("auth:sanctum");
