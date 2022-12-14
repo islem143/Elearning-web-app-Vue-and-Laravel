@@ -49,7 +49,7 @@ class QuizController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Di201splay the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -60,7 +60,7 @@ class QuizController extends Controller
     }
     public function doneQuiz($courseId, $quizId)
     {
-        return Auth::user()->quizzes()->where(["quiz_id"=>$quizId])->first();
+        return Auth::user()->quizzes()->where(["quiz_id" => $quizId])->first();
     }
 
     public function saveResult(Request $request, $courseId, $quizId)
@@ -79,7 +79,8 @@ class QuizController extends Controller
             "mark" => $request->mark,
             "time" => $request->time
         ]);
-     
+
+        Auth::user()->courses()->updateExistingPivot($courseId, ["staus" => "completed"]);
         $quiz->save();
 
         return response()->json(["quiz saved"], 201);
@@ -92,7 +93,7 @@ class QuizController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $courseId, $quizId)
-    {  
+    {
         $quiz = Quiz::findOrFail($quizId);
         $quiz->update($request->all());
         return response()->json(["quiz updated succesfully"]);

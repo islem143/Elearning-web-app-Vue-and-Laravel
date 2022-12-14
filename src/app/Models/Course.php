@@ -9,16 +9,21 @@ use App\Models\Module;
 class Course extends Model
 {
     use HasFactory;
-    protected $fillable=["title","description","module_id"];
+    protected $fillable = ["title", "description", "module_id","order"];
     public function module()
     {
         return $this->belongsTo(Module::class);
     }
-    public function quizzes(){
+    public function quizzes()
+    {
         return $this->hasMany(Quiz::class);
     }
-    public function media(){
+    public function users()
+    {
+        return $this->belongsToMany(User::class, "course_users");
+    }
+    public function media()
+    {
         return $this->hasMany(Media::class);
     }
-    
 }

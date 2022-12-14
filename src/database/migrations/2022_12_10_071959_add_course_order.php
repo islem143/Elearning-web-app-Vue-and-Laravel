@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUniqueConsrain extends Migration
+class AddCourseOrder extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class AddUniqueConsrain extends Migration
      */
     public function up()
     {
-        Schema::table('quiz_user', function (Blueprint $table) {
-    
-        // $table->dropForeign("quiz_user_user_id_foreign");
-        // $table->dropIndex("quiz_user_user_id_quiz_id_index");
-        
-
+        Schema::table('courses', function (Blueprint $table) {
+            $table->smallInteger("order");
         });
     }
 
@@ -29,8 +25,8 @@ class AddUniqueConsrain extends Migration
      */
     public function down()
     {
-        Schema::table('quiz_user', function (Blueprint $table) {
-            //
+        Schema::table('courses', function (Blueprint $table) {
+            $table->dropColumn("order");
         });
     }
 }

@@ -44,13 +44,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function modules(){
+    public function modules()
+    {
         return $this->belongsToMany(Module::class)->withTimestamps();
     }
-    public function quizzes(){
-        return $this->belongsToMany(Quiz::class)->withTimestamps()->withPivot(["time","mark"]);
+    public function quizzes()
+    {
+        return $this->belongsToMany(Quiz::class)->withTimestamps()->withPivot(["time", "mark"]);
     }
-    public function choices(){
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class,"course_users")->withTimestamps()->withPivot(["staus"]);
+    }
+
+    public function choices()
+    {
         return $this->belongsToMany(Choice::class)->withTimestamps();
     }
 }
