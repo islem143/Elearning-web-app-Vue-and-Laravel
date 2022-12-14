@@ -41,7 +41,7 @@ Route::prefix("logs")->middleware("auth:sanctum")->group(function () {
 });
 
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
-
+    Route::middleware("permission:view-course")->post("/{id2}/startCourse", [CourseController::class, "startCourse"])->name("course.startCourse");
     Route::middleware("permission:view-course")->get("/", [CourseController::class, "index"])->name("course.showall");
     Route::middleware("permission:view-course")->get("/{id2}", [CourseController::class, "show"])->name("course.showone");
     Route::middleware("permission:add-course")->post("/", [CourseController::class, "store"])->name("course.create");
@@ -57,9 +57,9 @@ Route::prefix("course/{courseId}/quiz")->middleware("auth:sanctum")->group(funct
     Route::middleware("permission:add-quiz")->post("/", [QuizController::class, "store"])->name("quiz.create");
     Route::middleware("permission:edit-quiz")->put("/{quizId}", [QuizController::class, "update"])->name("quiz.update");
     Route::middleware("permission:save-quiz-result")->put("/{quizId}/saveResult", [QuizController::class, "saveResult"])->name("quiz.saveResult");
+
     Route::middleware("permission:delete-quiz")->delete("/{quizId}", [QuizController::class, "destroy"])->name("quiz.delete");
 });
-
 Route::prefix("quiz/{quizId}/question")->middleware("auth:sanctum")->group(function () {
 
     Route::middleware("permission:view-question")->get("/", [QuestionController::class, "index"])->name("question.showall");

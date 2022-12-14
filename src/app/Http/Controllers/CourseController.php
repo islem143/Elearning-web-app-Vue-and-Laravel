@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Media;
 use App\Models\Module;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -18,14 +19,38 @@ class CourseController extends Controller
      */
     public function index($id1)
     {
-        //return Course::where(["module_id" => $id1])->with(["media","quizzes"])->get();
-        $courses = Course::where(["module_id" => $id1])->with(["media"])->get();
-        foreach ($courses as $course) {
+        if (Auth::user()->getRoleNames()[0] == "teacher") {
+            $courses = Course::where(["module_id" => $id1])->with(["media"])->get();
+            foreach ($courses as $course) {
 
-            $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
-            $course->quizzes = $quizzes;
+
+                $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
+                $course->quizzes = $quizzes;
+            }
+            return $courses;
+        } else {
+           
+
+            $courses = DB::table("courses")->leftJoin("course_users", function ($join) {
+                $join->on("courses.id", "course_users.course_id");
+            })->where("user_id", null)->orWhere("user_id", Auth::user()->id)->get();
+
+            foreach ($courses as $course) {
+
+               
+                if ($course->user_id != Auth::user()->id) {
+                    $course->is_taken = false;
+                } else {
+                    $course->is_taken = true;
+                }
+                $media = Media::where(["course_id" => $course->id])->get();
+                $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
+                $course->quizzes = $quizzes;
+                $course->media = $media;
+            }
+
+            return $courses;
         }
-        return $courses;
     }
 
     /**
@@ -46,9 +71,33 @@ class CourseController extends Controller
         $course = Course::create([
             "title" => $request->title,
             "description" => $request->description,
-            "module_id" => $module->id
+            "module_id" => $module->id,
+            "order" => $request->order
         ]);
+
         return $course;
+    }
+    public function startCourse(Request $request, $id1, $id2)
+    {
+        $module = Module::findOrFail($id1);
+        $course = Course::where(["id" => $id2])->first();
+
+        $s = Auth::user()->courses()->where("id", $id2)->first();
+
+        if ($course->order == 1 and !$s) {
+            Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
+            return response()->json(["message" => "course attached"], 201);
+        } else if ($course->order > 1  and (Auth::user()->courses()->where(["module_id" => $id1, "order" => $course->order - 1])->first()) and Auth::user()->courses()->where(["module_id" => $id1, "order" => $course->order - 1])->first()->pivot->staus == "completed" and (!Auth::user()->courses()->where(["module_id" => $id1, "id" => $id2])->first())) {
+            Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
+            return response()->json(["message" => "course attached"], 201);
+        }
+
+
+
+
+
+
+        return response()->json(["message" => "you can't start the course yet"], 403);
     }
 
     /**

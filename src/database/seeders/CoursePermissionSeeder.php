@@ -15,10 +15,10 @@ class CoursePermissionSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => "add-course"]);
-        Permission::create(["name" => "edit-course"]);
-        Permission::create(["name" => "delete-course"]);
-        Permission::create(["name" => "view-course"]);
+        // Permission::create(["name" => "add-course"]);
+        // Permission::create(["name" => "edit-course"]);
+        // Permission::create(["name" => "delete-course"]);
+        // Permission::create(["name" => "view-course"]);
         $teacherRole = Role::where('name', 'teacher')->first();
         $studentRole = Role::where('name', 'student')->first();
         $teacherRole->givePermissionTo(["add-course", "edit-course", "delete-course", "view-course"]);
