@@ -29,7 +29,7 @@ class CourseController extends Controller
             }
             return $courses;
         } else {
-           
+
 
             $courses = DB::table("courses")->leftJoin("course_users", function ($join) {
                 $join->on("courses.id", "course_users.course_id");
@@ -37,7 +37,7 @@ class CourseController extends Controller
 
             foreach ($courses as $course) {
 
-               
+
                 if ($course->user_id != Auth::user()->id) {
                     $course->is_taken = false;
                 } else {
@@ -67,12 +67,12 @@ class CourseController extends Controller
             "title" => "required",
             "description" => "required"
         ]);
-
+        $count = Course::count();
         $course = Course::create([
             "title" => $request->title,
             "description" => $request->description,
             "module_id" => $module->id,
-            "order" => $request->order
+            "order" => $count
         ]);
 
         return $course;
