@@ -37,20 +37,24 @@ services:
     networks:
       - laravel
 
-  myapp-websockets:
-    build:
-     context: .
-     dockerfile: DockerFile
-    command: ['php', 'artisan', 'websockets:serve']
-    container_name: myapp-websockets
-    restart: unless-stopped
+  # myapp-websockets:
+  #   build:
+  #    context: ./websockets
+  #    args:
+  #       - PUID=${HOST_PUID}
+  #       - PGID=${HOST_PGID}
+  #       - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
+  #   # dockerfile: DockerFile
+  #   command: ['php', 'artisan', 'websockets:serve']
+  #   container_name: myapp-websockets
+  #   restart: unless-stopped
    
-    volumes:
-      - ./src:/var/www/html
-    ports:
-      - "6001:6001"
-    networks:
-      - laravel
+  #   volumes:
+  #     - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+  #   ports:
+  #     - "6001:6001"
+  #   networks:
+  #     - laravel
     
   php:
     build:

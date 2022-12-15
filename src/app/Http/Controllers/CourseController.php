@@ -31,9 +31,14 @@ class CourseController extends Controller
         } else {
 
 
-            $courses = DB::table("courses")->leftJoin("course_users", function ($join) {
+            $courses = DB::table("courses")->where(["module_id" => $id1])->leftJoin("course_users", function ($join) {
                 $join->on("courses.id", "course_users.course_id");
-            })->where("user_id", null)->orWhere("user_id", Auth::user()->id)->get();
+            })->where(["module_id" => $id1])->where(function ($query) {
+                $query->where("user_id", null)
+                    ->orWhere("user_id", Auth::user()->id);
+            })->get();
+
+            // ->where("user_id", null)->orWhere("user_id", Auth::user()->id)->get();
 
             foreach ($courses as $course) {
 
@@ -77,6 +82,11 @@ class CourseController extends Controller
 
         return $course;
     }
+    public function compledtedCourses(Request $request, $id1, $id2)
+    {
+        $count = Module::where(["id" => $id1])->courses()->count();
+        dd($count);
+    }
     public function startCourse(Request $request, $id1, $id2)
     {
         $module = Module::findOrFail($id1);
@@ -84,7 +94,7 @@ class CourseController extends Controller
 
         $s = Auth::user()->courses()->where("id", $id2)->first();
 
-        if ($course->order == 1 and !$s) {
+        if ($course->order == 0 or !$s) {
             Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
             return response()->json(["message" => "course attached"], 201);
         } else if ($course->order > 1  and (Auth::user()->courses()->where(["module_id" => $id1, "order" => $course->order - 1])->first()) and Auth::user()->courses()->where(["module_id" => $id1, "order" => $course->order - 1])->first()->pivot->staus == "completed" and (!Auth::user()->courses()->where(["module_id" => $id1, "id" => $id2])->first())) {

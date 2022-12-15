@@ -27,7 +27,7 @@ use App\Models\Log;
 */
 
 Route::prefix("module")->middleware("auth:sanctum")->group(function () {
-
+    Route::middleware("permission:view-course")->get("/{id}/completedCourses", [ModuleController::class, "compledtedCourses"])->name("course.compledtedCourses");
     Route::middleware("permission:add-module")->post("/", [ModuleController::class, "store"])->name("module.create");
     Route::middleware("permission:edit-module")->put("/{id}", [ModuleController::class, "update"])->name("module.update");
     Route::middleware("permission:delete-module")->delete("/{id}", [ModuleController::class, "destroy"])->name("module.delete");
@@ -41,6 +41,8 @@ Route::prefix("logs")->middleware("auth:sanctum")->group(function () {
 });
 
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
+
+
     Route::middleware("permission:view-course")->post("/{id2}/startCourse", [CourseController::class, "startCourse"])->name("course.startCourse");
     Route::middleware("permission:view-course")->get("/", [CourseController::class, "index"])->name("course.showall");
     Route::middleware("permission:view-course")->get("/{id2}", [CourseController::class, "show"])->name("course.showone");

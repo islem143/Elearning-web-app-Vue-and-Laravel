@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseUser;
 use App\Models\Module;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class ModuleController extends Controller
@@ -17,9 +19,14 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        return Module::all();
+        return Module::with("courses")->get();
     }
-
+    public function compledtedCourses(Request $request, $id)
+    {
+        $totalCourses = Module::find($id)->courses->count();
+        $compltedCourses = DB::table("courses")->join("course_users", "courses.id", "=", "course_users.course_id")->where(["module_id" => $id, "staus" => "completed"])->count();
+        return response()->json(["totalCourse" => $totalCourses, "completedCourses" => $compltedCourses]);
+    }
     public function joinModule($id)
     {
 
