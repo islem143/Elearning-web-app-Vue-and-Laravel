@@ -9,7 +9,7 @@ use App\Models\Module;
 class Course extends Model
 {
     use HasFactory;
-    protected $fillable = ["title", "description", "module_id","order"];
+    protected $fillable = ["title", "description", "module_id", "order"];
     public function module()
     {
         return $this->belongsTo(Module::class);
@@ -17,6 +17,10 @@ class Course extends Model
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
+    }
+    public function coursesContent()
+    {
+        return $this->hasMany(CourseContent::class);
     }
     public function users()
     {

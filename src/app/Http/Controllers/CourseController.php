@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseContent;
 use App\Models\Media;
 use App\Models\Module;
 use App\Models\Quiz;
@@ -20,7 +21,7 @@ class CourseController extends Controller
     public function index($id1)
     {
         if (Auth::user()->getRoleNames()[0] == "teacher") {
-            $courses = Course::where(["module_id" => $id1])->with(["media"])->get();
+            $courses = Course::where(["module_id" => $id1])->with(["media", "coursesContent"])->get();
             foreach ($courses as $course) {
 
 
@@ -49,9 +50,11 @@ class CourseController extends Controller
                     $course->is_taken = true;
                 }
                 $media = Media::where(["course_id" => $course->id])->get();
+                $content = CourseContent::where(["course_id" => $course->id])->get();
                 $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
                 $course->quizzes = $quizzes;
                 $course->media = $media;
+                $course->contents = $content;
             }
 
             return $courses;
@@ -82,10 +85,17 @@ class CourseController extends Controller
 
         return $course;
     }
-    public function compledtedCourses(Request $request, $id1, $id2)
+    public function storeContent(Request $request, $id1, $id2)
     {
-        $count = Module::where(["id" => $id1])->courses()->count();
-        dd($count);
+        $course = Course::findOrFail($id2);
+        $this->validate($request, [
+            "content" => "required",
+
+        ]);
+        $course->coursesContent()->create([
+            "content" =>    json_encode($request->content)
+        ]);
+        return response()->json("course content created", 201);
     }
     public function startCourse(Request $request, $id1, $id2)
     {
