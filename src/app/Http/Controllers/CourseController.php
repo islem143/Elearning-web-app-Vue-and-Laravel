@@ -48,7 +48,9 @@ class CourseController extends Controller
 
                     $media = Media::where(["course_id" => $course->id])->get();
                     $content = CourseContent::where(["course_id" => $course->id])->get();
-                    $quiz = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
+                    $quiz_user = DB::table("quiz_user")->where("user_id", Auth::user()->id);
+
+                    $quiz = DB::table("quizzes")->leftJoinSub($quiz_user, "quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
                     $course->quiz = $quiz;
                     $course->media = $media;
                     $course->contents = $content;
