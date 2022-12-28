@@ -37,25 +37,36 @@ services:
     networks:
       - laravel
 
-  # myapp-websockets:
-  #   build:
-  #    context: ./websockets
-  #    args:
-  #       - PUID=${HOST_PUID}
-  #       - PGID=${HOST_PGID}
-  #       - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
-  #   # dockerfile: DockerFile
-  #   command: ['php', 'artisan', 'websockets:serve']
-  #   container_name: myapp-websockets
-  #   restart: unless-stopped
+  myapp-websockets:
+    build:
+     context: .
+     dockerfile: DockerFile
+     args:
+        - PUID=${HOST_PUID}
+        - PGID=${HOST_PGID}
+        - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
+    # dockerfile: DockerFile
+    command: ['php', 'artisan', 'websockets:serve']
+    container_name: myapp-websockets
+    restart: unless-stopped
    
-  #   volumes:
-  #     - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-  #   ports:
-  #     - "6001:6001"
-  #   networks:
-  #     - laravel
-    
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    ports:
+      - "6001:6001"
+    networks:
+      - laravel
+  redis:
+    build: ./redis
+    restart: unless-stopped
+    volumes:
+      - ${DATA_PATH_HOST}/redis:/data
+    expose:
+      - "6379"
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - laravel
   php:
     build:
      context: .

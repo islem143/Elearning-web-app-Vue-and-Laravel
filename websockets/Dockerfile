@@ -16,7 +16,6 @@ RUN apk add --no-cache \
     gmp-dev \
     icu-dev \
     && \
-    docker-php-ext-install \
         pcntl \
         mbstring \
         pdo \

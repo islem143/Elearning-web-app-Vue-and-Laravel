@@ -13,6 +13,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 class MessageSent  implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -38,6 +39,4 @@ class MessageSent  implements ShouldBroadcast
     {
         return new PrivateChannel("chat");
     }
-   
-
 }
