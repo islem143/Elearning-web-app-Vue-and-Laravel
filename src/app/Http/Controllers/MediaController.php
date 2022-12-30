@@ -15,7 +15,7 @@ class MediaController extends Controller
      */
     public function index(Request $request, $courseId)
     {
-        return Media::where(["course_id" => $courseId])->get();
+        return Media::where("course_id", $courseId)->get();
     }
 
     /**
@@ -69,6 +69,7 @@ class MediaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Media::destroy($id);
+        return response()->json(["message" => "media deleted"], 200);
     }
 }

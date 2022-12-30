@@ -25,8 +25,8 @@ class CourseController extends Controller
             foreach ($courses as $course) {
 
 
-                $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
-                $course->quizzes = $quizzes;
+                $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
+                $course->quiz = $quizzes;
             }
             return $courses;
         } else {

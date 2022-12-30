@@ -27,11 +27,11 @@ use App\Models\Log;
 */
 
 Route::prefix("module")->middleware("auth:sanctum")->group(function () {
-    Route::middleware("permission:view-course")->get("/{id}/completedCourses", [ModuleController::class, "compledtedCourses"])->name("course.compledtedCourses");
+    Route::middleware("permission:view-module")->get("", [ModuleController::class, "index"])->name("module.showall");
+    Route::middleware(["permission:view-course", 'role:student'])->get("/{id}/completedCourses", [ModuleController::class, "compledtedCourses"])->name("course.compledtedCourses");
     Route::middleware("permission:add-module")->post("/", [ModuleController::class, "store"])->name("module.create");
     Route::middleware("permission:edit-module")->put("/{id}", [ModuleController::class, "update"])->name("module.update");
     Route::middleware("permission:delete-module")->delete("/{id}", [ModuleController::class, "destroy"])->name("module.delete");
-    Route::middleware("permission:view-module")->get("/", [ModuleController::class, "index"])->name("module.showall");
     Route::middleware("permission:view-module")->get("/{id}", [ModuleController::class, "show"])->name("module.showone");
     Route::middleware("permission:join-module")->post("/{id}/join", [ModuleController::class, "joinModule"])->name("module.join");
     Route::middleware("permission:add-module")->post("/{moduleId}/image", [ImageController::class, "saveModuleImage"])->name("module.createimage");
@@ -86,11 +86,11 @@ Route::prefix("question/{questionId}/choice")->middleware("auth:sanctum")->group
 
 Route::prefix("media")->middleware("auth:sanctum")->group(function () {
 
-    //Route::middleware("permission:view-media")->get("/", [MediaController::class, "index"])->name("media.showall");
-    Route::middleware("permission:view-media")->get("/{courseId}", [MediaController::class, "index"])->name("media.showone");
+    Route::middleware("permission:view-media")->get("/{courseId}", [MediaController::class, "index"])->name("media.showall");
+    // Route::middleware("permission:view-media")->get("/{courseId}", [MediaController::class, "index"])->name("media.showone");
     Route::middleware("permission:add-media")->post("/", [MediaController::class, "store"])->name("media.create");
     Route::middleware("permission:edit-media")->put("/{choiceId}", [MediaController::class, "update"])->name("media.update");
-    Route::middleware("permission:delete-media")->delete("/{choiceId}", [MediaController::class, "destroy"])->name("media.delete");
+    Route::middleware("permission:delete-media")->delete("/{id}", [MediaController::class, "destroy"])->name("media.delete");
 });
 
 
