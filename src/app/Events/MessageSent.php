@@ -26,10 +26,11 @@ class MessageSent  implements ShouldBroadcast
     public function __construct(User $user, Message $message)
     {
         $this->user = $user;
+
         $this->message = $message;
     }
-    public $user;
-    public $messages;
+    private $user;
+    private $message;
     /**
      * Get the channels the event should broadcast on.
      *
@@ -37,6 +38,16 @@ class MessageSent  implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("chat");
+        return new PrivateChannel("chat." . $this->message->receiver_id);
+    }
+    public function broadcastWith()
+    {
+        return [
+            'sender_id' => $this->user->id,
+            'receiver_id' => $this->message->receiver_id,
+            "message" => $this->message->message,
+            "created_at" => $this->message->created_at
+
+        ];
     }
 }

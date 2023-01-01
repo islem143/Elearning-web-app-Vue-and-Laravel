@@ -20,14 +20,25 @@ class ModuleController extends Controller
     public function index(Request $request)
 
     {
+        if (Auth::user()->hasRole(["student", "super-admin"])) {
 
-        if ($request->query("title")) {
 
-            return Module::with("courses")->where("title", 'like', "%".$request->query("title")."%")->get();
+            if ($request->query("title")) {
+
+                return Module::with("courses")->where("title", 'like', "%" . $request->query("title") . "%")->get();
+            }
+
+
+            return Module::with("courses")->get();
+        } else {
+            if ($request->query("title")) {
+
+                return Module::with("courses")->where("title", 'like', "%" . $request->query("title") . "%")->get();
+            }
+
+
+            return Module::with("courses")->where("user_id", Auth::user()->id)->get();
         }
-
-      
-        return Module::with("courses")->get();
     }
     public function compledtedCourses(Request $request, $id)
     {
@@ -40,13 +51,13 @@ class ModuleController extends Controller
     {
 
         $module = Module::FindOrFail($id);
-        $response = Gate::inspect('joinModule', $module);
-        if ($response->allowed()) {
+        $can_join_module = Gate::inspect('joinModule', $module);
+        if ($can_join_module->allowed()) {
 
             Auth::user()->modules()->attach($module->id);
-            return response()->json(["student added to module"]);
+            return response()->json(["message" => "student added to module"], 201);
         }
-        return $response->message();
+        return response()->json(["message" => $can_join_module->message()], 403);
     }
     /**
      * Store a newly created resource in storage.
@@ -56,15 +67,18 @@ class ModuleController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize("create", Module::class);
         $this->validate($request, [
             "title" => "required",
-            "description" => "required"
+            "description" => "required",
+
 
         ]);
 
         $module = Module::create([
             "title" => $request->title,
-            "descprtion" => $request->description
+            "descprtion" => $request->description,
+            "user_id" => Auth::user()->id
         ]);
         return $module;
     }
@@ -91,6 +105,7 @@ class ModuleController extends Controller
     public function update(Request $request, $id)
     {
         $module = Module::findOrFail($id);
+        $this->authorize("update", $module);
         $module->update($request->all());
         return response()->json(["module updated succesfully"]);
     }
@@ -104,6 +119,7 @@ class ModuleController extends Controller
     public function destroy($id)
     {
         $module = Module::findOrFail($id);
+        $this->authorize("delete", $module);
         $module->delete();
         return response()->json(["module deleted succesfully"]);
     }

@@ -21,10 +21,12 @@ class ChatsController extends Controller
     {
         $user = Auth::user();
         $message = $user->messages()->create([
-            'message' => $request->input('message')
+            'message' => $request->input('message'),
+            'user_id' => $user->id,
+            'receiver_id' => $request->receiver_id
         ]);
-       //broadcast(new MessageSent($user, $message));
-        MessageSent::dispatch($user,$message);
+        //broadcast(new MessageSent($user, $message));
+        MessageSent::dispatch($user, $message);
 
         return ['status' => 'Message Sent!'];
     }

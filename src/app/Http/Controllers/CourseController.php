@@ -21,7 +21,7 @@ class CourseController extends Controller
     public function index($id1)
     {
         if (Auth::user()->getRoleNames()[0] == "teacher") {
-            $courses = Course::where(["module_id" => $id1])->with(["media", "coursesContent"])->get();
+            $courses = Course::where(["module_id" => $id1])->with(["media", "coursesContent"])->where("user_id", Auth::user()->id)->get();
             foreach ($courses as $course) {
 
 
@@ -70,7 +70,7 @@ class CourseController extends Controller
     public function store(Request $request, $id1)
     {
         $module = Module::findOrFail($id1);
-
+        $this->authorize("create", Course::class);
         $this->validate($request, [
             "title" => "required",
             "description" => "required"
@@ -80,7 +80,8 @@ class CourseController extends Controller
             "title" => $request->title,
             "description" => $request->description,
             "module_id" => $module->id,
-            "order" => $count
+            "order" => $count,
+            "user_id" => Auth::user()->id
         ]);
 
         return $course;
@@ -156,6 +157,7 @@ class CourseController extends Controller
     {
         Module::findOrFail($id1);
         $course = Course::findOrFail($id2);
+        $this->authorize("update", $course);
         $course->update($request->all());
         return response()->json(["course updated succesfully"]);
     }
@@ -169,6 +171,7 @@ class CourseController extends Controller
     public function destroy($id1, $id2)
     {
         $course = Course::findOrFail($id2);
+        $this->authorize("delete", $course);
         $course->delete();
         return response()->json(["course deleted succesfully"]);
     }

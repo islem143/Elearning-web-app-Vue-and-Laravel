@@ -12,12 +12,13 @@ class Module extends Model
 {
     use HasFactory;
 
-    protected $fillable=["title","descprtion","img_url"];
+    protected $fillable = ["title", "descprtion", "img_url", "user_id"];
     public function courses()
     {
         return $this->hasMany(Course::class);
     }
-    public function modules(){
+    public function modules()
+    {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

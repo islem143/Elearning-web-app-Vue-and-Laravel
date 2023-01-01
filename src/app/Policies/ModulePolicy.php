@@ -19,7 +19,6 @@ class ModulePolicy
      */
     public function viewAny(User $user)
     {
-        //
     }
 
     /**
@@ -31,7 +30,6 @@ class ModulePolicy
      */
     public function view(User $user, Module $module)
     {
-        return true;
     }
 
     /**
@@ -42,15 +40,20 @@ class ModulePolicy
      */
     public function create(User $user)
     {
-        return $user->role = "teacher" ? true : false;
+        return $user->can("add-module");
     }
-    public function joinModule(User $user,Module $module)
+
+
+    public function joinModule(User $user, Module $module)
     {
-      
-        $res=$user->modules()->where("id",$module->id)->first();
- 
-        if($res){
-            return Response::deny("You already entrolled in this course",403);
+        if ($user->cannot("join-module")) {
+            return false;
+        }
+
+        $res = $user->modules()->where("id", $module->id)->first();
+
+        if ($res) {
+            return Response::deny("You already entrolled in this course", 403);
         }
         return Response::allow();
     }
@@ -65,7 +68,10 @@ class ModulePolicy
      */
     public function update(User $user, Module $module)
     {
-        return $user->role = "teacher" ? true : false;
+        if ($user->can("edit-module")) {
+            return $user->id == $module->user_id ? true : false;
+        }
+        return false;
     }
 
     /**
@@ -77,7 +83,10 @@ class ModulePolicy
      */
     public function delete(User $user, Module $module)
     {
-        return $user->role = "teacher" ? true : false;
+        if ($user->can("delete-module")) {
+            return $user->id == $module->user_id ? true : false;
+        }
+        return false;
     }
 
     /**

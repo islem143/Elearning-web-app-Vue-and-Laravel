@@ -11,7 +11,7 @@ class Quiz extends Model
 
 
    protected $fillable=[
-    "title","description","duration","course_id"
+    "title","description","duration","course_id","created_by"
    ];
 
 
