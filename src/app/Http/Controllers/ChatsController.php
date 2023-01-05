@@ -15,7 +15,15 @@ class ChatsController extends Controller
     public function fetchMessages(Request $request)
     {
         $userId = Auth::user()->id;
-        return Message::with('user')->where("user_id", $userId)->orWhere("receiver_id", $userId)->get();
+        $querys = $request->query('receiver_id');
+        return Message::where(["user_id" => $userId, "receiver_id" => $request->query('receiver_id')])
+            ->orWhere(
+                function ($query) use ($querys, $userId) {
+                    $query->where(["user_id" => $querys, "receiver_id" => $userId]);
+                }
+
+
+            )->get();
     }
 
     public function sendMessage(Request $request)

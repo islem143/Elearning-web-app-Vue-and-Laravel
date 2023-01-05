@@ -13,6 +13,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\UserController;
 use App\Models\Log;
 
 /*
@@ -106,3 +107,4 @@ Route::post('/register', [RegisterApiController::class, 'store'])->name('registe
 Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index'])->middleware("auth:sanctum");
 Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages'])->middleware("auth:sanctum");
 Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage'])->middleware("auth:sanctum");
+Route::get("/users", [UserController::class, 'index'])->middleware("auth:sanctum");
