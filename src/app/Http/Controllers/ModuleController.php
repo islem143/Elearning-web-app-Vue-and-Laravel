@@ -19,7 +19,8 @@ class ModuleController extends Controller
      */
     public function index(Request $request)
 
-    {
+    { 
+        $this->authorize("view", Module::class);
         if (Auth::user()->hasRole(["student", "super-admin"])) {
 
 
@@ -42,7 +43,7 @@ class ModuleController extends Controller
     }
     public function compledtedCourses(Request $request, $id)
     {
-
+        
         $totalCourses = Module::find($id)->courses->count();
         $compltedCourses = DB::table("courses")->join("course_users", "courses.id", "=", "course_users.course_id")->where(["module_id" => $id, "user_id" => Auth::user()->id, "staus" => "completed"])->count();
         return response()->json(["totalCourse" => $totalCourses, "completedCourses" => $compltedCourses]);
@@ -90,8 +91,8 @@ class ModuleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //return Module::where(["id" => $id])->with("courses")->first();
+    {   $this->authorize("view", Module::class);
+ 
         return Module::where(["id" => $id])->first();
     }
 

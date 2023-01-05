@@ -28,11 +28,14 @@ class CoursePolicy
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Course $course)
+    public function view(User $user)
     {
-        //
+        return $user->can("view-course");
     }
-
+    public function startCourse(User $user)
+    {
+        return $user->hasRole(["student"]);
+    }
     /**
      * Determine whether the user can create models.
      *

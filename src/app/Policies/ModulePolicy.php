@@ -28,8 +28,9 @@ class ModulePolicy
      * @param  \App\Models\Module  $module
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Module $module)
+    public function view(User $user)
     {
+        return $user->can("view-module");
     }
 
     /**

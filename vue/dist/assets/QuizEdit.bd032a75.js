@@ -1,0 +1,1 @@
+import{Q as t}from"./QuizForm.6affa89b.js";import{_ as r,o as e,g as n,r as s}from"./index.72b1626b.js";import"./index.esm.df1fd4d8.js";const c={name:"QuizEdit",components:{QuizForm:t}};function a(i,m,p,_,u,f){const o=s("QuizForm");return e(),n(o)}const l=r(c,[["render",a]]);export{l as default};

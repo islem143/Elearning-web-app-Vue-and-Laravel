@@ -20,6 +20,7 @@ class CourseController extends Controller
      */
     public function index($id1)
     {
+        $this->authorize("view", Course::class);
         if (Auth::user()->getRoleNames()[0] == "teacher") {
             $courses = Course::where(["module_id" => $id1])->with(["media", "coursesContent"])->where("user_id", Auth::user()->id)->get();
             foreach ($courses as $course) {
@@ -102,7 +103,7 @@ class CourseController extends Controller
     {
         $module = Module::findOrFail($id1);
         $course = Course::where(["id" => $id2])->first();
-
+        $this->authorize("startCourse", Cousre::class);
         $s = Auth::user()->courses()->where("id", $id2)->first();
         if ($s && $s->status = "in_progress") {
             return response()->json(["message" => "course in progress"], 403);
@@ -137,7 +138,7 @@ class CourseController extends Controller
      */
     public function show($id1, $id2)
     {
-
+        $this->authorize("view", Course::class);
         $course = Course::where(["id" => $id2])->with(["media"])->first();
         $quiz = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
         $course->quiz = $quiz;

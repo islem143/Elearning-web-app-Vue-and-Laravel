@@ -17,7 +17,9 @@ class QuizController extends Controller
     public function index($courseId)
     {
         return Quiz::where(["course_id" => $courseId])->with(["questions", "questions.choices"])->get();
+        
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -28,6 +30,7 @@ class QuizController extends Controller
     public function store(Request $request, $courseId)
     {
         Course::FindOrFail($courseId);
+        $this->authorize("add-quiz", Quiz::class);
         $this->validate(
             $request,
             [
@@ -41,7 +44,8 @@ class QuizController extends Controller
                 "title" => $request->title,
                 "duration" => $request->duration,
                 "description" => $request->description,
-                "course_id" => $courseId
+                "course_id" => $courseId,
+                "created_by" => Auth::user()->id
             ]
         );
 
@@ -55,16 +59,17 @@ class QuizController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($courseId, $quizId)
-    {
+    {   $this->authorize("view", Quiz::class);
         return Quiz::where(["id" => $quizId])->with(["questions", "questions.choices"])->first();
     }
+
     public function doneQuiz($courseId, $quizId)
-    {
+    {   
         return Auth::user()->quizzes()->where(["quiz_id" => $quizId])->first();
     }
 
     public function saveResult(Request $request, $courseId, $quizId)
-    {
+    {   $this->authorize("saveResult", Quiz::class);
         $this->validate(
             $request,
             [
@@ -95,6 +100,7 @@ class QuizController extends Controller
     public function update(Request $request, $courseId, $quizId)
     {
         $quiz = Quiz::findOrFail($quizId);
+        $this->authorize("edit-quiz", $quiz);
         $quiz->update($request->all());
         return response()->json(["quiz updated succesfully"]);
     }
@@ -108,6 +114,7 @@ class QuizController extends Controller
     public function destroy($courseId, $quizId)
     {
         $quiz = Quiz::findOrFail($quizId);
+        $this->authorize("delete-quiz", $quiz);
         $quiz->delete();
         return response()->json(["quiz deleted succesfully"]);
     }

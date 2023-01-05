@@ -16,10 +16,12 @@ class ChoiceController extends Controller
      */
     public function index($questionId)
     {
+        $this->authorize("view", Choice::class);
         return Choice::where(["question_id" => $questionId])->get();
     }
     public function attach(Request $request, $questionId, $choiceId)
     {
+        $this->authorize("attach", Choice::class);
         $user = Auth::user();
         $user->choices()->attach($choiceId, [
             "question_id" => $questionId,
@@ -35,6 +37,7 @@ class ChoiceController extends Controller
      */
     public function storeOne(Request $request, $questionId)
     {
+        $this->authorize("create", Choice::class);
         Question::FindOrFail($questionId);
         $this->validate(
             $request,
@@ -56,7 +59,7 @@ class ChoiceController extends Controller
     }
     public function store(Request $request, $questionId)
     {
-
+        $this->authorize("create", Choice::class);
         Question::FindOrFail($questionId);
         $this->validate(
             $request,
@@ -90,6 +93,7 @@ class ChoiceController extends Controller
      */
     public function show($choiceId)
     {
+        $this->authorize("view", Choice::class);
         $choice = Choice::FindOrFail($choiceId);
         return $choice;
     }
@@ -103,6 +107,7 @@ class ChoiceController extends Controller
      */
     public function update(Request $request)
     {
+        $this->authorize("update", Choice::class);
 
         $this->validate(
             $request,
@@ -112,7 +117,7 @@ class ChoiceController extends Controller
 
             ]
         );
-        dd($request->get("choices"));
+      
         foreach ($request->get("choices") as $choice) {
             $choiceM = Choice::findOrFail($choice["id"]);
             $choiceM->text = $choice["text"];
@@ -135,6 +140,7 @@ class ChoiceController extends Controller
      */
     public function destroy($choiceId)
     {
+        $this->authorize("delete", Choice::class);
         $choice = Choice::findOrFail($choiceId);
         $choice->delete();
         return response()->json(["choice deleted succesfully"]);

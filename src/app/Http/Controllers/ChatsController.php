@@ -12,9 +12,10 @@ class ChatsController extends Controller
 
 
 
-    public function fetchMessages()
+    public function fetchMessages(Request $request)
     {
-        return Message::with('user')->get();
+        $userId = Auth::user()->id;
+        return Message::with('user')->where("user_id", $userId)->orWhere("receiver_id", $userId)->get();
     }
 
     public function sendMessage(Request $request)
