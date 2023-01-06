@@ -19,7 +19,7 @@ class LoginApiController extends Controller
             'password' =>  "required"
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('profile')->first();
         if (!$user) {
             return Response(["errors" => ["email" => ["User with this email not found"]], "message" => "not found"], 404);
         }
@@ -33,6 +33,7 @@ class LoginApiController extends Controller
             'user' => $user,
             'token' => $token,
             "roles"=>$user->getRoleNames()
+
        
         ];
         return response($response, 201);

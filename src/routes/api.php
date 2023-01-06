@@ -108,3 +108,5 @@ Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index'])->mid
 Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages'])->middleware("auth:sanctum");
 Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage'])->middleware("auth:sanctum");
 Route::get("/users", [UserController::class, 'index'])->middleware("auth:sanctum");
+Route::put("/user", [UserController::class, 'update'])->middleware("auth:sanctum");
+Route::post("/user/image", [UserController::class, 'image'])->middleware("auth:sanctum");
