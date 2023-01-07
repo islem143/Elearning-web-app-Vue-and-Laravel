@@ -109,7 +109,7 @@ Route::prefix("users")->middleware("auth:sanctum")->group(function () {
     // users
     Route::get("/", [UserController::class, 'index'])->middleware("auth:sanctum");
     Route::put("/{id}", [UserController::class, 'update'])->middleware("auth:sanctum");
-    Route::post("/user/image", [UserController::class, 'image'])->middleware("auth:sanctum");
+    Route::post("/image", [UserController::class, 'image'])->middleware("auth:sanctum");
     //admin
     Route::post("/", [UserController::class, 'store'])->middleware("auth:sanctum");
     Route::delete("/{id}", [UserController::class, 'destroy'])->middleware("auth:sanctum");

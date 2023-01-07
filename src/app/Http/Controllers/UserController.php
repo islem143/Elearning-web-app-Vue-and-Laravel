@@ -98,7 +98,7 @@ class UserController extends Controller
             ]);
             $arr["password"] = Hash::make($request->password);
         }
-        $this->authorize("update", $id);
+      
         if (Auth::user()->hasRole(["super-admin"])) {
             $user = User::find($id);
             $user->update($arr);

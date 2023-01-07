@@ -45,7 +45,7 @@ class ModuleController extends Controller
     {
 
         $totalCourses = Module::find($id)->courses->count();
-        $compltedCourses = DB::table("courses")->join("course_users", "courses.id", "=", "course_users.course_id")->where(["module_id" => $id, "user_id" => Auth::user()->id, "staus" => "completed"])->count();
+        $compltedCourses = DB::table("courses")->join("course_users", "courses.id", "=", "course_users.course_id")->where(["module_id" => $id, "course_users.user_id" => Auth::user()->id, "staus" => "completed"])->count();
         return response()->json(["totalCourse" => $totalCourses, "completedCourses" => $compltedCourses]);
     }
     public function joinModule($id)
