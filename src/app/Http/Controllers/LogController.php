@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LogController extends Controller
@@ -15,7 +16,11 @@ class LogController extends Controller
      */
     public function index()
     {
-        return  DB::table('logs')->where("role","student")->orderByDesc("created_at")->get()->unique("user_id");
+        if (Auth::user()->getRoleNames()[0] == "super-admin") {
+            return DB::table('logs')->where("user_id",'!=',Auth::user()->id)->orderByDesc("created_at")->get()->unique("user_id");
+        } else {
+            return  DB::table('logs')->where("role", "student")->orderByDesc("created_at")->get()->unique("user_id");
+        }
     }
 
     /**

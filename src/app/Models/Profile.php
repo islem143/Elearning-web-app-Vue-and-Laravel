@@ -12,7 +12,7 @@ class Profile extends Model
 
 
 
-    protected $fillable=["picture"];
+    protected $fillable=["img_url"];
 
     public function user(){
          return $this->hasOne(User::class);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginApiController;
@@ -103,10 +104,21 @@ Route::middleware('auth:sanctum')->post('/logout', [LogoutApiController::class, 
 Route::post('/login', [LoginApiController::class, 'store'])->name('login');
 Route::post('/register', [RegisterApiController::class, 'store'])->name('registerapi');
 
+Route::prefix("users")->middleware("auth:sanctum")->group(function () {
+
+    // users
+    Route::get("/", [UserController::class, 'index'])->middleware("auth:sanctum");
+    Route::put("/{id}", [UserController::class, 'update'])->middleware("auth:sanctum");
+    Route::post("/user/image", [UserController::class, 'image'])->middleware("auth:sanctum");
+    //admin
+    Route::post("/", [UserController::class, 'store'])->middleware("auth:sanctum");
+    Route::delete("/{id}", [UserController::class, 'destroy'])->middleware("auth:sanctum");
+});
+
+
 
 Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index'])->middleware("auth:sanctum");
 Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages'])->middleware("auth:sanctum");
 Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage'])->middleware("auth:sanctum");
-Route::get("/users", [UserController::class, 'index'])->middleware("auth:sanctum");
-Route::put("/user", [UserController::class, 'update'])->middleware("auth:sanctum");
-Route::post("/user/image", [UserController::class, 'image'])->middleware("auth:sanctum");
+
+Route::get('/admin/stats', [App\Http\Controllers\StatsController::class, 'AdminDashboardStats'])->middleware("auth:sanctum");

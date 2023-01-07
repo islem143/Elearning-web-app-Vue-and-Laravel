@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -20,7 +21,13 @@ class UserController extends Controller
         if (Auth::user()->hasRole(["student", "teacher"])) {
             return User::role(["student", "teacher"])->where('id', "!=", Auth::user()->id)->with('profile')->select(["id", "name"])->get();
         } else {
-            return User::with("profile");
+            $users = User::with(["profile", "roles"])->where("id", "!=", Auth::user()->id)->get();
+
+            foreach ($users as $user) {
+
+                $user->role = $user->roles[0]->name;
+            }
+            return $users;
         }
     }
 
@@ -32,7 +39,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize("update", User::class);
+        $this->validate($request, [
+            'email' => "required|email|unique:App\Models\User,email",
+            "name" => "required|max:255",
+            'password' =>  "required|confirmed",
+            'role' =>  "required|string"
+        ]);
+        $user = User::create([
+            'email' => $request->email,
+            "name" => $request->name,
+            "password" => Hash::make($request->password),
+
+
+
+        ]);
+        $user->assignRole($request->role);
+        $user->profile()->create(["img_url" => "profile1.jpeg"]);
+
+
+
+        $user = User::where('id', $user->id)->with(['roles', 'profile'])->first();
+        $user->role = $user->roles[0]->name;
+        return $user;;
     }
 
     /**
@@ -53,13 +82,39 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $user = User::find(Auth::user()->id);
-        $user->name = $request->name;
-        $user->save();
+        $this->validate($request, [
 
-        return User::where('id', Auth::user()->id)->with('profile')->first();
+            "name" => "required|max:255",
+
+
+        ]);
+        $arr = [];
+        $arr["name"] = $request->name;
+        if ($request->password) {
+            $this->validate($request, [
+                'password' =>  "confirmed",
+            ]);
+            $arr["password"] = Hash::make($request->password);
+        }
+        $this->authorize("update", $id);
+        if (Auth::user()->hasRole(["super-admin"])) {
+            $user = User::find($id);
+            $user->update($arr);
+
+            $user = User::where('id', $id)->with(['roles', 'profile'])->first();
+            $user->role = $user->roles[0]->name;
+            return $user;
+        } else {
+
+            $user = User::find($id);
+            $user->name = $request->name;
+            $user->save();
+            $user = User::where('id', $id)->with(['roles', 'profile'])->first();
+            $user->role = $user->roles[0]->name;
+            return $user;
+        }
     }
     public function image(Request $request)
     {
@@ -84,8 +139,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $this->authorize("delete", User::class);
+        return User::destroy($id);
     }
 }

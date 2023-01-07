@@ -28,7 +28,7 @@ class RegisterApiController extends Controller
 
         ]);
         $user->assignRole("student");
-        $user->profile()->create(["img_url" => "/images/profile.jpeg"]);
+        $user->profile()->create(["img_url" => "profile1.jpeg"]);
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
