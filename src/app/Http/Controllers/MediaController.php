@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Media;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MediaController extends Controller
 {
@@ -35,7 +36,7 @@ class MediaController extends Controller
 
         $filePath = $request->file('file')->store("public");
 
-        $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => $request->type, "url" => $filePath]);
+        $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => $request->type, "url" => $filePath,'created_by'=>Auth::user()->id]);
         return response()->json(["File uploaded successfuly"], 201);
     }
 

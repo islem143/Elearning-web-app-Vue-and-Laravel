@@ -30,8 +30,11 @@ use App\Models\Log;
 
 Route::prefix("module")->middleware("auth:sanctum")->group(function () {
     Route::get("/", [ModuleController::class, "index"])->name("module.showall");
+    Route::get("/count", [ModuleController::class, "count"])->name("module.showall");
+    Route::get("/myModules", [ModuleController::class, "myModules"])->name("module.showall");
     Route::get("/{id}/completedCourses", [ModuleController::class, "compledtedCourses"])->name("course.compledtedCourses");
     Route::post("/", [ModuleController::class, "store"])->name("module.create");
+    Route::post("/join", [ModuleController::class, "join"])->name("module.join");
     Route::put("/{id}", [ModuleController::class, "update"])->name("module.update");
     Route::delete("/{id}", [ModuleController::class, "destroy"])->name("module.delete");
     Route::get("/{id}", [ModuleController::class, "show"])->name("module.showone");

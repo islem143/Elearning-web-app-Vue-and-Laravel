@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseUser;
 use App\Models\Module;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,13 +24,11 @@ class ModuleController extends Controller
         if (Auth::user()->hasRole(["student", "super-admin"])) {
 
 
-            if ($request->query("title")) {
-
-                return Module::with("courses")->where("title", 'like', "%" . $request->query("title") . "%")->get();
-            }
 
 
-            return Module::with("courses")->get();
+            return Module::with(["courses", "users" => function ($query) {
+                $query->where('id', Auth::user()->id);
+            }])->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
         } else {
             if ($request->query("title")) {
 
@@ -40,6 +38,10 @@ class ModuleController extends Controller
 
             return Module::with("courses")->where("user_id", Auth::user()->id)->get();
         }
+    }
+    public function count()
+    {
+        return  response()->json(["count" => Module::count()]);
     }
     public function compledtedCourses(Request $request, $id)
     {
@@ -124,5 +126,26 @@ class ModuleController extends Controller
         $this->authorize("delete", $module);
         $module->delete();
         return response()->json(["module deleted succesfully"]);
+    }
+    public function join(Request $request)
+    {
+        $module = Auth::user()->modules()->where("module_id", $request->moduleId)->first();
+
+        if ($module) {
+            return response()->json(["message" => "your already enroled to this module"], 403);
+        } else {
+            Auth::user()->modules()->attach($request->moduleId);
+            return response()->json(["message" => "you have succesfully"]);
+        }
+    }
+    public function myModules(Request $request)
+    {
+        // if ($request->query("title")) {
+
+        //     return Module::with("courses")->where("title", 'like', "%" . $request->query("title") . "%")->get();
+        // }
+
+
+        return Module::with("courses")->join("module_user", 'modules.id', '=', 'module_user.module_id')->where('module_user.user_id', Auth::user()->id)->get();
     }
 }
