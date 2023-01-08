@@ -125,3 +125,4 @@ Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMess
 Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage'])->middleware("auth:sanctum");
 
 Route::get('/admin/stats', [App\Http\Controllers\StatsController::class, 'AdminDashboardStats'])->middleware("auth:sanctum");
+Route::get('/teacher/stats', [App\Http\Controllers\StatsController::class, 'TeacherDashboardStats'])->middleware("auth:sanctum");

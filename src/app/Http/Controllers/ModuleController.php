@@ -30,18 +30,19 @@ class ModuleController extends Controller
                 $query->where('id', Auth::user()->id);
             }])->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
         } else {
-            if ($request->query("title")) {
-
-                return Module::with("courses")->where("title", 'like', "%" . $request->query("title") . "%")->get();
-            }
 
 
-            return Module::with("courses")->where("user_id", Auth::user()->id)->get();
+
+            return Module::with("courses")->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);;
         }
     }
     public function count()
     {
-        return  response()->json(["count" => Module::count()]);
+        if (Auth::user()->hasRole(["student", "super-admin"])) {
+            return   response()->json(["count" => Module::count()]);
+        } else {
+            return   response()->json(["count" => Module::where("user_id",Auth::user()->id)->count()]);
+        }
     }
     public function compledtedCourses(Request $request, $id)
     {
@@ -146,6 +147,6 @@ class ModuleController extends Controller
         // }
 
 
-        return Module::with("courses")->join("module_user", 'modules.id', '=', 'module_user.module_id')->where('module_user.user_id', Auth::user()->id)->get();
+        return Module::with("courses")->join("module_user", 'modules.id', '=', 'module_user.module_id')->where('module_user.user_id', Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
     }
 }
