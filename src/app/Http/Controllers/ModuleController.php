@@ -20,6 +20,7 @@ class ModuleController extends Controller
     public function index(Request $request)
 
     {
+
         $this->authorize("view", Module::class);
         if (Auth::user()->hasRole(["student", "super-admin"])) {
 
@@ -41,7 +42,7 @@ class ModuleController extends Controller
         if (Auth::user()->hasRole(["student", "super-admin"])) {
             return   response()->json(["count" => Module::count()]);
         } else {
-            return   response()->json(["count" => Module::where("user_id",Auth::user()->id)->count()]);
+            return   response()->json(["count" => Module::where("user_id", Auth::user()->id)->count()]);
         }
     }
     public function compledtedCourses(Request $request, $id)

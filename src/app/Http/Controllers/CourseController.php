@@ -10,6 +10,7 @@ use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Modules\Course\CourseService;
 
 class CourseController extends Controller
 {
@@ -18,47 +19,22 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $courseService;
+    public function __construct(CourseService $courseService)
+    {
+        $this->courseService = $courseService;
+    }
+
     public function index($id1)
     {
+
+
         $this->authorize("view", Course::class);
         if (Auth::user()->getRoleNames()[0] == "teacher") {
-            $courses = Course::where(["module_id" => $id1])->with(["media", "coursesContent"])->where("user_id", Auth::user()->id)->get();
-            foreach ($courses as $course) {
 
-
-                $quizzes = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
-                $course->quiz = $quizzes;
-            }
-            return $courses;
+            return $this->courseService->getTeacherCourses($id1);
         } else {
-
-            $courses_users = DB::table("course_users")->where("user_id", Auth::user()->id);
-            $courses = DB::table("courses")->leftJoinSub($courses_users, "course_users", function ($join) {
-                $join->on("courses.id", "course_users.course_id");
-            })->where(["module_id" => $id1])->get();
-
-
-
-            foreach ($courses as $course) {
-
-
-                if (!$course->user_id) {
-                    $course->is_taken = false;
-                } else {
-                    $course->is_taken = true;
-
-                    $media = Media::where(["course_id" => $course->id])->get();
-                    $content = CourseContent::where(["course_id" => $course->id])->get();
-                    $quiz_user = DB::table("quiz_user")->where("user_id", Auth::user()->id);
-
-                    $quiz = DB::table("quizzes")->leftJoinSub($quiz_user, "quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
-                    $course->quiz = $quiz;
-                    $course->media = $media;
-                    $course->contents = $content;
-                }
-            }
-
-            return $courses;
+            return $this->courseService->getStudentCourses($id1);
         }
     }
 
@@ -70,22 +46,10 @@ class CourseController extends Controller
      */
     public function store(Request $request, $id1)
     {
-        $module = Module::findOrFail($id1);
-        $this->authorize("create", Course::class);
-        $this->validate($request, [
-            "title" => "required",
-            "description" => "required"
-        ]);
-        $count = Course::count();
-        $course = Course::create([
-            "title" => $request->title,
-            "description" => $request->description,
-            "module_id" => $module->id,
-            "order" => $count,
-            "user_id" => Auth::user()->id
-        ]);
 
-        return $course;
+        $this->authorize("create", Course::class);
+
+        return $this->courseService->createCourse($id1, $request->all());
     }
     public function storeContent(Request $request, $id1, $id2)
     {
@@ -103,7 +67,7 @@ class CourseController extends Controller
     {
         $module = Module::findOrFail($id1);
         $course = Course::where(["id" => $id2])->first();
-        $this->authorize("startCourse", Cousre::class);
+        $this->authorize("startCourse", Course::class);
         $s = Auth::user()->courses()->where("id", $id2)->first();
         if ($s && $s->status = "in_progress") {
             return response()->json(["message" => "course in progress"], 403);
@@ -113,21 +77,6 @@ class CourseController extends Controller
             Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
             return response()->json(["message" => "course started"], 201);
         }
-
-        // if ($course->order == 0 or !$s) {
-        //     Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
-        //     return response()->json(["message" => "course attached"], 201);
-        // } else if ($course->order > 1  and (Auth::user()->courses()->where(["module_id" => $id1, "order" => $course->order - 1])->first()) and Auth::user()->courses()->where(["module_id" => $id1, "order" => $course->order - 1])->first()->pivot->staus == "completed" and (!Auth::user()->courses()->where(["module_id" => $id1, "id" => $id2])->first())) {
-        //     Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
-        //     return response()->json(["message" => "course attached"], 201);
-        // }
-
-
-
-
-
-
-
     }
 
     /**
