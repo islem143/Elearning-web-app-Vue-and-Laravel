@@ -46,6 +46,8 @@ services:
         - PUID=${HOST_PUID}
         - PGID=${HOST_PGID}
         - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
     # dockerfile: DockerFile
     command: ['php', 'artisan', 'websockets:serve']
     container_name: myapp-websockets
@@ -72,6 +74,9 @@ services:
     build:
      context: .
      dockerfile: Dockerfile
+     args:
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
     
     volumes:
       - ./src:/var/www/html

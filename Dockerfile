@@ -3,7 +3,20 @@ FROM php:8.1-fpm-alpine
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN chown -R www-data:www-data /var/www
+
+ARG UID
+ARG GID
+
+ENV UID=${UID}
+ENV GID=${GID}
+
+
+RUN addgroup -g ${GID} --system islem
+RUN adduser -G islem --system -D -s /bin/sh -u ${UID} islem
+
+
+RUN sed -i "s/user = www-data/user = islem/g" /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i "s/group = www-data/group = islem/g" /usr/local/etc/php-fpm.d/www.conf
 
 WORKDIR /var/www/html
 
