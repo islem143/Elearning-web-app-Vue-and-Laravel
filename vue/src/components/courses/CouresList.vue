@@ -7,6 +7,7 @@
 
     <CourseCardVue
       @get-course="$emit('get-course', course)"
+      @delete-course="deleteCourse"
       v-for="course in courses"
       :key="course.id"
       :course="course"
@@ -29,7 +30,11 @@ export default {
   components: {
     CourseCardVue,
   },
-  methods() {},
+  methods: {
+    deleteCourse(id) {
+      this.$emit("delete-course", id);
+    },
+  },
 };
 </script>
 

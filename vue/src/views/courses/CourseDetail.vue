@@ -47,6 +47,7 @@ export default {
     let courseId = this.$route.params.courseId;
     this.courseId = courseId;
     this.moduleId = moduleId;
+    this.getCourse();
   },
   methods: {
     getCourse() {
@@ -54,7 +55,7 @@ export default {
         .get("/api/module/" + this.moduleId + "/course/" + this.courseId)
         .then((res) => {
           this.info = res.data;
-          axios.get("/api/media/" + courseId).then((res) => {
+          axios.get("/api/media/" + this.courseId).then((res) => {
             this.attachments = res.data;
           });
         });

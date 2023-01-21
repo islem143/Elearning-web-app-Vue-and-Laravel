@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div >
     <p class="text-red-400">{{ showError ? "please select a choice" : "" }}</p>
 
     <div
       v-if="questions.length != 0 && !quizFinished && !quizDone"
-      class="flex w-8 mx-auto flex-column mt-8 justify-content-center align-items-center"
+      class="flex w-9 mx-auto flex-column mt-8 justify-content-center align-items-center"
     >
       <div class="p-card p-3 mb-3 align-self-end">
         Time:
@@ -18,7 +18,7 @@
         :choices="questions[currentIndex].choices"
         :correctChoice="correctChoice"
       />
-      <Button class="align-self-end" label="Confirm" @click="confirmChoice" />
+      <Button class="align-self-end mb-2 surface-700" label="Confirm" @click="confirmChoice" />
       <Button
         class="align-self-end"
         :label="currentIndex < questions.length - 1 ? 'Next' : 'Finish Quiz'"

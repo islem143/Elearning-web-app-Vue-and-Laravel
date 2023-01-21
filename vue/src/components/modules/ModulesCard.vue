@@ -3,9 +3,13 @@
     <module-card
       @confirm-delete-module="$emit('confirm-delete-module', module)"
       @edit-module="$emit('edit-module', module)"
+      :mylist="mylist"
       @go-to="$emit('go-to', module)"
+      @enroll="enroll"
       :module="module"
     />
+  
+
   </div>
 </template>
 
@@ -18,6 +22,11 @@ export default {
     ModuleCard,
   },
 
-  props: ["modules"],
+  props: ["modules", "mylist"],
+  methods: {
+    enroll(module) {
+      this.$emit("enroll", module);
+    },
+  },
 };
 </script>

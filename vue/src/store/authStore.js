@@ -59,7 +59,7 @@ const authStore = {
           const user = res.data.user;
           const token = res.data.token;
           const roles = res.data.roles;
-          console.log(roles);
+          console.log(user);
           commit("setUser", user);
           commit("setToken", token);
           commit("setRoles", roles);

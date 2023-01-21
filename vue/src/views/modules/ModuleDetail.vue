@@ -1,5 +1,5 @@
 <template>
-  <div class="card pt-0 px-0 p-fluid bg-white">
+  <div class="card pt-0 px-0 p-fluid bg-white w-10 mx-auto">
     <div class="p-4 text-white border-round-top m-0 bg-blue-300">
       <h3>Module: {{ info.title }}</h3>
     </div>
@@ -22,6 +22,7 @@
       <CouresListVue
         @get-course="getCourse"
         @get-courses="getCourses"
+        @delete-course="deleteCourse"
         :courses="courses"
       />
     </div>
@@ -32,7 +33,7 @@
 import ModuleInfoVue from "../../components/modules/ModuleInfo.vue";
 import CouresListVue from "../../components/courses/CouresList.vue";
 import axios from "../../http";
-
+import Course from "../../api/Course";
 export default {
   inject: ["role"],
   name: "ModuleDetail",
@@ -71,10 +72,19 @@ export default {
     this.getCourses();
   },
   methods: {
-    getCourses() {
-      axios.get("/api/module/" + this.id + "/course").then((res) => {
-        this.courses = res.data;
-      });
+    deleteCourse(id) {
+      console.log(id);
+      axios
+        .delete("/api/module/" + this.$route.params.moduleId + "/course/" + id)
+        .then((res) => {
+          console.log("yes");
+          let index = this.courses.findIndex((val) => val.id == id);
+          this.courses.splice(index, 1);
+        });
+    },
+    async getCourses() {
+      let courses = await Course.getCourses(this.id);
+      this.courses = courses;
     },
     getCourse(course) {
       axios

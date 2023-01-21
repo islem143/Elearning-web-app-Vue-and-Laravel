@@ -39,7 +39,7 @@
           @add-media-field="addMediaField"
           :media="media"
         />
-      
+
         <!-- <h4>Add Course Content</h4> -->
 
         <!-- <ContentForm @add-content="addContent" /> -->
@@ -68,7 +68,7 @@ export default {
   components: {
     UploadMedia,
     QuizForm,
-   // ContentForm,
+    // ContentForm,
   },
   created() {
     let moduleId = parseInt(this.$route.params.moduleId);
@@ -202,7 +202,7 @@ export default {
     },
     async submit(e, withUpload) {
       const isFormCorrect = await this.v$.$validate();
-      console.log(withUpload);
+
       if (isFormCorrect) {
         if (this.courseId) {
           await axios.put(
@@ -224,8 +224,8 @@ export default {
                 return id;
               } else {
                 this.$router.push({
-                  name: "course-detail",
-                  params: { moduleId: this.moduleId, courseId: id },
+                  name: "module-detail",
+                  params: { moduleId: this.moduleId },
                 });
               }
             })

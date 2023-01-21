@@ -28,8 +28,22 @@ import AppTopBar from "./AppTopbar.vue";
 import AppMenu from "./AppMenu.vue";
 //import AppConfig from "./AppConfig.vue";
 import AppFooter from "./AppFooter.vue";
+import emitter from "./mitt";
 
 export default {
+  mounted() {
+    emitter.on("*", (type,data) => {
+     if(type=="error"){
+      this.$toast.add({
+        severity: "error",
+        summary: data.message,
+
+        life: 3000,
+      });
+     }
+     
+    });
+  },
   emits: ["change-theme"],
   data() {
     return {
@@ -160,7 +174,7 @@ export default {
   components: {
     AppTopBar: AppTopBar,
     AppMenu: AppMenu,
-  //  AppConfig: AppConfig,
+   // AppConfig: AppConfig,
     AppFooter: AppFooter,
   },
 };
@@ -168,6 +182,7 @@ export default {
 
 <style lang="scss">
 @import "./App.scss";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 body {
   font-family: "Roboto", sans-serif;

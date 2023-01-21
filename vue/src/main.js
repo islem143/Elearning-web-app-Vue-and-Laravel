@@ -7,8 +7,8 @@ window.Echo = new Echo({
   broadcaster: "pusher",
   key: "khjkjhk",
 
-  wsHost: "localhost",
-  wsPort: 6001,
+  wsHost: "socket.localhost",
+  wsPort: 6002,
   forceTLS: false,
   disableStats: true,
   authorizer: (channel, options) => {
@@ -128,8 +128,6 @@ import TriStateCheckbox from "primevue/tristatecheckbox";
 
 import CodeHighlight from "./AppCodeHighlight";
 import BlockViewer from "./BlockViewer.vue";
-
-
 
 import store from "./store";
 import { getRoles } from "./utils/auth";

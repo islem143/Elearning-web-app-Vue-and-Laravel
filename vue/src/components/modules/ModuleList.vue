@@ -22,11 +22,15 @@
           />
         </div>
       </div>
-      <p class="mt-4 text-2xl" v-if="data.length == 0 && search">No match found for "{{ search }}".</p>
+      <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
+        No match found for "{{ search }}".
+      </p>
       <module-cards
+        :mylist="false"
         @edit-module="editModule"
         @confirm-delete-module="confirmDeleteModule"
         @go-to="goTo"
+        @enroll="enroll"
         :modules="data"
       />
 
@@ -55,6 +59,7 @@
           />
         </template>
       </Dialog>
+      <Paginator :rows="3" @page="list" :totalRecords="count"></Paginator>
     </div>
   </div>
 </template>
@@ -77,6 +82,8 @@ export default {
       sortKey: null,
       sortOrder: null,
       sortField: null,
+      page: 0,
+      count: 0,
       sortOptions: [
         { label: "Price High to Low", value: "!price" },
         { label: "Price Low to High", value: "price" },
@@ -86,24 +93,58 @@ export default {
 
   created() {
     this.getModules();
+    axios.get("/api/module/count").then((res) => {
+      this.count = res.data.count;
+    });
   },
 
   methods: {
-    getModules() {
-      let params = { title: this.search };
-      axios.get("/api/module", { params }).then((res) => {
-        this.data = res.data;
-        if (this.role == "student") {
-          this.data.forEach((d) => {
-            axios
-              .get("/api/module/" + d.id + "/completedCourses")
-              .then((res) => {
-                d.totalCourses = res.data.totalCourse;
-                d.completedCourses = res.data.completedCourses;
-              });
-          });
-        }
+    list(e) {
+      this.page = e.page;
+      this.getModules();
+    },
+    enroll(module) {
+      axios.post("/api/module/join", { moduleId: module.id }).then((res) => {
+        this.$toast.add({
+          severity: "success",
+          summary: "you have been entrolled to this module ",
+
+          life: 3000,
+        });
+        let index = this.data.findIndex((val) => val.id == module.id);
+        console.log(index);
+        let d = { ...this.data[index] };
+        d.users = true;
+        this.data.splice(index, 1, d);
       });
+    },
+    getModules() {
+      let params = { title: this.search, page: this.page + 1 };
+      if (!this.role) {
+        axios.get("/api/modules", { params }).then((res) => {
+          this.data = res.data.data;
+        });
+        return;
+      }
+      axios
+        .get("/api/module", { params })
+        .then((res) => {
+          console.log(res.status);
+          this.data = res.data.data;
+          if (this.role == "student") {
+            this.data.forEach((d) => {
+              axios
+                .get("/api/module/" + d.id + "/completedCourses")
+                .then((res) => {
+                  d.totalCourses = res.data.totalCourse;
+                  d.completedCourses = res.data.completedCourses;
+                });
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     },
     src(info) {
       console.log(info);

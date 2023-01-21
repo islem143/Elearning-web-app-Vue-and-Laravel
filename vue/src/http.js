@@ -1,6 +1,8 @@
 import axios from "axios";
+
+import emitter from "./mitt";
 let client = axios.create({
-  baseURL: "http://localhost:8081",
+  baseURL: "http://api.localhost:8081",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -14,4 +16,20 @@ client.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;
 });
+
+client.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  (err) => {
+    if (err.response.status == 403) {
+      emitter.emit("error", { message: err.message });
+    } else if (err.response.status == 404) {
+      window.location = "/404";
+      //emitter.emit("error", { message: err.message });
+    }
+
+    return Promise.reject(err);
+  }
+);
 export default client;

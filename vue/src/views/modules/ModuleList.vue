@@ -1,5 +1,5 @@
 <template>
-  <div class="grid w-8 m-auto">
+  <div class="grid w-8 m-auto ">
    
 
     <ModuleListVue />

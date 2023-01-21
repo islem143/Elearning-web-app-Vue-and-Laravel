@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from "../App.vue";
 import { hasToken, hasRoutes, getRoles, setHasRoutes } from "../utils/auth";
 const staticRoutes = [
- 
   {
     path: "/login",
     name: "login",
@@ -29,17 +28,27 @@ const staticRoutes = [
   //     name: 'access',
   //     component: () => import('./pages/Access.vue')
   // }
+  // {
+  //   path: "/",
+
+  //   component: App,
+  //   redirect: "/modules/list",
+  // },
   {
     path: "/",
 
+    component: () => import("../views/Home.vue"),
+    name: "home",
+  },
+  {
+    path: "/modules",
     component: App,
-    redirect: "/dashboard",
 
     children: [
       {
-        path: "dashboard",
-        name: "dashboard",
-        component: () => import("../components/Dashboard.vue"),
+        path: "list",
+        name: "module-list",
+        component: () => import("../views/modules/ModuleList.vue"),
         meta: {
           roles: ["super-admin", "student", "teacher"],
         },
@@ -54,14 +63,23 @@ const asyncRoutes = [
     component: App,
     redirect: "/modules/list",
     children: [
+      // {
+      //   path: "list",
+      //   name: "module-list",
+      //   component: () => import("../views/modules/ModuleList.vue"),
+      //   meta: {
+      //     roles: ["super-admin", "student", "teacher"],
+      //   },
+      // },
       {
-        path: "list",
-        name: "module-list",
-        component: () => import("../views/modules/ModuleList.vue"),
+        path: "mylist",
+        name: "module-student-list",
+        component: () => import("../views/modules/MyModules.vue"),
         meta: {
-          roles: ["super-admin", "student", "teacher"],
+          roles: ["student"],
         },
       },
+
       {
         path: ":moduleId(\\d+)/detail",
         name: "module-detail",
@@ -164,6 +182,14 @@ const asyncRoutes = [
           roles: ["super-admin", "teacher", "student"],
         },
       },
+      {
+        path: "list",
+        name: "chat-list",
+        component: () => import("../views/chat/ChatList.vue"),
+        meta: {
+          roles: ["super-admin", "teacher", "student"],
+        },
+      },
     ],
   },
   {
@@ -177,6 +203,59 @@ const asyncRoutes = [
         component: () => import("../views/history/LogList.vue"),
         meta: {
           roles: ["super-admin", "teacher"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/profile",
+    component: App,
+
+    children: [
+      {
+        path: "",
+        name: "profile",
+        component: () => import("../views/profile/Profile.vue"),
+        meta: {
+          roles: ["super-admin", "student", "teacher"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/teacher",
+    component: App,
+
+    children: [
+      {
+        path: "",
+        name: "teacher-dashboard",
+        component: () => import("../views/TeacherDashboard.vue"),
+        meta: {
+          roles: ["teacher"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    component: App,
+
+    children: [
+      {
+        path: "users",
+        name: "users-list",
+        component: () => import("../views/admin/UsersList.vue"),
+        meta: {
+          roles: ["super-admin"],
+        },
+      },
+      {
+        path: "",
+        name: "admin-dashboard",
+        component: () => import("../views/admin/Dashboard.vue"),
+        meta: {
+          roles: ["super-admin"],
         },
       },
     ],
@@ -224,10 +303,10 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const $hasToken = hasToken();
   const $hasRoutes = hasRoutes();
-  console.log(router.getRoutes());
+  console.log(to.name);
   if ($hasToken) {
-    if (to.name == "login") {
-      return { path: "/" };
+    if (to.name == "login" || to.name == "register" || to.name == "home") {
+      return { name: "module-list" };
     } else if ($hasRoutes) {
       return true;
     } else {
@@ -238,10 +317,16 @@ router.beforeEach((to, from) => {
       });
 
       setHasRoutes();
-      return to.fullPath;
+      
+      return to.fullPath
     }
-  } else if (to.name !== "login" && to.name !== "register") {
-    return { name: "login" };
+  } else if (
+    to.name !== "login" &&
+    to.name !== "register" &&
+    to.name != "home" &&
+    to.name != "module-list"
+  ) {
+    return { name: "home" };
   } else {
     return true;
   }
