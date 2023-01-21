@@ -5,7 +5,7 @@ A simple api for an elearning platform.
 The app is contains three types of users:
 ### 1. **Admin** 
     + Crud operations on users
-    + Dashboard contains simple stats
+    + Dashboard containing simple stats
     + History log for the users 
 
 ### 2. **Teacher** 
@@ -13,9 +13,9 @@ The app is contains three types of users:
     + Add Courses for each module
     + Add quizzes for each course
     + attach media(text,vedio) to courses
-    + Dashboard contains simple stats
+    + Dashboard containing simple stats
     + History log for the students
-    + 
+     
 ### 3. **Student**  
     + View All modules
     + entroll to modules
@@ -27,12 +27,32 @@ The app is contains three types of users:
 
 ## Technologies used:
    + Laravel for the api
-   + Larave web-sokets pakcage for the websockes server
-   + redis for messages event queue
-   + docker
+   + Larave websockets pakcage for the websockes server
+   + Redis for messages event queue
+   + Docker for managing the containers
+   + Nginx as a web server
 
 
   
-  
+## Back end Aritechure  
+
+![Alt text](images/Host.png "a title")
+
+## Screenshots
+
+Admin users             |  Chat
+:-------------------------:|:-------------------------:
+![](images/admin-dashboard.png)  |  ![](images/chat.png)
+
+Student history            |  Modules
+:-------------------------:|:-------------------------:
+![](images/history.png)  |  ![](images/modules.png)
 
 
+Quiz                       |     Teacher courses        
+:-------------------------:|:-------------------------:
+![](images/quiz.png)  |  ![](images/teacher-courses.png)
+
+Login           |  Home
+:-------------------------:|:-------------------------:
+![](images/login.png)  |  ![](images/home.png)
