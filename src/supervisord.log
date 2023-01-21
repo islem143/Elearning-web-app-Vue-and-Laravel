@@ -1,0 +1,36 @@
+2023-01-11 09:07:26,605 INFO Set uid to user 1000 succeeded
+2023-01-11 09:07:26,606 INFO daemonizing the supervisord process
+2023-01-11 09:07:26,606 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:16:33,319 INFO Set uid to user 1000 succeeded
+2023-01-11 09:16:33,320 INFO daemonizing the supervisord process
+2023-01-11 09:16:33,320 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:21:35,634 INFO Set uid to user 1000 succeeded
+2023-01-11 09:21:35,635 INFO daemonizing the supervisord process
+2023-01-11 09:21:35,635 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:23:56,581 INFO Set uid to user 1000 succeeded
+2023-01-11 09:23:56,582 INFO daemonizing the supervisord process
+2023-01-11 09:23:56,582 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:24:00,037 INFO Set uid to user 1000 succeeded
+2023-01-11 09:24:00,037 INFO daemonizing the supervisord process
+2023-01-11 09:24:00,038 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:26:20,346 INFO Set uid to user 1000 succeeded
+2023-01-11 09:26:20,346 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:27:26,423 WARN received SIGINT indicating exit request
+2023-01-11 09:27:42,025 INFO Set uid to user 1000 succeeded
+2023-01-11 09:27:42,025 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:28:08,056 WARN received SIGINT indicating exit request
+2023-01-11 09:28:35,114 INFO Set uid to user 1000 succeeded
+2023-01-11 09:28:35,114 CRIT could not write pidfile /var/www/html/supervisord.pid
+2023-01-11 09:28:54,139 WARN received SIGINT indicating exit request
+2023-01-11 09:29:52,045 INFO Set uid to user 1000 succeeded
+2023-01-11 09:29:52,045 INFO supervisord started with pid 19
+2023-01-11 09:36:48,537 WARN received SIGINT indicating exit request
+2023-01-11 09:37:57,413 INFO Set uid to user 1000 succeeded
+2023-01-11 09:37:57,413 INFO supervisord started with pid 15
+2023-01-11 09:39:31,523 WARN received SIGINT indicating exit request
+2023-01-11 09:39:44,246 INFO Set uid to user 1000 succeeded
+2023-01-11 09:39:44,247 INFO daemonizing the supervisord process
+2023-01-11 09:39:44,247 INFO supervisord started with pid 19
+2023-01-11 09:43:44,394 INFO Set uid to user 1000 succeeded
+2023-01-11 09:43:44,396 INFO daemonizing the supervisord process
+2023-01-11 09:43:44,396 INFO supervisord started with pid 41

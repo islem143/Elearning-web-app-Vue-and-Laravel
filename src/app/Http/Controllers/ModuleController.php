@@ -17,6 +17,10 @@ class ModuleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getAllModules(Request $request)
+    {
+        return Module::where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
+    }
     public function index(Request $request)
 
     {
@@ -39,7 +43,7 @@ class ModuleController extends Controller
     }
     public function count()
     {
-        if (Auth::user()->hasRole(["student", "super-admin"])) {
+        if (!Auth::user() || Auth::user()->hasRole(["student", "super-admin"])) {
             return   response()->json(["count" => Module::count()]);
         } else {
             return   response()->json(["count" => Module::where("user_id", Auth::user()->id)->count()]);
