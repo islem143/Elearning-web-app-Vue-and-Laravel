@@ -33,22 +33,22 @@ Route::get("module/count", [ModuleController::class, "count"])->name("module.cou
 
 Route::prefix("module")->middleware("auth:sanctum")->group(function () {
     Route::get("/", [ModuleController::class, "index"])->name("module.showall");
-    Route::get("/myModules", [ModuleController::class, "myModules"])->name("module.showall");
+    Route::get("/myModules", [ModuleController::class, "myModules"])->name("module.showmymodules");
     Route::get("/{id}/completedCourses", [ModuleController::class, "compledtedCourses"])->name("course.compledtedCourses");
     Route::post("/", [ModuleController::class, "store"])->name("module.create");
     Route::post("/join", [ModuleController::class, "join"])->name("module.join");
     Route::put("/{id}", [ModuleController::class, "update"])->name("module.update");
     Route::delete("/{id}", [ModuleController::class, "destroy"])->name("module.delete");
     Route::get("/{id}", [ModuleController::class, "show"])->name("module.showone");
-    Route::post("/{id}/join", [ModuleController::class, "joinModule"])->name("module.join");
+    Route::post("/{id}/join", [ModuleController::class, "joinModule"])->name("module.join2");
     Route::post("/{moduleId}/image", [ImageController::class, "saveModuleImage"])->name("module.createimage");
 });
 Route::prefix("logs")->middleware("auth:sanctum")->group(function () {
-    Route::middleware("can:view-logs")->get("/", [LogController::class, "index"])->name("logs.showall");
+    Route::middleware("can:view-logs")->get("/", [LogController::class, "index"])->name("logs.show");
 });
 
 Route::prefix("users")->middleware("auth:sanctum")->group(function () {
-    Route::middleware("can:view-users")->get("/", [LogController::class, "index"])->name("logs.showall");
+    Route::middleware("can:view-users")->get("/", [LogController::class, "index"])->name("logs.showusers");
 });
 
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
