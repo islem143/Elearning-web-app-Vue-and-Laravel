@@ -3,25 +3,25 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:stable-alpine
-    #container_name: nginx
+    build:
+     context: .
+     dockerfile: ./nginx/Dockerfile
+ 
     ports:
      - "8081:80"
      - "6002:6002"
      
-    volumes:
-      - ./src:/var/www/html
-      - ./vue/dist:/var/www/frontend
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
     depends_on:
       - php
       - mysql
+      - myapp-websockets
 
     networks:
      - laravel
   mysql:
     image: mysql:8
-    #container_name: mysql
+   
     restart: unless-stopped
     tty: true
     ports:
@@ -30,32 +30,34 @@ services:
     - mysql:/var/lib/mysql
     environment:
        MYSQL_DATABASE: elearning
-       MYSQL_USER: islem
-       MYSQL_PASSWORD: 28225822
-       MYSQL_ROOT_PASSWORD: 28225822
+       MYSQL_USER: ${MYSQL_USER}
+       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
        SERVICE_TAGS: dev
-       #SERVICE_NAME: mysql
+ 
 
     networks:
       - laravel
 
   myapp-websockets:
+   
     build:
      context: .
+     
      dockerfile: Dockerfile
      args:
         - PUID=${HOST_PUID}
         - PGID=${HOST_PGID}
-        - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
+      
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-    # dockerfile: DockerFile
+        - USERNAME=${CONTAINER_USERNAME}
+   
     command: ['php', 'artisan', 'websockets:serve']
     container_name: myapp-websockets
     restart: unless-stopped
    
-    volumes:
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+   
     ports:
       - "6001:6001"
     networks:
@@ -72,40 +74,59 @@ services:
     networks:
       - laravel
   php:
+   
     build:
      context: .
+     
      dockerfile: Dockerfile
      args:
       - UID=${UID:-1000}
       - GID=${GID:-1000}
+      - USERNAME=${CONTAINER_USERNAME}
     
-    volumes:
-      - ./src:/var/www/html
-    #command: ['php', 'artisan', 'serve','--host','0.0.0.0:9000']  
+ 
     ports:
       - "9000:9000" 
+    volumes:
+      - ./src/.env.prod:/var/www/html/.env
 
-
+   
     networks:
       - laravel  
 
-  # front:
-  #   build:
-  #     context: ./vue
-      
+  front:
+    build:
+      context: ./vue
+    ports:
+      - "3000:3000"   
+    networks:
+      - laravel    
    
+   
+  # supervisor:
+  #   build:
+  #     context: .
+  #     dockerfile: ./supervisor/Dockerfile
+  #     args:
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #       - USERNAME=${CONTAINER_USERNAME}  
+  #   container_name: supervisor
   #   volumes:
-  #      - ./vue:/app
-  #   ports:
-  #     - "8000:8000" 
-    
+  #     - ./src:/var/www/html
   #   networks:
-  #     - laravel  
+  #     - laravel
+  
+       
+     
+    
+     
 
 
 
 
 volumes:
   mysql:
+
 networks:
     laravel:
