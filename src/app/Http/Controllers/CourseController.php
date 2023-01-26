@@ -65,9 +65,10 @@ class CourseController extends Controller
     }
     public function startCourse(Request $request, $id1, $id2)
     {
+       
+        $this->authorize("startCourse", Course::class);
         $module = Module::findOrFail($id1);
         $course = Course::where(["id" => $id2])->first();
-        $this->authorize("startCourse", Course::class);
         $s = Auth::user()->courses()->where("id", $id2)->first();
         if ($s && $s->status = "in_progress") {
             return response()->json(["message" => "course in progress"], 403);

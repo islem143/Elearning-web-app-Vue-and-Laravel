@@ -7,8 +7,8 @@ window.Echo = new Echo({
   broadcaster: "pusher",
   key: "khjkjhk",
 
-  wsHost: "socket.localhost",
-  wsPort: 6002,
+  wsHost: import.meta.env.VITE_SOCKET_HOST,
+  wsPort: import.meta.env.VITE_SOCKET_PORT,
   forceTLS: false,
   disableStats: true,
   authorizer: (channel, options) => {

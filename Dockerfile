@@ -33,7 +33,7 @@ RUN apk update && apk add  zip
 RUN docker-php-ext-install pdo pdo_mysql
 
 COPY ./src /var/www/html/
-#COPY ./src/.env.dev /var/www/html/.env
+COPY ./src/.env.dev /var/www/html/.env
 COPY --from=build /usr/bin/composer /usr/bin/composer
 RUN composer install --prefer-dist --no-interaction
 
@@ -58,9 +58,10 @@ RUN sed -i "s/group = www-data/group = ${USERNAME}/g" /usr/local/etc/php-fpm.d/w
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-
+#COPY ./src /var/www/html
 COPY --from=build /app /var/www/html
 
+#RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
 # RUN php artisan config:cache && \
 #     php artisan route:cache 

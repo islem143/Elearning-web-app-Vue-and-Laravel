@@ -22,7 +22,7 @@
             width="50"
             v-if="user"
             class="mt-4"
-            :src="'http://localhost:8081/images/' + user.profile.img_url"
+            :src="'http://api.localhost:8081/images/' + user.profile.img_url"
           />
         </div>
         <Button @click="submit" label="Submit" />

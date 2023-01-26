@@ -56,6 +56,8 @@ services:
     command: ['php', 'artisan', 'websockets:serve']
     container_name: myapp-websockets
     restart: unless-stopped
+    volumes:
+      - .env.prod:/var/www/html/.env
    
    
     ports:
@@ -84,11 +86,11 @@ services:
       - GID=${GID:-1000}
       - USERNAME=${CONTAINER_USERNAME}
     
- 
+    volumes:
+      - .env.prod:/var/www/html/.env
     ports:
       - "9000:9000" 
-    volumes:
-      - ./src/.env.prod:/var/www/html/.env
+   
 
    
     networks:
@@ -97,6 +99,7 @@ services:
   front:
     build:
       context: ./vue
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"   
     networks:
