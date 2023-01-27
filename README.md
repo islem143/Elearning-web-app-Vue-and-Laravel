@@ -28,6 +28,7 @@ The app is contains three types of users:
 ## Technologies used:
    + Laravel for the api
    + Larave websockets pakcage for the websockes server
+   + Laravel Spatie package for role and permission managements.
    + Redis for messages event queue
    + Docker for managing the containers
    + Nginx as a web server
