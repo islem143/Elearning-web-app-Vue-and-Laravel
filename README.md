@@ -1,5 +1,5 @@
 # elearning-app-api
-A simple api for an elearning platform.
+A simple e-learning platform made with laravel and vue.js.
 
 ## Featrues:
 The app is contains three types of users:
@@ -37,6 +37,12 @@ The app is contains three types of users:
 ## Back end Aritechure  
 
 ![Alt text](images/Host.png "a title")
+
+
+
+## Enity-Association Diagram  
+
+![Alt text](images/diag.png "a title")
 
 ## Screenshots
 
