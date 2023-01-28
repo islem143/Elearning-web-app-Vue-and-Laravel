@@ -247,6 +247,15 @@ const asyncRoutes = [
           roles: ["teacher"],
         },
       },
+      {
+        path: "modules",
+        name: "teacher-modules",
+        component: () => import("../views/modules/ModuleList2.vue"),
+        meta: {
+          roles: ["teacher"],
+        },
+      },
+
     ],
   },
   {

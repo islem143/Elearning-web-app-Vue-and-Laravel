@@ -1,13 +1,13 @@
 <template>
   <div class="layout-menu-container">
-    <!-- <AppSubmenu
+    <AppSubmenu
       :items="items"
       class="layout-menu"
       :root="true"
       @menuitem-click="onMenuItemClick"
       @keydown="onKeyDown"
-    /> -->
-    <div class="p-2">
+    />
+    <!-- <div class="p-2">
       <Router-link
         :key="item.id"
         v-for="item in items"
@@ -25,7 +25,7 @@
           {{ item.label }}</a
         >
       </Router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -36,13 +36,32 @@ export default {
   inject: ["role"],
   data() {
     return {
-      items: [],
+      items: [
+        {
+          label: "Home",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-home",
+              to: "/teacher",
+            },
+          ],
+        },
+        {
+          label: "Modules",
+          items: [
+            {
+              label: "Modules",
+              icon: "pi pi-fw pi-home",
+              to: "/teacher/modules",
+            },
+          ],
+        },
+      ],
       currentItem: null,
     };
   },
-  created() {
-    
-  },
+  created() {},
 
   props: {
     model: Array,

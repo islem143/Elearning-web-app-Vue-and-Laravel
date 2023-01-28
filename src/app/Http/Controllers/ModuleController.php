@@ -38,7 +38,7 @@ class ModuleController extends Controller
 
 
 
-            return Module::with("courses")->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);;
+            return Module::withCount(["courses as total_courses", "users as total_users"])->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
         }
     }
     public function count()
@@ -79,14 +79,14 @@ class ModuleController extends Controller
         $this->authorize("create", Module::class);
         $this->validate($request, [
             "title" => "required",
-            "description" => "required",
+            "descprtion" => "required",
 
 
         ]);
 
         $module = Module::create([
             "title" => $request->title,
-            "descprtion" => $request->description,
+            "descprtion" => $request->descprtion,
             "user_id" => Auth::user()->id
         ]);
         return $module;
@@ -117,7 +117,8 @@ class ModuleController extends Controller
         $module = Module::findOrFail($id);
         $this->authorize("update", $module);
         $module->update($request->all());
-        return response()->json(["module updated succesfully"]);
+        return $module;
+       
     }
 
     /**

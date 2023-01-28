@@ -8,7 +8,7 @@ use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
-use Spatie\UrlSigner\Laravel\UrlSignerFacade;
+
 
 class LoginApiController extends Controller
 {
@@ -28,9 +28,9 @@ class LoginApiController extends Controller
         if (!$user) {
             return Response(["errors" => ["email" => ["User with this email not found"]], "message" => "not found"], 404);
         }
-        if (!$user->email_verified_at) {
-            return response()->json(["message" => "you must verify your email"], 403);
-        }
+        // if (!$user->email_verified_at) {
+        //     return response()->json(["message" => "you must verify your email"], 403);
+        // }
         if (!Hash::check($request->password, $user->password)) {
             return Response(["errors" => ["password" => ["Invalid Password"]], "message" => "invalid password"], 401);
         }

@@ -28,7 +28,7 @@ client.interceptors.response.use(
         message: err.response.data.message,
       });
     } else if (err.response.status == 404) {
-      window.location = "/404";
+      //window.location = "/404";
       //emitter.emit("error", { message: err.message });
     }
 
