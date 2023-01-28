@@ -39,7 +39,6 @@
       <DataTable
         ref="dt"
         :value="data"
-       
         v-model:selection="selectedItems"
         dataKey="id"
         @page="list"
@@ -72,7 +71,19 @@
           :exportable="false"
         ></Column>
 
-        <Column field="title" header="Title" style="min-width: 16rem"></Column>
+        <Column field="title" header="Title" style="min-width: 16rem">
+          <template #body="slotProps">
+            <router-link
+              :to="{
+                name: 'module-detail',
+                params: { moduleId: slotProps.data.id },
+              }"
+            >
+              {{ slotProps.data.title }}</router-link
+            >
+          </template>
+        </Column>
+
         <Column
           field="descprtion"
           header="Description"
@@ -330,7 +341,7 @@ export default {
       if (this.editMode) {
         axios.put("/api/module/" + this.item.id, this.item).then((res) => {
           let index = this.data.findIndex((val) => val.id == this.item.id);
-   
+
           this.data.splice(index, 1, this.item);
           this.editMode = false;
           this.$toast.add({
