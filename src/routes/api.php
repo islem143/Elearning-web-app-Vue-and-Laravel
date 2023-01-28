@@ -15,6 +15,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VereficationController;
 use App\Models\Log;
 
 /*
@@ -27,6 +28,8 @@ use App\Models\Log;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get("email-verification",[VereficationController::class,"verify"])->name("verification.verify");
 
 Route::get("modules", [ModuleController::class, "getAllModules"])->name("module.getAllModules");
 Route::get("module/count", [ModuleController::class, "count"])->name("module.count");

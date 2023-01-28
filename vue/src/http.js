@@ -23,7 +23,10 @@ client.interceptors.response.use(
   },
   (err) => {
     if (err.response.status == 403) {
-      emitter.emit("error", { message: err.message });
+      emitter.emit("error", {
+        type: "error",
+        message: err.response.data.message,
+      });
     } else if (err.response.status == 404) {
       window.location = "/404";
       //emitter.emit("error", { message: err.message });

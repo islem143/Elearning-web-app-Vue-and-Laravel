@@ -1,6 +1,7 @@
 {
     "require": {
         "fruitcake/laravel-cors": "^3.0",
-        "pusher/pusher-php-server": "7.0.2"
+        "pusher/pusher-php-server": "7.0.2",
+        "spatie/laravel-url-signer": "^3.0"
     }
 }

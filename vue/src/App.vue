@@ -32,8 +32,11 @@ import emitter from "./mitt";
 
 export default {
   mounted() {
+   
     emitter.on("*", (type,data) => {
+      
      if(type=="error"){
+console.log(data);
       this.$toast.add({
         severity: "error",
         summary: data.message,

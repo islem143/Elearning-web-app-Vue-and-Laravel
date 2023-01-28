@@ -12,7 +12,19 @@ const staticRoutes = [
     name: "register",
     component: () => import("../views/auth/Register.vue"),
   },
+  {
+    path: "/",
 
+    component: App,
+
+    children: [
+      {
+        path: "email-verify",
+        name: "verify",
+        component: () => import("../views/auth/VerifyEmail.vue"),
+      },
+    ],
+  },
   //   {
   //     path: '/error',
   //     name: 'error',
@@ -317,14 +329,15 @@ router.beforeEach((to, from) => {
       });
 
       setHasRoutes();
-      
-      return to.fullPath
+
+      return to.fullPath;
     }
   } else if (
     to.name !== "login" &&
     to.name !== "register" &&
     to.name != "home" &&
-    to.name != "module-list"
+    to.name != "module-list" &&
+    to.name != "verify"
   ) {
     return { name: "home" };
   } else {
