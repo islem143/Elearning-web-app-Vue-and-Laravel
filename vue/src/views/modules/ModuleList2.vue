@@ -42,7 +42,7 @@
         v-model:selection="selectedItems"
         dataKey="id"
         @page="list"
-        :paginator="true"
+        :paginator="false"
         :rows="10"
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -114,6 +114,9 @@
             />
           </template>
         </Column>
+        <template #footer
+          ><Paginator :rows="3" @page="list" :totalRecords="count"></Paginator
+        ></template>
       </DataTable>
     </div>
 
@@ -263,7 +266,7 @@ export default {
       },
       page: 0,
       search: "",
-      count: 5,
+      count: 0,
       selectedItems: null,
       filters: {},
       submitted: false,
@@ -273,9 +276,7 @@ export default {
   userService: null,
   created() {
     this.getModules();
-    axios.get("/api/module/count").then((res) => {
-      this.count = res.data.count;
-    });
+   
     this.initFilters();
   },
   validations() {
@@ -319,6 +320,7 @@ export default {
       if (!this.role) {
         axios.get("/api/module", { params }).then((res) => {
           this.data = res.data.data;
+          this.count=res.data.total
         });
         return;
       }
