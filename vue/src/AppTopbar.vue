@@ -4,12 +4,12 @@
       <img alt="Logo" :src="topbarImage()" />
       <span>ELEARNING</span>
     </router-link>
-    <!-- <button 
+    <button 
       class="p-link layout-menu-button layout-topbar-button"
       @click="onMenuToggle"
     >
       <i class="pi pi-bars"></i>
-    </button> -->
+    </button>
 
     <button
       class="p-link layout-topbar-menu-button layout-topbar-button"

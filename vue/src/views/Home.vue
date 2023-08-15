@@ -13,7 +13,7 @@
             <Router-link :to="{ name: 'module-list' }">
               <button
                 style="background: none"
-                class="text-white text-xl border-none hover:text-gray-400 cursor-pointer"
+                class="text-xl border-none hover:text-gray-400 cursor-pointer"
               >
                 Courses
               </button>
@@ -26,7 +26,7 @@
             <Router-link :to="{ name: 'login' }">
               <button
                 style="background: none"
-                class="text-white text-xl border-none hover:text-gray-400 cursor-pointer"
+                class="text-xl border-none hover:text-gray-400 cursor-pointer"
               >
                 Login
               </button>
@@ -36,8 +36,8 @@
           <li class="p-1">
             <Router-link :to="{ name: 'register' }">
               <button
-                style="background: none"
-                class="text-white text-xl py-1 hover:surface-800 px-3 cursor-pointer outline-none border-1 border-round-md border-500"
+                style=" background: #0056D2;"
+                class="text-xl text-white py-2  hover:surface-800 px-3 cursor-pointer outline-none border-1 border-round-md border-500"
               >
                 Sign up
               </button>
@@ -328,18 +328,18 @@
           </g>
         </svg>
         <div class="w-5 main flex flex-column align-items-start">
-          <h1 class="text-white text-bold">
+          <h1 class=" text-bold">
             E-Learning platform <br />
             Online courses at your time
           </h1>
 
-          <p class="text-white mt-5 w-9">
+          <p class="mt-5 w-9">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sunt
             quasi eos rem quibusdam dolorum a porro beatae iste cumque adipisci
           </p>
           <div class="flex align-items-center mt-5">
-            <a href="#" class="text-white mr-3">Learn more</a>
-            <Button class="bg-white text-900 hover:bg-blue-400">Courses</Button>
+            <Button id="btn" class="text-white mr-3 px-3">Courses</Button>
+            <a href="#" class=" text-900">Learn more</a>
           </div>
         </div>
       </div>
@@ -356,17 +356,22 @@ export default {
 
 <style type="text/css" scoped>
 .app {
-  background: #000f42;
+  background: #fff;
   font-family: "Montserrat", sans-serif;
   height: 100vh;
+  color: #000;
+}
+#btn{
+  background: #0056D2;
 }
 .main {
   margin: 85px 0 0 100px;
 }
 .list {
-  color: white;
+  color: #000;
   padding: 20px;
   margin: 0;
+ 
 }
 .st0 {
   display: none;

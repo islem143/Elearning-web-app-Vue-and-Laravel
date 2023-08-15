@@ -20,6 +20,8 @@
             :key="m.id"
             class="flex justify-content-between align-items-center p-card mb-2 p-2"
           >
+          
+          <i :class="icons[m.type]"></i>
             <a class="block" :href="'http://localhost:8081/' + m.url">
               {{ m.name }}
             </a>
@@ -93,6 +95,11 @@ export default {
     return {
       modukeId: null,
       courseId: null,
+      icons: {
+        video: "pi pi-video",
+        image: "pi pi-image",
+        file: "pi pi-file",
+      },
       info: {
         title: "",
         description: "",
@@ -175,20 +182,33 @@ export default {
       this.media = res.data;
     },
     async uploadFiles(selectedFiles, courseId) {
+     
       for (const file of selectedFiles) {
-        await UploadService.upload(
+        try{
+ await UploadService.upload(
           file,
           { courseId: courseId },
           "/api/media",
           (event) => {
-            this.$toast.add({
-              severity: "success",
-              summary: "Files were uploaded.",
+            // this.$toast.add({
+            //   severity: "success",
+            //   summary: "Files were uploaded.",
+
+            //   life: 3000,
+            // });
+          }
+        );
+        }catch(err){
+          console.log(err.message);
+          this.$toast.add({
+              severity: "error",
+              summary: "Files were not uploaded.",
 
               life: 3000,
             });
-          }
-        );
+
+        }
+       
       }
     },
     async upload(selectedFiles) {
@@ -196,7 +216,7 @@ export default {
       if (!courseId) {
         courseId = await this.submit(true);
       }
-      await this.uploadFiles(selectedFiles, courseId);
+      let res=await this.uploadFiles(selectedFiles, courseId);
 
       this.getMedia();
     },

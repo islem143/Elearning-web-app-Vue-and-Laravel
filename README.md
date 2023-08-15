@@ -1,7 +1,7 @@
-# elearning-app-api
+# Elearning-app-api
 A simple e-learning platform made with laravel and vue.js.
 
-## Featrues:
+## Features:
 The app is contains three types of users:
 ### 1. **Admin** 
     + Crud operations on users

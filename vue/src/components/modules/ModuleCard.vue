@@ -4,7 +4,11 @@
       <div class="flex justify-content-between">
         <h4>{{ module.title }}</h4>
         <ProgressBar
-          v-if="role && role == 'student'"
+          v-if="
+            role &&
+            role == 'student' &&
+            (mylist || (module.users && module.users[0]))
+          "
           class="w-3 text-center"
           :value="(module.completedCourses * 100) / module.totalCourses"
         >
@@ -35,7 +39,6 @@
         :key="course.id"
         >{{ course.title }}</a
       >
-      
     </template>
     <template #footer>
       <Button
@@ -48,7 +51,11 @@
         @click="$emit('enroll', module)"
         label="Enroll"
       />
-      <Button v-else-if="role=='teacher'" @click="$emit('go-to', module)" label="Edit Courses" />
+      <Button
+        v-else-if="role == 'teacher'"
+        @click="$emit('go-to', module)"
+        label="Edit Courses"
+      />
     </template>
   </Card>
 </template>

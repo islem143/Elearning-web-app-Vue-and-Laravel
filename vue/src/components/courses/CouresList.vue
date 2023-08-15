@@ -4,8 +4,13 @@
       label="Completed"
       class="py-1 px-3 cursor-pointer font-bold text-900 hover:surface-400 mr-2 mb-3 custom-chip"
     />
-
+     
+      <Card v-if="courses.length==0" class="text-center"> 
+    <template #title>There are no courses for this module. </template>
+    
+</Card>
     <CourseCardVue
+     v-else
       @get-course="$emit('get-course', course)"
       @delete-course="deleteCourse"
       v-for="course in courses"

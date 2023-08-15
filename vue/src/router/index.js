@@ -264,14 +264,6 @@ const asyncRoutes = [
 
     children: [
       {
-        path: "users",
-        name: "users-list",
-        component: () => import("../views/admin/UsersList.vue"),
-        meta: {
-          roles: ["super-admin"],
-        },
-      },
-      {
         path: "",
         name: "admin-dashboard",
         component: () => import("../views/admin/Dashboard.vue"),
@@ -279,6 +271,15 @@ const asyncRoutes = [
           roles: ["super-admin"],
         },
       },
+      {
+        path: "users",
+        name: "users-list",
+        component: () => import("../views/admin/UsersList.vue"),
+        meta: {
+          roles: ["super-admin"],
+        },
+      },
+     
     ],
   },
 

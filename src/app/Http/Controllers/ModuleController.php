@@ -79,14 +79,14 @@ class ModuleController extends Controller
         $this->authorize("create", Module::class);
         $this->validate($request, [
             "title" => "required",
-            "descprtion" => "required",
+            "description" => "required",
 
 
         ]);
 
         $module = Module::create([
             "title" => $request->title,
-            "descprtion" => $request->descprtion,
+            "descprtion" => $request->description,
             "user_id" => Auth::user()->id
         ]);
         return $module;

@@ -5,7 +5,7 @@ import axios from "../http";
 const dict = {
   image: ["png", "jpeg", "jpg"],
   file: ["pdf", "ppt", "doc", "docx"],
-  video: ["mp4"],
+  video: ["mp4","webm"],
 };
 
 class UplaodFileService {

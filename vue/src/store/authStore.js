@@ -52,6 +52,7 @@ const authStore = {
   },
 
   actions: {
+    
     async login({ commit }, user) {
       return await axios
         .post("/api/login", user)
