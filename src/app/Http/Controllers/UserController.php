@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
@@ -98,7 +100,7 @@ class UserController extends Controller
             ]);
             $arr["password"] = Hash::make($request->password);
         }
-      
+
         if (Auth::user()->hasRole(["super-admin"])) {
             $user = User::find($id);
             $user->update($arr);
@@ -118,18 +120,28 @@ class UserController extends Controller
     }
     public function image(Request $request)
     {
-        $path =  now()->timestamp . $request->file("image")->getClientOriginalName();
-        $request->file('image')->storeAs("public/images", $path);
+        $file = $request->file('image');
+        $fileName = (string) Str::uuid();
+        $folder = config('filesystems.disks.do.folder');
+        $files = Storage::disk('do')->files(
+            "{$folder}",
 
-        $profile = Profile::where("user_id", Auth::user()->id)->first();
+        );
+        return response()->json(['message' => $files], 200);
 
-        if ($profile->img_url != "profile1.jpeg") {
-            Storage::delete("public/" . $profile->img_url);
-        }
-        $profile->img_url = $path;
 
-        $profile->save();
-        return User::where('id', Auth::user()->id)->with('profile')->first();
+        // $path =  now()->timestamp . $request->file("image")->getClientOriginalName();
+        // $request->file('image')->storeAs("public/images", $path);
+
+        // $profile = Profile::where("user_id", Auth::user()->id)->first();
+
+        // // if ($profile->img_url != "profile1.jpeg") {
+        // //     Storage::disk("do")->delete("public/" . $profile->img_url);
+        // // }
+        // $profile->img_url = $path;
+
+        // $profile->save();
+        // return User::where('id', Auth::user()->id)->with('profile')->first();
     }
 
 
