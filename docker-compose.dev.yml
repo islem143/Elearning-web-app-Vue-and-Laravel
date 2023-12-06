@@ -40,37 +40,37 @@ services:
     networks:
       - laravel
 
-  myapp-websocketsdev:
+  # myapp-websocketsdev:
    
-    build:
-     context: .
-     target: dev
-     dockerfile: Dockerfile
-     args:
-        - PUID=${HOST_PUID}
-        - PGID=${HOST_PGID}
-       # - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-        - USERNAME=${CONTAINER_USERNAME}
-    # dockerfile: DockerFile
-    command: ['php', 'artisan', 'websockets:serve']
-    container_name: myapp-websockets
-    restart: unless-stopped
+  #   build:
+  #    context: .
+  #    target: dev
+  #    dockerfile: Dockerfile
+  #    args:
+  #       - PUID=${HOST_PUID}
+  #       - PGID=${HOST_PGID}
+  #      # - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #       - USERNAME=${CONTAINER_USERNAME}
+  #   # dockerfile: DockerFile
+  #   command: ['php', 'artisan', 'websockets:serve']
+  #   container_name: myapp-websockets
+  #   restart: unless-stopped
    
-    volumes:
-    - ./src:/var/www/html
-    - .env.dev:/var/www/html/.env
-    - vendor:/var/www/html/vendor
+  #   volumes:
+  #   - ./src:/var/www/html
+  #   - .env.dev:/var/www/html/.env
+  #   - vendor:/var/www/html/vendor
 
   
-    ports:
-      - "6001:6001"
-    depends_on:
-      - phpdev
+  #   ports:
+  #     - "6001:6001"
+  #   depends_on:
+  #     - phpdev
 
-    networks:
-      - laravel
+  #   networks:
+  #     - laravel
   redis:
     build: ./redis
     restart: unless-stopped
@@ -122,23 +122,16 @@ services:
        - node_modules:/app/node_modules
     ports:
       - "3000:3000"
-  mailhog:
-    image: mailhog/mailhog:latest
-    restart: always
-    ports:
-      - 1025:1025
-      - 8025:8025    
-    networks:
-      - laravel     
+  # mailhog:
+  #   image: mailhog/mailhog:latest
+  #   restart: always
+  #   ports:
+  #     - 1025:1025
+  #     - 8025:8025    
+  #   networks:
+  #     - laravel     
       
        
-     
-    
-     
-
-
-
-
 volumes:
   mysql:
   node_modules:

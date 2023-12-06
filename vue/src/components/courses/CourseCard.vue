@@ -137,6 +137,7 @@ export default {
 
   methods: {
     goToQuiz(quiz) {
+      console.log(quiz);
       this.$router.push({
         name: "quiz",
         params: {

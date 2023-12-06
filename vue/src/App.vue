@@ -32,25 +32,22 @@ import emitter from "./mitt";
 
 export default {
   mounted() {
-   
-    emitter.on("*", (type,data) => {
-      
-     if(type=="error"){
-console.log(data);
-      this.$toast.add({
-        severity: "error",
-        summary: data.message,
+    emitter.on("*", (type, data) => {
+      if (type == "error") {
+        console.log(data);
+        this.$toast.add({
+          severity: "error",
+          summary: data.message,
 
-        life: 3000,
-      });
-     }
-     
+          life: 3000,
+        });
+      }
     });
   },
   emits: ["change-theme"],
   data() {
     return {
-      layoutMode: "static",
+      layoutMode: "overlay",
       staticMenuInactive: false,
       overlayMenuActive: false,
       mobileMenuActive: false,
@@ -177,7 +174,7 @@ console.log(data);
   components: {
     AppTopBar: AppTopBar,
     AppMenu: AppMenu,
-   // AppConfig: AppConfig,
+    //AppConfig: AppConfig,
     AppFooter: AppFooter,
   },
 };
@@ -185,7 +182,7 @@ console.log(data);
 
 <style lang="scss">
 @import "./App.scss";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 body {
   font-family: "Roboto", sans-serif;

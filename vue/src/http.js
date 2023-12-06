@@ -2,7 +2,7 @@ import axios from "axios";
 
 import emitter from "./mitt";
 let client = axios.create({
-  baseURL: `http://${import.meta.env.VITE_HOST_PROD}:8081`,
+  baseURL: `http://${import.meta.env.VITE_HOST}`,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

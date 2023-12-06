@@ -118,7 +118,6 @@ class ModuleController extends Controller
         $this->authorize("update", $module);
         $module->update($request->all());
         return $module;
-       
     }
 
     /**

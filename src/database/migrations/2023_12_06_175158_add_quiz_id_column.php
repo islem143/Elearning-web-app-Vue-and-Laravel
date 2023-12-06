@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CategorieTable extends Migration
+class AddQuizIdColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CategorieTable extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            //
+        Schema::table('quiz_user', function (Blueprint $table) {
+            $table->foreignId("quiz_id")->constrained()->onDelete("cascade");
         });
     }
 
@@ -25,7 +25,7 @@ class CategorieTable extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('quiz_user', function (Blueprint $table) {
             //
         });
     }

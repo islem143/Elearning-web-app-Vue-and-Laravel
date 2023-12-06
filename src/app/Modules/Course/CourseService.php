@@ -31,6 +31,7 @@ class CourseService
         $courses = DB::table("courses")->leftJoinSub($courses_users, "course_users", function ($join) {
             $join->on("courses.id", "course_users.course_id");
         })->where(["module_id" => $moduleId])->get();
+
         // $courses = Course::with(
         //     [
         //         "users" => function ($query) {
@@ -56,7 +57,8 @@ class CourseService
                 //$content = CourseContent::where(["course_id" => $course->id])->get();
                 $quiz_user = DB::table("quiz_user")->where("user_id", Auth::user()->id);
 
-                $quiz = DB::table("quizzes")->leftJoinSub($quiz_user, "quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->get();
+                $quiz = DB::table("quizzes")->leftJoinSub($quiz_user, "quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.user_id")->get();
+                
                 $course->quizzes = $quiz;
                 $course->media = $media;
                 //$course->contents = $content;

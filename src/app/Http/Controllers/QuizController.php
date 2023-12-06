@@ -17,9 +17,8 @@ class QuizController extends Controller
     public function index($courseId)
     {
         return Quiz::where(["course_id" => $courseId])->with(["questions", "questions.choices"])->get();
-        
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -59,17 +58,19 @@ class QuizController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($courseId, $quizId)
-    {   $this->authorize("view", Quiz::class);
+    {
+        $this->authorize("view", Quiz::class);
         return Quiz::where(["id" => $quizId])->with(["questions", "questions.choices"])->first();
     }
 
     public function doneQuiz($courseId, $quizId)
-    {   
+    {
         return Auth::user()->quizzes()->where(["quiz_id" => $quizId])->first();
     }
 
     public function saveResult(Request $request, $courseId, $quizId)
-    {   $this->authorize("saveResult", Quiz::class);
+    {
+        $this->authorize("saveResult", Quiz::class);
         $this->validate(
             $request,
             [

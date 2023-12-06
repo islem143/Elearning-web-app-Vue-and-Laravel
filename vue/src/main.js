@@ -139,7 +139,7 @@ router.beforeEach(function (to, from, next) {
 const app = createApp(AppWrapper);
 
 app.config.globalProperties.$appState = reactive({
-  theme: "lara-light-indigo",
+  theme: "tailwind-light",
   darkTheme: false,
 });
 

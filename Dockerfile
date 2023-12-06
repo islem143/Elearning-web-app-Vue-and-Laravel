@@ -1,6 +1,6 @@
 FROM composer:2.4 as build
 COPY ./src /app/
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+RUN composer update --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
 
 
