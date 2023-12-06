@@ -32,21 +32,19 @@
 <script>
 import AppSubmenu from "./AppSubmenu.vue";
 import axios from "./http";
-import store from './store';
+import store from "./store";
 export default {
   inject: ["role"],
   data() {
     return {
-      items: [
-     
-      ],
+      items: [],
       currentItem: null,
     };
   },
   created() {
-    store.dispatch("config/getMenuItems").then(()=>{
-     this.items=store.state.config.config.menuItems;
-    })
+    store.dispatch("config/getMenuItems").then(() => {
+      this.items = store.state.config.config.menuItems;
+    });
   },
 
   props: {

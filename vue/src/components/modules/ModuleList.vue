@@ -111,11 +111,8 @@ export default {
 
           life: 3000,
         });
-        let index = this.data.findIndex((val) => val.id == module.id);
-        console.log(index);
-        let d = { ...this.data[index] };
-        d.users = true;
-        this.data.splice(index, 1, d);
+        this.getModules();
+
       });
     },
     getModules() {

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <QuillEditor toolbar="full" v-model:content="content" theme="snow" />
-    <button @click="$emit('add-content', content)">add content</button>
+    <QuillEditor toolbar="full" v-model="content" theme="snow" />
+    <Button @click="$emit('add-content', content)">Add content</Button>
   </div>
 </template>
 

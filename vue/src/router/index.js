@@ -30,11 +30,7 @@ const staticRoutes = [
   //     name: 'error',
   //     component: () => import('./pages/Error.vue')
   // },
-  {
-    path: "/404",
-    name: "notfound",
-    component: () => import("../views/NotFound.vue"),
-  },
+  
   // {
   //     path: '/access',
   //     name: 'access',
@@ -66,6 +62,11 @@ const staticRoutes = [
         },
       },
     ],
+  },
+  {
+    path: "/404",
+    name: "notfound",
+    component: () => import("../views/NotFound.vue"),
   },
 ];
 

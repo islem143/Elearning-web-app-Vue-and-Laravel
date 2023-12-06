@@ -1,6 +1,6 @@
 import axios from "../http";
 import store from "./index";
-import { TEACHER_MENU,ADMIN_MENU,STUDENT_MENU } from "./MENU_ITEMS";
+import { TEACHER_MENU, ADMIN_MENU, STUDENT_MENU } from "./MENU_ITEMS";
 const configStore = {
   namespaced: true,
   state: {
@@ -21,19 +21,15 @@ const configStore = {
 
   actions: {
     async getMenuItems({ commit }) {
-     
-        if(store.state.auth.user.roles[0]=="super-admin"){
-           commit('setMenuItems',ADMIN_MENU);
-        }else if(store.state.auth.user.roles[0]=="teacher"){
-            commit('setMenuItems',TEACHER_MENU);
-           
-        }else{
-            commit('setMenuItems',STUDENT_MENU);
-        }
-        return Promise.resolve();
+      let d = {
+        super_admin: ADMIN_MENU,
+        teacher: TEACHER_MENU,
+        student: STUDENT_MENU,
+      };
+      commit("setMenuItems", d[store.state.auth.user.roles[0]]);
+
+      return Promise.resolve();
     },
- 
-  
   },
   modules: {},
 };

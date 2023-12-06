@@ -20,8 +20,7 @@
             :key="m.id"
             class="flex justify-content-between align-items-center p-card mb-2 p-2"
           >
-          
-          <i :class="icons[m.type]"></i>
+            <i :class="icons[m.type]"></i>
             <a class="block" :href="'http://localhost:8081/' + m.url">
               {{ m.name }}
             </a>
@@ -44,7 +43,7 @@
 
         <!-- <h4>Add Course Content</h4> -->
 
-        <!-- <ContentForm @add-content="addContent" /> -->
+        <!-- <ContentForm @add-content="addContent" />  -->
       </div>
       <!-- <ul>
         <li v-for="media of mediaList">
@@ -182,33 +181,29 @@ export default {
       this.media = res.data;
     },
     async uploadFiles(selectedFiles, courseId) {
-     
       for (const file of selectedFiles) {
-        try{
- await UploadService.upload(
-          file,
-          { courseId: courseId },
-          "/api/media",
-          (event) => {
-            // this.$toast.add({
-            //   severity: "success",
-            //   summary: "Files were uploaded.",
-
-            //   life: 3000,
-            // });
-          }
-        );
-        }catch(err){
+        try {
+          await UploadService.upload(
+            file,
+            { courseId: courseId },
+            "/api/media",
+            (event) => {
+              // this.$toast.add({
+              //   severity: "success",
+              //   summary: "Files were uploaded.",
+              //   life: 3000,
+              // });
+            }
+          );
+        } catch (err) {
           console.log(err.message);
           this.$toast.add({
-              severity: "error",
-              summary: "Files were not uploaded.",
+            severity: "error",
+            summary: "Files were not uploaded.",
 
-              life: 3000,
-            });
-
+            life: 3000,
+          });
         }
-       
       }
     },
     async upload(selectedFiles) {
@@ -216,7 +211,7 @@ export default {
       if (!courseId) {
         courseId = await this.submit(true);
       }
-      let res=await this.uploadFiles(selectedFiles, courseId);
+      let res = await this.uploadFiles(selectedFiles, courseId);
 
       this.getMedia();
     },

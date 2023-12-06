@@ -60,6 +60,6 @@ Quiz                       |     Teacher courses
 :-------------------------:|:-------------------------:
 ![](images/quiz.png)  |  ![](images/teacher-courses.png)
 
-Login           |  Home
-:-------------------------:|:-------------------------:
-![](images/login.png)  |  ![](images/home.png)
+Home
+
+![](images/home.png)

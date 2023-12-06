@@ -34,14 +34,14 @@
       </div>
       <div></div>
     </div>
-    <!-- <p v-for="content in course.courses_content" :key="content.id">
+     <p v-for="content in course.courses_content" :key="content.id">
       <a
         class="text-900 text-lg hover:underline"
         @click="openDialogContent(content)"
       >
         Average atomic mass
       </a>
-    </p> -->
+    </p> 
     <div class="p-5" v-if="course.is_taken == false && role != 'teacher'">
       <Button @click="startCourse">Start the course</Button>
     </div>
@@ -137,7 +137,6 @@ export default {
 
   methods: {
     goToQuiz(quiz) {
-      console.log(quiz);
       this.$router.push({
         name: "quiz",
         params: {

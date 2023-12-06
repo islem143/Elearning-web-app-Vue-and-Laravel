@@ -1,5 +1,4 @@
 <template>
-  
   <div v-if="progressInfos">
     <div
       class="mb-2"
@@ -89,9 +88,7 @@ export default {
       this.selectedFiles = e.files;
     },
     uploader() {
-      this.$emit("upload-files",this.selectedFiles);
-    
-      
+      this.$emit("upload-files", this.selectedFiles);
     },
 
     uploadFiles() {

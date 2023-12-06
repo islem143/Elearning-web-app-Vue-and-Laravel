@@ -29,7 +29,7 @@ class RegisterApiController extends Controller
         ]);
         $user->assignRole("student");
         $user->profile()->create(["img_url" => "profile1.jpeg"]);
-        $user->sendEmailVerificationNotification(); 
+       // $user->sendEmailVerificationNotification(); 
 
         $response = [
             'user' => $user,

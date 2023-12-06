@@ -1,7 +1,7 @@
 <template>
   <div class="layout-topbar">
     <router-link to="/" class="layout-topbar-logo">
-      <img alt="Logo" :src="topbarImage()" />
+     
       <span>ELEARNING</span>
     </router-link>
     <button 

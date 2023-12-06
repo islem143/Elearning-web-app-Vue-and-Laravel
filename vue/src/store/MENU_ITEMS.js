@@ -61,7 +61,7 @@ export const  TEACHER_MENU=[
         {
           label: "Dashboard",
           icon: "pi pi-fw pi-home",
-          to: "/teacher",
+          to: "/",
         },
       ],
     },
@@ -71,8 +71,14 @@ export const  TEACHER_MENU=[
         {
           label: "Modules",
           icon: "pi pi-fw pi-bookmark",
-          to: "/teacher/modules",
+          to: "/modules/list",
+        },
+        {
+          label: "My Modules",
+          icon: "pi pi-fw pi-bookmark",
+          to: "/modules/mylist",
         },
       ],
     },
+    
   ];  
