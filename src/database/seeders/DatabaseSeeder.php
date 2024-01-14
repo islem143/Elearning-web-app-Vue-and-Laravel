@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // $roleSeeder=new RolesSeeder();
-        // $roleSeeder->run();
+          $roleSeeder=new RolesSeeder();
+          $roleSeeder->run();
           $supAdminSeeder=new SuperAdminSeeder();
           $teacherS=new TeacherSeeder();
           $st=new StudentSeeder();
@@ -28,17 +28,17 @@ class DatabaseSeeder extends Seeder
           $Module=new ModulePermissionSeeder();
           $QuestionPermissionSeeder=new QuestionPermissionSeeder();
           $QuizPermissionSeeder=new QuizPermissionSeeder();
-        //   $supAdminSeeder->run();
-        //   $teacherS->run();
-        //   $st->run();
+          $supAdminSeeder->run();
+          $teacherS->run();
+          $st->run();
           $add->run();
-        //   $choice->run();
-        //   $course->run();
-        //   $log->run();
-        //   $media->run();
-        //   $Module->run();
-        //   $QuestionPermissionSeeder->run();
-        //   $QuizPermissionSeeder->run();
+          $choice->run();
+          $course->run();
+          $log->run();
+          $media->run();
+          $Module->run();
+          $QuestionPermissionSeeder->run();
+          $QuizPermissionSeeder->run();
 
         
 
