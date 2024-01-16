@@ -31,8 +31,9 @@
 
 <script>
 import AppSubmenu from "./AppSubmenu.vue";
-import axios from "./http";
-import store from "./store";
+import { mapActions } from 'pinia'
+
+import { useConfig } from "./store/configStore";
 export default {
   inject: ["role"],
   data() {
@@ -42,8 +43,9 @@ export default {
     };
   },
   created() {
-    store.dispatch("config/getMenuItems").then(() => {
-      this.items = store.state.config.config.menuItems;
+    const configStore=useConfig();
+    this.getMenuItems().then(() => {
+      this.items = configStore.config.menuItems;
     });
   },
 
@@ -52,6 +54,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(useConfig, ['getMenuItems']),
     setCurrentItem(item) {
       this.currentItem = item.id;
     },

@@ -34,7 +34,7 @@
       </li>
 
       <li v-if="role">
-        <p @click="logout" class="p-link mt-2 hover:bg-gray-300 p-2">Logout</p>
+        <p @click="logoutt" class="p-link mt-2 hover:bg-gray-300 p-2">Logout</p>
       </li>
 
        <li v-if="role">
@@ -51,7 +51,9 @@
 </template>
 
 <script>
-import store from "./store";
+import { useAuth } from "./store/authStore";
+import { mapActions } from 'pinia'
+
 export default {
   inject: ["role"],
   data() {
@@ -60,6 +62,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(useAuth, ['logout']),
     onMenuToggle(event) {
       this.$emit("menu-toggle", event);
     },
@@ -71,15 +74,15 @@ export default {
         ? "/images/logo-white.svg"
         : "/images/logo-dark.svg";
     },
-    logout() {
-      store.dispatch("auth/logout").then((res) => {
+    logoutt() {
+      this.logout().then((res) => {
         this.$router.replace({ name: "login" });
       });
     },
   },
   created() {
  
-    if (this.role == "super-admin") {
+    if (this.role && this.role == "super-admin") {
      
       this.items = [
         {
@@ -101,7 +104,7 @@ export default {
           to: { name: "history-list" },
         },
       ];
-    } else if (this.role == "teacher") {
+    } else if (this.role && this.role == "teacher") {
       this.items = [
         {
           id: 1,
@@ -122,7 +125,7 @@ export default {
           to: { name: "history-list" },
         },
       ];
-    } else if (this.role == "student") {
+    } else if (this.role && this.role == "student") {
       this.items = [
         {
           id: 1,

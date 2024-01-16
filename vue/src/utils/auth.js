@@ -1,13 +1,22 @@
-import store from "../store";
+import { useAuth } from "../store/authStore";
+
 export const hasToken = () => {
+
   return localStorage.getItem("token") ? localStorage.getItem("token") : false;
 };
 export const hasRoutes = () => {
-  return store.state.auth.user.hasRoutes;
+  const store=useAuth();
+  return store.user.hasRoutes;
 };
 export const getRoles = () => {
-  return store.state.auth.user.roles;
+  const store=useAuth();
+  let roles=store.user.roles;
+  if(!roles){
+    return '';
+  }
+  return roles;
 };
 export const setHasRoutes = () => {
-  store.commit("auth/setHasRoutes", true);
+  const store=useAuth();
+  store.user.hasRoutes=true;
 };

@@ -128,8 +128,8 @@ import TriStateCheckbox from "primevue/tristatecheckbox";
 
 import CodeHighlight from "./AppCodeHighlight";
 import BlockViewer from "./BlockViewer.vue";
+import { createPinia } from 'pinia'
 
-import store from "./store";
 import { getRoles } from "./utils/auth";
 import { computed } from "vue";
 router.beforeEach(function (to, from, next) {
@@ -137,6 +137,7 @@ router.beforeEach(function (to, from, next) {
   next();
 });
 const app = createApp(AppWrapper);
+const pinia = createPinia()
 
 app.config.globalProperties.$appState = reactive({
   theme: "tailwind-light",
@@ -148,7 +149,8 @@ app.use(PrimeVue, { ripple: true, inputStyle: "outlined" });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
-app.use(store);
+
+app.use(pinia)
 app.provide(
   "role",
   computed(() => getRoles()[0])

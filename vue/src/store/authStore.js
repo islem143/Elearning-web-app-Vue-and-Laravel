@@ -1,69 +1,43 @@
 import axios from "../http";
-const authStore = {
-  namespaced: true,
-  state: {
-    user: {
-      data: localStorage.getItem("token")
-        ? JSON.parse(localStorage.getItem("user"))
-        : "",
-      token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
-      roles: localStorage.getItem("roles")
-        ? JSON.parse(localStorage.getItem("roles"))
-        : [],
-      hasRoutes: false,
-    },
-  },
-  getters: {
-    isAuth(state) {
-      return !!state.user.token;
-    },
-    getUserId(state) {
-      return state.user.data.id;
-    },
-  },
-  mutations: {
-    setUser(state, user) {
-      state.user.data = user;
-      localStorage.setItem("user", JSON.stringify(user));
-    },
-    setToken(state, token) {
-      state.user.token = token;
-      localStorage.setItem("token", token);
-    },
-    setRoles(state, roles) {
-      state.user.roles = roles;
-      localStorage.setItem("roles", JSON.stringify(roles));
-    },
-    setHasRoutes(state, cond) {
-      state.user.hasRoutes = true;
-    },
+import { defineStore } from 'pinia'
 
-    logout(state) {
-      state.user = {
-        data: null,
-        token: "",
-        roles: null,
-      };
-
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("roles");
-    },
+export const useAuth=defineStore('auth',{
+state:()=>({
+  user: {
+    data: localStorage.getItem("token")
+      ? JSON.parse(localStorage.getItem("user"))
+      : "",
+    token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
+    roles: localStorage.getItem("roles")
+      ? JSON.parse(localStorage.getItem("roles"))
+      : [],
+    hasRoutes: false,
   },
-
-  actions: {
+}),
+getters: {
+  isAuth(state) {
+    return !!state.user.token;
+  },
+  getUserId(state) {
+    return state.user.data.id;
+  },
+},
+actions: {
     
-    async login({ commit }, user) {
+    async login(user) {
+    
       return await axios
         .post("/api/login", user)
         .then((res) => {
           const user = res.data.user;
           const token = res.data.token;
           const roles = res.data.roles;
-          console.log(user);
-          commit("setUser", user);
-          commit("setToken", token);
-          commit("setRoles", roles);
+          this.user.data=user;
+          this.user.token=token;
+          this.user.roles = roles
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("token", token);
+          localStorage.setItem("roles", JSON.stringify(roles));
 
           return res;
         })
@@ -71,7 +45,7 @@ const authStore = {
           return Promise.reject(err.response.data);
         });
     },
-    async register({ commit }, user) {
+    async register(user) {
       return await axios
         .post("/api/register", user)
         .then((res) => {
@@ -86,20 +60,27 @@ const authStore = {
           return Promise.reject(err.response.data);
         });
     },
-    async logout({ commit }, user) {
+    async logout() {
       return await axios
         .post("/api/logout")
         .then((res) => {
-          commit("logout");
-
+          this.user = {
+            data: null,
+            token: "",
+            roles: null,
+          };
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("roles");
           return res;
         })
         .catch((err) => {
+          console.log(err,"eeeeee");
           console.log(err.response.data);
         });
     },
   },
-  modules: {},
-};
 
-export default authStore;
+});
+
+

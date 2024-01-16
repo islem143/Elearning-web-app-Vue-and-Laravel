@@ -115,6 +115,7 @@
 
 <script>
 import store from "../../store";
+import { useAuth } from "../../store/authStore";
 export default {
   name: "Register",
   data() {
@@ -139,14 +140,15 @@ export default {
     },
   },
   methods: {
+    ...mapActions(useAuth, ['register']),
     clearErrors() {
       this.emailError = "";
       this.nameError = "";
       this.passwordError = "";
     },
     login() {
-      store
-        .dispatch("auth/register", this.info)
+      
+     this.register(this.info)
         .then(() => {
           this.$toast.add({
             severity: "success",

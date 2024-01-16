@@ -1,37 +1,33 @@
-import axios from "../http";
-import store from "./index";
+
+import { useAuth } from "./authStore";
+import { defineStore } from "pinia";
 import { TEACHER_MENU, ADMIN_MENU, STUDENT_MENU } from "./MENU_ITEMS";
-const configStore = {
-  namespaced: true,
-  state: {
+export const useConfig=defineStore("config",{
+state:()=>({
+  
     config: {
       menuItems: [],
     },
+  
+}),
+getters: {
+  getMenus(state) {
+    return !!state.config.menuItems;
   },
-  getters: {
-    getMenus(state) {
-      return !!state.config.menuItems;
-    },
-  },
-  mutations: {
-    setMenuItems(state, items) {
-      state.config.menuItems = items;
-    },
-  },
+},
+actions: {
+  async getMenuItems() {
+    const authStore=useAuth();
+    let d = {
+      super_admin: ADMIN_MENU,
+      teacher: TEACHER_MENU,
+      student: STUDENT_MENU,
+    };
+  
+    this.config.menuItems=d[authStore.user.roles[0]];
 
-  actions: {
-    async getMenuItems({ commit }) {
-      let d = {
-        super_admin: ADMIN_MENU,
-        teacher: TEACHER_MENU,
-        student: STUDENT_MENU,
-      };
-      commit("setMenuItems", d[store.state.auth.user.roles[0]]);
-
-      return Promise.resolve();
-    },
+    return Promise.resolve();
   },
-  modules: {},
-};
+},
+});
 
-export default configStore;

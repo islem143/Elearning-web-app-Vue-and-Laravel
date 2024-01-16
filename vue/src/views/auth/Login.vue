@@ -74,7 +74,7 @@
             <Button
               label="Sign In"
               class="w-full p-3 text-xl"
-              @click="login"
+              @click="loginn"
             ></Button>
           </div>
         </div>
@@ -84,7 +84,8 @@
 </template>
 
 <script>
-import store from "../../store";
+import { mapActions } from 'pinia';
+import { useAuth } from '../../store/authStore';
 export default {
   name: "Login",
   data() {
@@ -105,9 +106,10 @@ export default {
     },
   },
   methods: {
-    login() {
-      store
-        .dispatch("auth/login", { email: this.email, password: this.password })
+    ...mapActions(useAuth, ['login']),
+    loginn() {
+     
+        this.login({ email: this.email, password: this.password })
         .then(() => {
           this.$router.push({name:"module-list"});
         })
