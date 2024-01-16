@@ -16,7 +16,7 @@
 
 <script>
 import axios from "../../http";
-import store from "../../store";
+import { useAuth } from "../../store/authStore";
 import Messages from "../../components/chat/Messages.vue";
 import Users from "./ChatList.vue";
 export default {
@@ -43,6 +43,7 @@ export default {
   },
 
   created() {
+    const authStore=useAuth();
     axios.get("/api/users").then((res) => {
       this.users = res.data;
       this.receiver = this.users[0];
@@ -53,7 +54,7 @@ export default {
         });
     });
 
-    this.userId = store.state.auth.user.data.id;
+    this.userId = store.user.data.id;
     console.log(this.userId);
     window.Echo.private("chat." + this.userId).listen("MessageSent", (e) => {
       // console.log("message reciedv", e.message);

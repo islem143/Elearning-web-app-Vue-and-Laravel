@@ -35,10 +35,12 @@
 import { required } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "../../http";
-import store from "../../store";
+import { useAuth } from "../../store/authStore";
+import {setUserData} from "../../utils/auth"
 export default {
   created() {
-    this.user = store.state.auth.user.data;
+    const authStore=useAuth();
+    this.user = authStore.user.data;
     console.log(this.user);
   },
  
@@ -61,6 +63,7 @@ export default {
     };
   },
   methods: {
+
     errorMessages(key) {
       const errors = [];
       if (!this.v$.goal[key].$dirty) return errors;
@@ -70,6 +73,7 @@ export default {
       return errors;
     },
     async submit() {
+      
       const isFormCorrect = await this.v$.$validate();
       if (isFormCorrect) {
         await axios.put("/api/users/"+this.user.id, this.user).then(async (res) => {
@@ -80,8 +84,9 @@ export default {
 
             life: 3000,
           });
-         console.log(res.data);
-          store.commit("auth/setUser", res.data);
+         
+          setUserData(res.data);
+      
           if (file) {
             let formData = new FormData();
             formData.append("image", file);
@@ -92,8 +97,9 @@ export default {
                 },
               })
               .then((res) => {
-                store.commit("auth/setUser", res.data);
-                this.user = store.state.auth.user.data;
+               setUserData(res.data)
+               const authStore=useAuth();
+         this.user = authStore.user.data;
               });
           }
         });
