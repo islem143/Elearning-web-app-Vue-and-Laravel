@@ -15,13 +15,13 @@ class ImageController extends Controller
 
         $path = now()->timestamp . $request->file("image")->getClientOriginalName();
         $filePath = $request->file('image')->storeAs("images", $path, 'public');
-
+      
         $module = Module::findOrFail($moduleId);
 
         if ($module->img_url) {
             Storage::delete($module->img_url);
         }
-        $module->img_url = $filePath;
+        $module->img_url = asset($filePath);
 
         $module->save();
         return response()->json(["image saved succefuly"], 201);

@@ -72,6 +72,7 @@
         <Column header="Image">
           <template #body="slotProps">
             <img
+            v-if="slotProps.data.profile"
               :src="
                 'http://localhost:8081/images/' + slotProps.data.profile.img_url
               "

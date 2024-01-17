@@ -19,10 +19,10 @@
               </button>
             </Router-link>
           </li>
-          <li class="ml-6">
+          <li class="ml-6" v-if="!isAuth">
             <p class="text-3xl">|</p>
           </li>
-          <li class="p-2 ml-5">
+          <li class="p-2 ml-5" v-if="!isAuth">
             <Router-link :to="{ name: 'login' }">
               <button
                 style="background: none"
@@ -33,13 +33,23 @@
             </Router-link>
           </li>
 
-          <li class="p-1">
+          <li class="p-1" v-if="!isAuth">
             <Router-link :to="{ name: 'register' }">
               <button
                 style=" background: #0056D2;"
                 class="text-xl text-white py-2  hover:surface-800 px-3 cursor-pointer outline-none border-1 border-round-md border-500"
               >
                 Sign up
+              </button>
+            </Router-link>
+          </li>
+          <li class="p-1" v-if="isAuth">
+            <Router-link :to="{ name: 'modules' }">
+              <button
+                style=" background: #0056D2;"
+                class="text-xl text-white py-2  hover:surface-800 px-3 cursor-pointer outline-none border-1 border-round-md border-500"
+              >
+                Dashbarod
               </button>
             </Router-link>
           </li>
@@ -68,13 +78,10 @@
 </template>
 
 <script setup >
-import {useTodos} from "../store/piniatest";
+import {useAuth} from "../store/authStore";
 
-const store=useTodos();
-console.log(store.finishedTodos);
-
-store.addTodo("first 1");
-console.log(store.unfinishedTodos);
+const {isAuth}=useAuth();
+console.log(isAuth);
 
 </script>
 

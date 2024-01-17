@@ -1,7 +1,7 @@
 <template>
   <div class="layout-topbar">
     <router-link to="/" class="layout-topbar-logo">
-     
+
       <span>ELEARNING</span>
     </router-link>
     <button 
@@ -32,7 +32,7 @@
           </p></router-link
         >
       </li>
-
+    
       <li v-if="role">
         <p @click="logoutt" class="p-link mt-2 hover:bg-gray-300 p-2">Logout</p>
       </li>

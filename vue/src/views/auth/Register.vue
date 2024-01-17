@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import store from "../../store";
+import { mapActions } from "pinia";
 import { useAuth } from "../../store/authStore";
 export default {
   name: "Register",

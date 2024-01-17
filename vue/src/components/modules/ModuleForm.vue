@@ -11,6 +11,7 @@
           <label for="Description">Description</label>
           <InputText v-model="info.description" type="text" />
         </div>
+        <img width="200"  height="200" v-if="info.imgUrl" :src="info.imgUrl" alt="">
         <div class="field">
           <label for="age1">Image</label>
           <FileUpload
@@ -40,6 +41,7 @@ export default {
         console.log(res.data);
         this.info.title = res.data.title;
         this.info.description = res.data.descprtion;
+        this.info.imgUrl = res.data.img_url;
       });
     }
   },

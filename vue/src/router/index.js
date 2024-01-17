@@ -63,6 +63,7 @@ const asyncRoutes = [
     path: "/modules",
     component: App,
     redirect: "/modules/list",
+    name:"modules",
     children: [
       // {
       //   path: "list",

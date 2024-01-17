@@ -1,6 +1,6 @@
 <template>
-  <div class="col-12">
-    <div class="card">
+ 
+    <div class="card w-9	mx-auto">
       <h3>Modules</h3>
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
@@ -25,15 +25,17 @@
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
         No match found for "{{ search }}".
       </p>
+      <div class="grid gap-4 mt-4 	">
       <module-cards
-        :mylist="false"
+         class="col-6"
+         :mylist="false"
         @edit-module="editModule"
         @confirm-delete-module="confirmDeleteModule"
         @go-to="goTo"
         @enroll="enroll"
         :modules="data"
       />
-
+    </div>
       <Dialog
         v-model:visible="deleteModuleDialog"
         :style="{ width: '450px' }"
@@ -59,9 +61,9 @@
           />
         </template>
       </Dialog>
-      <Paginator :rows="3" @page="list" :totalRecords="count"></Paginator>
+      <Paginator :rows="10" @page="list" :totalRecords="count"></Paginator>
     </div>
-  </div>
+
 </template>
 
 <script>

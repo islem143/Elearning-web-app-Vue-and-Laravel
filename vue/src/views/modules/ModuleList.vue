@@ -1,9 +1,9 @@
 <template>
-  <div class="grid w-8 m-auto ">
+
    
 
     <ModuleListVue />
-  </div>
+
 </template>
 
 <script>

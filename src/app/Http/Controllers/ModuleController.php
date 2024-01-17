@@ -18,13 +18,13 @@ class ModuleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getAllModules(Request $request)
-    {
-        return Module::where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
+    {   
+        return Module::where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
     }
     public function index(Request $request)
 
     {
-
+      
         $this->authorize("view", Module::class);
         if (Auth::user()->hasRole(["student", "super-admin"])) {
 
@@ -33,12 +33,12 @@ class ModuleController extends Controller
 
             return Module::with(["courses", "users" => function ($query) {
                 $query->where('id', Auth::user()->id);
-            }])->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
+            }])->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
         } else {
 
 
 
-            return Module::withCount(["courses as total_courses", "users as total_users"])->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
+            return Module::withCount(["courses as total_courses", "users as total_users"])->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
         }
     }
     public function count()
@@ -152,6 +152,6 @@ class ModuleController extends Controller
         // }
 
 
-        return Module::with("courses")->join("module_user", 'modules.id', '=', 'module_user.module_id')->where('module_user.user_id', Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(3);
+        return Module::with("courses")->join("module_user", 'modules.id', '=', 'module_user.module_id')->where('module_user.user_id', Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
     }
 }

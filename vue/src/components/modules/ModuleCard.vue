@@ -1,7 +1,11 @@
 <template>
-  <Card class="my-3">
-    <template #title>
-      <div class="flex justify-content-between">
+
+
+
+        <Card  class="col-3">
+            <template #header>
+              <img alt="user header" height="100" :src="module.img_url" />            </template>
+            <template #title> <div class="flex justify-content-between">
         <h4>{{ module.title }}</h4>
         <ProgressBar
           v-if="
@@ -28,10 +32,10 @@
             v-if="role == 'teacher'"
           />
         </div>
-      </div>
-    </template>
-    <template #content>
-      {{ module.descprtion }}
+      </div> </template>
+           
+            <template #content>
+              {{ module.descprtion }}
       <hr />
       <a
         class="block mt-2 text-lg hover:underline cursor-pointer"
@@ -39,9 +43,9 @@
         :key="course.id"
         >{{ course.title }}</a
       >
-    </template>
-    <template #footer>
-      <Button
+            </template>
+            <template #footer>
+              <Button
         v-if="role && (mylist || (module.users && module.users[0]))"
         @click="$emit('go-to', module)"
         label="Continue"
@@ -56,8 +60,11 @@
         @click="$emit('go-to', module)"
         label="Edit Courses"
       />
-    </template>
-  </Card>
+            </template>
+        </Card>
+  
+
+  
 </template>
 
 <script>

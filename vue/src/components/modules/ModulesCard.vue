@@ -1,16 +1,18 @@
 <template>
-  <div v-for="module in modules" :key="module.id">
+
     <module-card
+      v-for="module in modules"
+      :key="module.id"
       @confirm-delete-module="$emit('confirm-delete-module', module)"
       @edit-module="$emit('edit-module', module)"
       :mylist="mylist"
       @go-to="$emit('go-to', module)"
       @enroll="enroll"
-      :module="module"
+      :module="module" 
     />
   
 
-  </div>
+ 
 </template>
 
 <script>
