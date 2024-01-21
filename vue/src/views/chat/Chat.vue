@@ -54,7 +54,7 @@ export default {
         });
     });
 
-    this.userId = store.user.data.id;
+    this.userId = authStore.user.data.id;
     console.log(this.userId);
     window.Echo.private("chat." + this.userId).listen("MessageSent", (e) => {
       // console.log("message reciedv", e.message);

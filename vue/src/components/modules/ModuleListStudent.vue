@@ -2,6 +2,7 @@
   <div class="col-12">
     <div class="card">
       <h3>My Modules</h3>
+     
       <div class="flex align-items-center">
         <div class="p-input-icon-right col-4">
           <i class="pi pi-search" />
@@ -13,11 +14,20 @@
             @input="getModules"
           />
         </div>
+       
       </div>
+      <Chip
+     v-if="role=='student'"
+      label="Completed"
+      
+      class="py-1 px-3 cursor-pointer font-bold text-900 hover:surface-400 mr-2 mb-3 custom-chip"
+    />
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
         No match found for "{{ search }}".
       </p>
+      <div class="flex flex-wrap 	 gap-2 mt-4 	">
       <module-cards @go-to="goTo" :mylist="true" :modules="data" />
+    </div>
     <Paginator :rows="3" @page="list" :totalRecords="count"></Paginator>
     </div>
   </div>
@@ -27,6 +37,7 @@
 import axios from "../../http";
 import ModuleCards from "./ModulesCard.vue";
 export default {
+  inject:["role"],
   components: {
     ModuleCards,
   },

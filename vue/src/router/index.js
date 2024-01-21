@@ -85,7 +85,7 @@ const asyncRoutes = [
       {
         path: ":moduleId(\\d+)/detail",
         name: "module-detail",
-        component: () => import("../views/modules/ModuleDetail.vue"),
+        component: () => import("../views/modules/ModuleCourses.vue"),
         meta: {
           roles: ["super-admin", "student", "teacher"],
         },

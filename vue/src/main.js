@@ -37,6 +37,7 @@ import "prismjs/themes/prism-coy.css";
 import "./assets/styles/layout.scss";
 import "./assets/demo/flags/flags.css";
 
+
 import { createApp, reactive } from "vue";
 import router from "./router";
 import AppWrapper from "./AppWrapper.vue";

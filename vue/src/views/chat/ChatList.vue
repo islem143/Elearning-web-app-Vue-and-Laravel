@@ -15,7 +15,7 @@
     >
       <img
         class="mr-2 max-w-2rem border-round-3xl"
-        :src="'http://localhost:8081/images/' + user.profile.img_url"
+        :src="'http://localhost:8081/images/' + (user.profile && user.profile.img_url)"
         alt=""
       />
       <p>{{ user.name }}</p>

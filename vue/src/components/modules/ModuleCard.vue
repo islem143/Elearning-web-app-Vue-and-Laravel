@@ -2,23 +2,16 @@
 
 
 
-        <Card  class="col-3">
-            <template #header>
-              <img alt="user header" height="100" :src="module.img_url" />            </template>
-            <template #title> <div class="flex justify-content-between">
-        <h4>{{ module.title }}</h4>
-        <ProgressBar
-          v-if="
-            role &&
-            role == 'student' &&
-            (mylist || (module.users && module.users[0]))
-          "
-          class="w-3 text-center"
-          :value="(module.completedCourses * 100) / module.totalCourses"
-        >
-        </ProgressBar>
-        <div v-if="role == 'teacher'">
+        <Card  class="card w-2 ">
+            <template #header >
+              <img alt="user header" class="w-full" height="120" :src="module.img_url" /></template>
+            <template #title > 
+              <div class=" flex justify-content-between">
+        <h4 class="flex">{{ module.title }}</h4>
+       
+        <div class="flex ml-4" v-if="role == 'teacher'">
           <Button
+           size="small"
             icon="pi pi-pencil"
             class="p-button-rounded p-button-success mr-2"
             @click="$emit('edit-module', module)"
@@ -26,6 +19,7 @@
           />
 
           <Button
+          size="small"
             icon="pi pi-trash"
             class="p-button-rounded p-button-danger"
             @click="$emit('confirm-delete-module', module)"
@@ -34,7 +28,17 @@
         </div>
       </div> </template>
            
-            <template #content>
+            <template #content class="p-0">
+            <ProgressBar
+                  v-if="
+                    role &&
+                    role == 'student' &&
+                    (mylist || (module.users && module.users[0]))
+                  "
+                  class="text-center flex mb-4"
+                  :value="(module.completedCourses * 100) / module.totalCourses"
+          >
+          </ProgressBar>
               {{ module.descprtion }}
       <hr />
       <a
@@ -74,3 +78,18 @@ export default {
   props: ["module", "mylist"],
 };
 </script>
+
+<style>
+.p-card{
+  padding: 0;
+}
+.p-card-header	{
+  padding: 1rem;
+}
+.p-card-body{
+  padding: 0;
+}
+.p-card .p-card-content{
+  padding: 0;
+}
+</style>

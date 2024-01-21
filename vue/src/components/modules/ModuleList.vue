@@ -1,6 +1,6 @@
 <template>
  
-    <div class="card w-9	mx-auto">
+    <div class="card w-10  	mx-auto">
       <h3>Modules</h3>
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
@@ -25,9 +25,10 @@
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
         No match found for "{{ search }}".
       </p>
-      <div class="grid gap-4 mt-4 	">
+      
+      <div class="flex flex-wrap 	 gap-2 mt-4 	">
       <module-cards
-         class="col-6"
+        
          :mylist="false"
         @edit-module="editModule"
         @confirm-delete-module="confirmDeleteModule"

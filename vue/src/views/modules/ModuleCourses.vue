@@ -18,11 +18,12 @@
           />
         </router-link>
       </div>
-
+      <Toast />
+    <ConfirmDialog></ConfirmDialog>
       <CouresListVue
         @get-course="getCourse"
         @get-courses="getCourses"
-        @delete-course="deleteCourse"
+        @delete-course="confirmDelete"
         :courses="courses"
       />
     </div>
@@ -36,7 +37,7 @@ import axios from "../../http";
 import Course from "../../api/Course";
 export default {
   inject: ["role"],
-  name: "ModuleDetail",
+  name: "ModuleCourses",
   components: {
     ModuleInfoVue,
     CouresListVue,
@@ -72,14 +73,35 @@ export default {
     this.getCourses();
   },
   methods: {
+    confirmDelete(id) {
+            this.$confirm.require({
+                message: 'Are you sure you want to delete the course?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept: async() => {
+                  try{
+                    await this.deleteCourse(id);
+                    this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'CourseDeleted', life: 3000 });
+
+                  }catch(err){
+                    this.$toast.add({ severity: 'error', summary: 'Error', detail: 'An error occured', life: 3000 });
+                  }
+                },
+
+            });
+        },
     deleteCourse(id) {
-      console.log(id);
-      axios
+     
+      return axios
         .delete("/api/module/" + this.$route.params.moduleId + "/course/" + id)
         .then((res) => {
           console.log("yes");
+     
           let index = this.courses.findIndex((val) => val.id == id);
           this.courses.splice(index, 1);
+          return Promise.resolve();
+        }).catch(err=>{
+          return Promise.reject(err);
         });
     },
     async getCourses() {
