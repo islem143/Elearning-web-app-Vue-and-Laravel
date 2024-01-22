@@ -34,8 +34,9 @@ class MediaController extends Controller
         $fileName = explode(".", $request->file('file')->getClientOriginalName())[0];
         //$extension = $request->file('file')->getClientOriginalExtension();
 
-        $filePath = $request->file('file')->store("public");
-
+        $path = "media/";
+        Storage::disk("s3")->put($path,$request->file('file'));
+        $img=Storage::disk("s3")->url($path);
         $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => $request->type, "url" => $filePath,'created_by'=>Auth::user()->id]);
         return response()->json(["File uploaded successfuly"], 201);
     }

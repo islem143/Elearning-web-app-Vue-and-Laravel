@@ -10,6 +10,7 @@ services:
     ports:
      - "8081:80"
      - "6002:6002"
+     - "81:81"
      
 
     depends_on:
@@ -41,29 +42,22 @@ services:
 
   myapp-websockets:
    
-    build:
-     context: .
-     
-     dockerfile: Dockerfile
-     args:
-        - PUID=${HOST_PUID}
-        - PGID=${HOST_PGID}
-      
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-        - USERNAME=${CONTAINER_USERNAME}
+    image: myphp
    
     command: ['php', 'artisan', 'websockets:serve']
     container_name: myapp-websockets
     restart: unless-stopped
-    volumes:
-      - .env.prod:/var/www/html/.env
+    # volumes:
+    #   - .env.prod:/var/www/html/.env
    
    
     ports:
       - "6001:6001"
     networks:
       - laravel
+    depends_on:
+      - php
+      
   redis:
     build: ./redis
     restart: unless-stopped
@@ -76,10 +70,11 @@ services:
     networks:
       - laravel
   php:
-   
+    image: myphp
+    
     build:
      context: .
-     
+     target: production
      dockerfile: Dockerfile
      args:
       - UID=${UID:-1000}
@@ -106,19 +101,16 @@ services:
       - laravel    
    
    
-  # supervisor:
-  #   build:
-  #     context: .
-  #     dockerfile: ./supervisor/Dockerfile
-  #     args:
-  #       - UID=${UID:-1000}
-  #       - GID=${GID:-1000}
-  #       - USERNAME=${CONTAINER_USERNAME}  
-  #   container_name: supervisor
-  #   volumes:
-  #     - ./src:/var/www/html
-  #   networks:
-  #     - laravel
+  supervisor:
+    image: myphp 
+    container_name: supervisor
+    restart: unless-stopped
+    networks:
+      - laravel
+    command: "/usr/bin/supervisord -n -c  /etc/supervisor/conf.d/laravel-worker.conf" 
+    depends_on:
+      - php
+      
   
        
      

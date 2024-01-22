@@ -1,11 +1,12 @@
 FROM composer:2.4 as build
 COPY ./src /app/
+WORKDIR /app
 RUN composer update --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
 
 
 
-FROM php:8.1-fpm-alpine as dev
+FROM php:8.2-fpm-alpine as dev
 
 
 ARG UID
@@ -38,7 +39,7 @@ COPY --from=build /usr/bin/composer /usr/bin/composer
 RUN composer install --prefer-dist --no-interaction
 
 
-FROM php:8.1-fpm-alpine as production
+FROM php:8.2-fpm-alpine as production
 
 ARG UID
 ARG GID
@@ -57,18 +58,22 @@ RUN sed -i "s/group = www-data/group = ${USERNAME}/g" /usr/local/etc/php-fpm.d/w
 
 
 RUN docker-php-ext-install pdo pdo_mysql
-
 #COPY ./src /var/www/html
 COPY --from=build /app /var/www/html
 
+COPY .env.prod /var/www/html/.env
+COPY ./src/php.ini /usr/local/etc/php/conf.d/
 #RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
-# RUN php artisan config:cache && \
-#     php artisan route:cache 
-#RUN apk add --update supervisor
+RUN php artisan config:cache && \
+     php artisan route:cache 
+RUN apk add --update supervisor
 
-#COPY ./supervisor/laravel-worker.conf /etc/supervisor/conf.d/
-#RUN mkdir /etc/supervisor/logs
+COPY ./supervisor/laravel-worker.conf /etc/supervisor/conf.d/
+RUN mkdir -p "/etc/supervisor/logs"
+RUN chown ${USERNAME} /etc/supervisor/logs
+RUN chown  ${USERNAME} -R /var/www/html/storage/
+
 #RUN supervisord --configuration /etc/supervisor/conf.d/laravel-worker.conf
 
 #CMD php-fpm && supervisord --configuration /etc/supervisor/conf.d/laravel-worker.conf 
