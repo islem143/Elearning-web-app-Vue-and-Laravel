@@ -2,7 +2,7 @@
 
 
 
-        <Card  class="card col-6  flex ">
+        <Card  class="card  w-2 surface-100  ">
             <template #header  >
               <img alt="user header" class="w-full" height="150" :src="module.img_url" />
             </template>

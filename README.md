@@ -63,3 +63,5 @@ Quiz                       |     Teacher courses
 Home
 
 ![](images/home.png)
+
+![](images/stats.png)

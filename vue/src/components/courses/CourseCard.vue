@@ -34,20 +34,13 @@
       </div>
       <div></div>
     </div>
-     <p v-for="content in course.courses_content" :key="content.id">
-      <a
-        class="text-900 text-lg hover:underline"
-        @click="openDialogContent(content)"
-      >
-        Average atomic mass
-      </a>
-    </p> 
+  
     <div class="p-5" v-if="course.is_taken == false && role != 'teacher'">
       <Button @click="startCourse">Start the course</Button>
     </div>
     <div v-else class="px-5 pb-3">
-      <div>
-        <h5>Learn:</h5>
+      <div class="my-4">
+        <h5>Recourses:</h5>
       </div>
 
       <p v-for="media in course.media" :key="media.id">
@@ -87,7 +80,7 @@
   <CourseQuiz
      
     v-if="(role == 'teacher' && course.quizzes[0]) || 
-    (role != 'teacher' && course.is_taken == true && course.quizzes)"
+    (course.quizzes[0] && role != 'teacher' && course.is_taken == true && course.quizzes)"
      
     
     @go-to-quiz="goToQuiz"

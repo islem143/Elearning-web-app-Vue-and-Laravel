@@ -7,16 +7,9 @@
       <h4>Quiz</h4>
     </div>
     <div class="p-2">
-      <div v-if="role!='teacher' && quiz.user_id">
-        <p>
-          <b>Title: </b>{{ quiz.title }}, <b> mark: {{ quiz.mark }}</b>
-        </p>
-        <p>
-          <b> time: {{ quiz.time }}</b>
-        </p>
-      </div>
 
-      <div v-else>
+      
+      <div v-if="quiz" >
         <p><b>Title: </b>{{ quiz.title }}</p>
 
         <p><b>Duration: </b> {{ quiz.duration }} mn</p>
@@ -24,12 +17,12 @@
     </div>
 
     <div class="p-2 flex gap-2">
-  
+
       <Button
-        v-if="role == 'student'"
+        v-if="role == 'student' "
         class="text-sm"
         @click="$emit('go-to-quiz', quiz)"
-        :label="quiz.user_id ? 'See Result' : 'Start Quiz'"
+        :label="quiz && quiz.user_id ? 'See Result' : 'Start Quiz'"
       />
       <Button
         style="width: 110px"

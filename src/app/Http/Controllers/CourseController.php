@@ -90,7 +90,11 @@ class CourseController extends Controller
     {
         $this->authorize("view", Course::class);
         $course = Course::where(["id" => $id2])->with(["media"])->first();
-        $quiz = DB::table("quizzes")->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.*")->first();
+        $quiz = DB::table("quizzes")
+        ->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")
+        ->where(["quizzes.course_id" => $course->id])
+        ->select("quizzes.*", "quiz_user.*")
+        ->first();
         $course->quiz = $quiz;
         $course->is_taken = true;
         return $course;
