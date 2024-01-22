@@ -8,7 +8,7 @@
     </div>
     <div class="p-2">
 
-      
+     
       <div v-if="quiz" >
         <p><b>Title: </b>{{ quiz.title }}</p>
 
@@ -22,7 +22,7 @@
         v-if="role == 'student' "
         class="text-sm"
         @click="$emit('go-to-quiz', quiz)"
-        :label="quiz && quiz.user_id ? 'See Result' : 'Start Quiz'"
+        :label="quiz && quiz.quiz_users[0] ? 'See Result' : 'Start Quiz'"
       />
       <Button
         style="width: 110px"

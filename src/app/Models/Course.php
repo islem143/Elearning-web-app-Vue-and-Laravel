@@ -18,6 +18,10 @@ class Course extends Model
     {
         return $this->hasMany(Quiz::class);
     }
+    public function courseUsers()
+    {
+        return $this->hasMany(CourseUser::class);
+    }
     public function coursesContent()
     {
         return $this->hasMany(CourseContent::class);

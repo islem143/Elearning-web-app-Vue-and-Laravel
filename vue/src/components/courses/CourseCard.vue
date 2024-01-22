@@ -80,7 +80,7 @@
   <CourseQuiz
      
     v-if="(role == 'teacher' && course.quizzes[0]) || 
-    (course.quizzes[0] && role != 'teacher' && course.is_taken == true && course.quizzes)"
+    (course.quizzes[0] && role != 'teacher' && course.course_users  && course.quizzes)"
      
     
     @go-to-quiz="goToQuiz"

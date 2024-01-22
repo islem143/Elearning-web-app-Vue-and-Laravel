@@ -97,6 +97,7 @@ class CourseController extends Controller
         ->first();
         $course->quiz = $quiz;
         $course->is_taken = true;
+        
         return $course;
     }
 

@@ -27,43 +27,14 @@ class CourseService
     public function getStudentCourses($moduleId)
     {
 
-        $courses_users = DB::table("course_users")->where("user_id", Auth::user()->id);
-        $courses = DB::table("courses")->leftJoinSub($courses_users, "course_users", function ($join) {
-            $join->on("courses.id", "course_users.course_id");
-        })->where(["module_id" => $moduleId])->get();
-
-        // $courses = Course::with(
-        //     [
-        //         "users" => function ($query) {
-        //             $query->where("user_id", Auth::user()->id);
-        //         },
-        //         "media", "quizzes" => function ($query) {
-        //             $query->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->first();
-        //         }
-
-        //     ]
-        // )->get();
-        // dd($courses);
-
-        foreach ($courses as $course) {
-
-
-            if (!$course->user_id) {
-                $course->is_taken = false;
-            } else {
-                $course->is_taken = true;
-
-                $media = Media::where(["course_id" => $course->id])->get();
-                //$content = CourseContent::where(["course_id" => $course->id])->get();
-                $quiz_user = DB::table("quiz_user")->where("user_id", Auth::user()->id);
-
-                $quiz = DB::table("quizzes")->leftJoinSub($quiz_user, "quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")->where(["quizzes.course_id" => $course->id])->select("quizzes.*", "quiz_user.user_id")->get();
-                
-                $course->quizzes = $quiz;
-                $course->media = $media;
-                //$course->contents = $content;
-            }
-        }
+        $courses=Course::where("module_id",$moduleId)->with(["courseUsers"=>function($query){
+            $query->where("user_id",Auth::user()->id);
+        },"media","quizzes"=>function($query){
+            $query->with(["quizUsers"=>function($query){
+                $query->where("user_id",Auth::user()->id);
+            }]);
+        }])->get();
+    
 
         return $courses;
     }
