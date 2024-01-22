@@ -14,7 +14,7 @@ class TeacherSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create(["name" => "teacher2", "email" => "teacher2@el.com", "password" => bcrypt($password = "teacher2")]);
+        $user = User::create(["name" => "teacher3", "email" => "teacher3@el.com", "password" => bcrypt($password = "teacher3")]);
         $user->assignRole("teacher");
     }
 }

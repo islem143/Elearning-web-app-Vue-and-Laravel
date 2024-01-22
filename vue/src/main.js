@@ -133,6 +133,8 @@ import { createPinia } from 'pinia'
 
 import { getRoles } from "./utils/auth";
 import { computed } from "vue";
+
+
 router.beforeEach(function (to, from, next) {
   window.scrollTo(0, 0);
   next();

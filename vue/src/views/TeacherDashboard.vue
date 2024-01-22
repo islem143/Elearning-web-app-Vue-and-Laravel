@@ -1,12 +1,10 @@
 <template>
-  <div class="grid">
-    <!-- <div class="col-12 lg:col-6 xl:col-3">
+  <div class="grid w-9 mx-auto">
+    <div class="col-12 lg:col-6 xl:col-4" v-if="stats">
       <div class="card mb-0 bg-white">
         <div class="flex justify-content-between mb-3">
           <div>
-            <span class="block text-500 font-medium mb-3"
-              >Entrolled Students</span
-            >
+            <span class="block text-500 font-medium mb-3">Students</span>
             <div class="text-900 font-medium text-xl">{{ stats.students }}</div>
           </div>
           <div
@@ -16,70 +14,152 @@
             <i class="pi pi-users text-blue-500 text-xl"></i>
           </div>
         </div>
-   
+        <!-- <span class="text-green-500 font-medium">24 new </span>
+        <span class="text-500">since last visit</span> -->
       </div>
     </div>
-    <div class="col-12 lg:col-6 xl:col-3">
-      <div class="card mb-0 bg-white">
+    <div class="col-12 lg:col-6 xl:col-4" v-if="stats">
+      <div class="card mb-0  bg-white">
         <div class="flex justify-content-between mb-3">
           <div>
-            <span class="block text-500 font-medium mb-3">Total Modules</span>
+            <span class="block text-500 font-medium mb-3">Modules</span>
             <div class="text-900 font-medium text-xl">{{ stats.modules }}</div>
           </div>
           <div
-            class="flex align-items-center justify-content-center bg-orange-100 border-round"
+            class="flex align-items-center justify-content-center bg-blue-100 border-round"
             style="width: 2.5rem; height: 2.5rem"
           >
-            <i class="pi pi-book text-orange-500 text-xl"></i>
+            <i class="pi pi-book  text-blue-500 text-xl"></i>
           </div>
         </div>
-        
+        <!-- <span class="text-green-500 font-medium">%52+ </span>
+        <span class="text-500">since last week</span> -->
       </div>
-    </div> -->
-
-    <div class="card flex justify-content-center">
-      <Chart
-        type="pie"
-        :data="chartData"
-        :options="chartOptions"
-        class="w-full md:w-30rem"
-      />
     </div>
+    <div class="col-12 lg:col-6 xl:col-4" v-if="stats">
+      <div class="card mb-0  bg-white">
+        <div class="flex justify-content-between mb-3">
+          <div>
+            <span class="block text-500 font-medium mb-3">Total Quizzes</span>
+            <div class="text-900 font-medium text-xl">{{ stats.totalQuizzes }}</div>
+          </div>
+          <div
+            class="flex align-items-center justify-content-center bg-blue-100 border-round"
+            style="width: 2.5rem; height: 2.5rem"
+          >
+            <i class="pi pi-question  text-blue-500 text-xl"></i>
+          </div>
+        </div>
+        <!-- <span class="text-green-500 font-medium">%52+ </span>
+        <span class="text-500">since last week</span> -->
+      </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-4" v-if="stats">
+      <div class="card mb-0  bg-white">
+        <div class="flex justify-content-between mb-3">
+          <div>
+            <span class="block text-500 font-medium mb-3">Total Courses</span>
+            <div class="text-900 font-medium text-xl">{{ stats.totalCourses }}</div>
+          </div>
+          <div
+            class="flex align-items-center justify-content-center bg-blue-100 border-round"
+            style="width: 2.5rem; height: 2.5rem"
+          >
+            <i class="pi pi-book  text-blue-500 text-xl"></i>
+          </div>
+        </div>
+        <!-- <span class="text-green-500 font-medium">%52+ </span>
+        <span class="text-500">since last week</span> -->
+      </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-4" v-if="stats">
+      <div class="card mb-0  bg-white">
+        <div class="flex justify-content-between mb-3">
+          <div>
+            <span class="block text-500 font-medium mb-3">Total  Uploaded Media</span>
+            <div class="text-900 font-medium text-xl">{{ stats.totalMedia }}</div>
+          </div>
+          <div
+            class="flex align-items-center justify-content-center bg-blue-100 border-round"
+            style="width: 2.5rem; height: 2.5rem"
+          >
+            <i class="pi pi-video  text-blue-500 text-xl"></i>
+          </div>
+        </div>
+        <!-- <span class="text-green-500 font-medium">%52+ </span>
+        <span class="text-500">since last week</span> -->
+      </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3" v-if="stats">
+      <div class="card mb-0  bg-white w-full md:w-30rem">
+    <Chart type="pie" :data="chartData" :options="chartOptions" class="w-full md:w-30rem" />
+  </div>
+  </div>
+  
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import axios from "../http";
 
-const chartData = ref({
-  labels: ["Q1", "Q2", "Q3", "Q4"],
-  datasets: [
-    {
-      label: "Sales",
-      data: [540, 325, 702, 620],
-      backgroundColor: [
-        "rgba(255, 159, 64, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-      ],
-      borderColor: [
-        "rgb(255, 159, 64)",
-        "rgb(75, 192, 192)",
-        "rgb(54, 162, 235)",
-        "rgb(153, 102, 255)",
-      ],
-      borderWidth: 1,
-    },
-  ],
+
+let stats=ref();
+const chartData = ref();
+const chartOptions = ref();
+onMounted(()=>{
+  axios.get("/api/teacher/stats").then((res) => {
+    
+     stats.value = res.data;
+
+
+     chartData.value = setChartData();
+     chartOptions.value = setChartOptions();
+    });
 });
-const chartOptions = ref({
-  scales: {
-    y: {
-      beginAtZero: true,
+
+
+
+const setChartData = () => {
+    const documentStyle = getComputedStyle(document.body);
+
+    return {
+        labels: stats.value.moduleStudentPie.labels,
+        datasets: [
+            {
+                data: stats.value.moduleStudentPie.data,
+                backgroundColor: [documentStyle.getPropertyValue('--blue-500'), documentStyle.getPropertyValue('--yellow-500'), documentStyle.getPropertyValue('--green-500'),documentStyle.getPropertyValue('--red-500')],
+                hoverBackgroundColor: [documentStyle.getPropertyValue('--blue-400'), documentStyle.getPropertyValue('--yellow-400'), documentStyle.getPropertyValue('--green-400')]
+            }
+        ]
+    };
+};
+
+const setChartOptions = () => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+
+    return {
+        plugins: {
+          colors: {
+      enabled: true
     },
-  },
-});
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    color: textColor
+                }
+            },
+            title: {
+        display: true,
+        text: 'Students count per module'
+      }
+
+
+        },
+        
+    };
+};
 </script>
 <!-- <script >
   import EventBus from "../AppEventBus";

@@ -21,7 +21,7 @@
           <Button
           size="small"
             icon="pi pi-trash"
-            class="p-button-rounded p-button-danger"
+            class="p-button-rounded p-button-danger "
             @click="$emit('confirm-delete-module', module)"
             v-if="role == 'teacher'"
           />
@@ -35,18 +35,14 @@
                     role == 'student' &&
                     (mylist || (module.users && module.users[0]))
                   "
-                  class="text-center flex mb-4"
+                  class="text-center flex mb-4 h-1rem	"
                   :value="(module.completedCourses * 100) / module.totalCourses"
           >
           </ProgressBar>
+          <div v-else class="h-1rem	 w-full mb-4"></div>
               {{ module.descprtion }}
       <hr />
-      <a
-        class="block mt-2 text-lg hover:underline cursor-pointer"
-        v-for="course in module.courses"
-        :key="course.id"
-        >{{ course.title }}</a
-      >
+    
             </template>
             <template #footer>
               <Button
@@ -63,6 +59,7 @@
         v-else-if="role == 'teacher'"
         @click="$emit('go-to', module)"
         label="Edit Courses"
+        size="small"
       />
             </template>
         </Card>
@@ -90,6 +87,6 @@ export default {
   padding: 0;
 }
 .p-card .p-card-content{
-  padding: 0;
+  padding: 0.8rem;
 }
 </style>

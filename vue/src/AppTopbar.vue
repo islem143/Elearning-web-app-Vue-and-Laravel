@@ -106,20 +106,26 @@ export default {
       ];
     } else if (this.role && this.role == "teacher") {
       this.items = [
-        {
+      {
           id: 1,
+          label: "Dashbarod",
+          roles: ["teacher"],
+          to: { name: "teacher-dashboard" },
+        },
+        {
+          id: 2,
           label: "Modules",
           roles: ["teacher", "student"],
           to: { name: "module-list" },
         },
         {
-          id: 2,
+          id:3,
           label: "Chat",
           roles: ["teacher", "student", "super-admin"],
           to: { name: "chat" },
         },
         {
-          id: 3,
+          id: 4,
           label: "History",
           roles: ["teacher", "super-admin"],
           to: { name: "history-list" },

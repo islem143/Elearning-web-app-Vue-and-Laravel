@@ -31,7 +31,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apk update && apk add  zip
 RUN docker-php-ext-install pdo pdo_mysql
-
+COPY ./src/php.ini /usr/local/etc/php/conf.d/
 COPY ./src /var/www/html/
 COPY ./src/.env.dev /var/www/html/.env
 COPY --from=build /usr/bin/composer /usr/bin/composer

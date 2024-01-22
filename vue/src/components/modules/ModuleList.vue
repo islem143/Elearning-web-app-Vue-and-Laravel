@@ -1,6 +1,6 @@
 <template>
  
-    <div class="card w-10  	mx-auto">
+    <div class="card w-9  	mx-auto">
       <h3>Modules</h3>
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">

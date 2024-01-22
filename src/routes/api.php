@@ -125,9 +125,12 @@ Route::prefix("users")->middleware("auth:sanctum")->group(function () {
 
 
 
+Route::middleware("auth:sanctum")->group(function(){
+
+    Route::get('/admin/stats', [App\Http\Controllers\StatsController::class, 'AdminDashboardStats'])->middleware("auth:sanctum");
+    Route::get('/teacher/stats', [App\Http\Controllers\StatsController::class, 'TeacherDashboardStats'])->middleware("auth:sanctum");
+    
+});
 Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index'])->middleware("auth:sanctum");
 Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages'])->middleware("auth:sanctum");
 Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage'])->middleware("auth:sanctum");
-
-Route::get('/admin/stats', [App\Http\Controllers\StatsController::class, 'AdminDashboardStats'])->middleware("auth:sanctum");
-Route::get('/teacher/stats', [App\Http\Controllers\StatsController::class, 'TeacherDashboardStats'])->middleware("auth:sanctum");
