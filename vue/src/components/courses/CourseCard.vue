@@ -76,19 +76,21 @@
       </Dialog>
     </div>
   </div>
+<div  v-for="quiz in course.quizzes">
 
   <CourseQuiz
-     
-    v-if="(role == 'teacher' && course.quizzes[0]) || 
-    (course.quizzes[0] && role != 'teacher' && course.course_users  && course.quizzes)"
+    
+    v-if="(role == 'teacher' && quiz) || 
+    (quiz && role != 'teacher' && course.course_users  && course.quizzes)"
      
     
     @go-to-quiz="goToQuiz"
     @edit-quiz="editQuiz"
     @delete-quiz="deleteQuiz"
-    :quiz="course.quizzes[0]"
+    :quiz="quiz"
     :course="course"
   />
+</div>
 </template>
 
 <script>

@@ -22,7 +22,7 @@
         v-if="role == 'student' "
         class="text-sm"
         @click="$emit('go-to-quiz', quiz)"
-        :label="quiz && quiz.quiz_users[0] ? 'See Result' : 'Start Quiz'"
+        :label="quiz && quiz.quiz_user ? 'See Result' : 'Start Quiz'"
       />
       <Button
         style="width: 110px"

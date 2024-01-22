@@ -17,8 +17,10 @@ class CourseService
     public function getTeacherCourses($moduleId)
     {
 
-        $courses = Course::where(["module_id" => $moduleId])->with(["media", "coursesContent", "quizzes" => function ($query) {
-            $query->where("created_by", Auth::user()->id)->first();
+        $courses = Course::where(["module_id" => $moduleId])
+        ->with(["media", "coursesContent", 
+        "quizzes" => function ($query) {
+            $query->where("created_by", Auth::user()->id);
         }])->where("user_id", Auth::user()->id)->get();
 
         return $courses;
@@ -30,7 +32,7 @@ class CourseService
         $courses=Course::where("module_id",$moduleId)->with(["courseUsers"=>function($query){
             $query->where("user_id",Auth::user()->id);
         },"media","quizzes"=>function($query){
-            $query->with(["quizUsers"=>function($query){
+            $query->with(["quizUser"=>function($query){
                 $query->where("user_id",Auth::user()->id);
             }]);
         }])->get();

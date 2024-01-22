@@ -1,6 +1,9 @@
 <template>
   <div >
-    <p class="text-red-400">{{ showError ? "please select a choice" : "" }}</p>
+    <div class="mx-auto w-4">
+      <Message v-if="showError" severity="info">please select a choice</Message>
+
+    </div>
 
     <div
       v-if="questions.length != 0 && !quizFinished && !quizDone"
