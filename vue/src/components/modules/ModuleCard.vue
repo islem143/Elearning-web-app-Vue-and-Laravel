@@ -2,16 +2,18 @@
 
 
 
-        <Card  class="card w-2 ">
-            <template #header >
-              <img alt="user header" class="w-full" height="120" :src="module.img_url" /></template>
+        <Card  class="card col-6  flex ">
+            <template #header  >
+              <img alt="user header" class="w-full" height="150" :src="module.img_url" />
+            </template>
             <template #title > 
-              <div class=" flex justify-content-between">
-        <h4 class="flex">{{ module.title }}</h4>
+              <div class=" flex justify-content-between w-full">
+        <h4 class="flex h-2rem">{{ module.title }}</h4>
        
         <div class="flex ml-4" v-if="role == 'teacher'">
           <Button
            size="small"
+           style="width: 30px;height: 30px;"
             icon="pi pi-pencil"
             class="p-button-rounded p-button-success mr-2"
             @click="$emit('edit-module', module)"
@@ -19,9 +21,10 @@
           />
 
           <Button
-          size="small"
+           size="small"
+           style="width: 30px;height: 30px;"
             icon="pi pi-trash"
-            class="p-button-rounded p-button-danger "
+            class="p-button-rounded p-button-danger"
             @click="$emit('confirm-delete-module', module)"
             v-if="role == 'teacher'"
           />
