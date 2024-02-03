@@ -44,6 +44,7 @@
       </div>
 
       <p v-for="media in course.media" :key="media.id">
+
         <i
           :class="
             icons[media.type] + ' mr-3 mt-2 border-1 p-1 surface-200 text-900'
@@ -51,7 +52,15 @@
           style="font-size: 1rem"
         >
         </i>
-        <a
+        <a v-if="media.type=='video'"
+         @click="openDialog(media.url,media.name)"
+          class="text-900 text-lg hover:underline"
+        
+          >
+          {{ media.name }}
+          </a
+        >
+        <a v-else
           class="text-900 text-lg hover:underline"
           :href="'http://localhost:8081/' + media.url"
           >{{ media.name }}</a
@@ -59,21 +68,11 @@
       </p>
 
       <Dialog class="p-2" :header="this.title" v-model:visible="visible">
-        <iframe
-          :src="'http://www.youtube.com/embed/' + this.url"
-          width="560"
-          height="315"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
+        <video width="1200" height="700" controls>
+  <source :src="'http://localhost:8081/'+this.url" type="video/mp4">
+</video>
       </Dialog>
-      <Dialog
-        class="p-2 w-9"
-        :header="this.title"
-        v-model:visible="visibleContent"
-      >
-        <div v-html="html"></div>
-      </Dialog>
+     
     </div>
   </div>
 <div  v-for="quiz in course.quizzes">
@@ -118,7 +117,7 @@ export default {
       url: "",
       title: "",
       content: "",
-      visibleContent: false,
+
       visible: false,
       html: "",
       icons: {

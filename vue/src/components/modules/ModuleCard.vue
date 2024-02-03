@@ -2,14 +2,14 @@
 
 
 
-        <Card  class="card  w-2 surface-100  ">
+        <Card  class="card  w-18rem surface-0  ">
             <template #header  >
               <img alt="user header" class="w-full" height="150" :src="module.img_url" />
             </template>
             <template #title > 
               <div class=" flex justify-content-between w-full">
         <h4 class="flex h-2rem">{{ module.title }}</h4>
-       
+         
         <div class="flex ml-4" v-if="role == 'teacher'">
           <Button
            size="small"
@@ -30,19 +30,23 @@
           />
         </div>
       </div> </template>
-           
+          
             <template #content class="p-0">
+              <span v-if="module.created_by" class="my-1">By: {{ module.created_by.name }}</span>
+              <Rating v-if="role=='student'" style="margin-left: -8px"  class="my-2 " :cancel="false" />
+
             <ProgressBar
                   v-if="
                     role &&
                     role == 'student' &&
                     (mylist || (module.users && module.users[0]))
                   "
-                  class="text-center flex mb-4 h-1rem	"
+                  class="text-center flex  h-1rem	"
                   :value="(module.completedCourses * 100) / module.totalCourses"
           >
           </ProgressBar>
-          <div v-else class="h-1rem	 w-full mb-4"></div>
+          
+          <div v-else class="h-1rem	 w-full "></div>
               {{ module.descprtion }}
       <hr />
     
@@ -80,16 +84,8 @@ export default {
 </script>
 
 <style>
-.p-card{
-  padding: 0;
-}
-.p-card-header	{
-  padding: 1rem;
-}
-.p-card-body{
-  padding: 0;
-}
 .p-card .p-card-content{
-  padding: 0.8rem;
+  padding: 0;
 }
+
 </style>

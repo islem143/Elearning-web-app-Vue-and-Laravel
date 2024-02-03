@@ -12,13 +12,13 @@ const staticRoutes = [
     name: "register",
     component: () => import("../views/auth/Register.vue"),
   },
-  
+
   //   {
   //     path: '/error',
   //     name: 'error',
   //     component: () => import('./pages/Error.vue')
   // },
-  
+
   // {
   //     path: '/access',
   //     name: 'access',
@@ -52,7 +52,7 @@ const staticRoutes = [
     ],
   },
   {
-    path: "/404",
+    path: "/:pathMatch(.*)*",
     name: "notfound",
     component: () => import("../views/NotFound.vue"),
   },
@@ -63,7 +63,7 @@ const asyncRoutes = [
     path: "/modules",
     component: App,
     redirect: "/modules/list",
-    name:"modules",
+    name: "modules",
     children: [
       // {
       //   path: "list",
@@ -245,7 +245,6 @@ const asyncRoutes = [
           roles: ["teacher"],
         },
       },
-
     ],
   },
   {
@@ -269,7 +268,6 @@ const asyncRoutes = [
           roles: ["super-admin"],
         },
       },
-     
     ],
   },
 
@@ -299,7 +297,7 @@ function filterRoutes(roles, routes) {
   return filtredRoutes;
 }
 
-function generateRoutes(roles, routes) {
+export function generateRoutes(roles, routes) {
   if (getRoles().length == 1 && getRoles()[0] == "super-admin") {
     return routes;
   } else {
@@ -315,7 +313,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const $hasToken = hasToken();
   const $hasRoutes = hasRoutes();
-  console.log(to.name);
+
   if ($hasToken) {
     if (to.name == "login" || to.name == "register") {
       return { name: "module-list" };
@@ -332,28 +330,9 @@ router.beforeEach((to, from) => {
 
       return to.fullPath;
     }
-  } else if (
-    to.name !== "login" &&
-    to.name !== "register" &&
-    to.name != "home" &&
-    to.name != "module-list" &&
-    to.name != "verify"
-  ) {
-    return { name: "home" };
   } else {
     return true;
   }
-  // if (hasToken) {
-  //   return { name: "Login" };
-  // } else if (
-  //   to.meta.requireAuth &&
-  //   store.state.auth.user.token &&
-  //   !to.meta.roles.includes(getRole())
-  // ) {
-  //   return { name: "Home" };
-  // } else if (to.meta.isGuest && store.state.auth.user.token) {
-  //   return { name: "Home" };
-  // }
 });
 
 export default router;

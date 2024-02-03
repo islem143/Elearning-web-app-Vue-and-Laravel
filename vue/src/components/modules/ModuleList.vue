@@ -1,7 +1,10 @@
 <template>
  
-    <div class="card w-9 	mx-auto">
+    <div class="flex " >
+      <SideBarFilter class="w-2" :page="page"></SideBarFilter>
+      <div class="card w-9 	surface-200 mx-auto">
       <h3>Modules</h3>
+      
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
           <Button
@@ -11,16 +14,7 @@
             @click="openNew"
           />
         </router-link>
-        <div class="p-input-icon-right col-4">
-          <i class="pi pi-search" />
-          <InputText
-            type="text"
-            class="w-full"
-            v-model="search"
-            placeholder="Search"
-            @input="getModules"
-          />
-        </div>
+       
       </div>
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
         No match found for "{{ search }}".
@@ -62,18 +56,20 @@
           />
         </template>
       </Dialog>
-      <Paginator :rows="10" @page="list" :totalRecords="count"></Paginator>
-    </div>
+      <Paginator  :rows="10" @page="list" :totalRecords="count"></Paginator>
+    </div></div>
 
 </template>
 
 <script>
 import axios from "../../http";
 import ModuleCards from "./ModulesCard.vue";
+import SideBarFilter from "../Filters/SideBarFilter.vue";
 export default {
   inject: ["role"],
   components: {
     ModuleCards,
+    SideBarFilter,
   },
   data() {
     return {

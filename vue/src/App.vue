@@ -1,6 +1,7 @@
 <template>
   <div :class="containerClass" @click="onWrapperClick">
     <Toast />
+ 
     <AppTopBar @menu-toggle="onMenuToggle" />
     <div class="layout-sidebar" @click="onSidebarClick">
       <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
@@ -47,7 +48,7 @@ export default {
   emits: ["change-theme"],
   data() {
     return {
-      layoutMode: "overlay",
+      layoutMode: "static",
       staticMenuInactive: false,
       overlayMenuActive: false,
       mobileMenuActive: false,
