@@ -1,5 +1,5 @@
 <template>
-  <div class="p-input-icon-right col-4 surface-200 border-round-lg	  p-4">
+  <div class="p-input-icon-right col-4 surface-100 border-round-lg	  p-4">
     <InputText
       type="text"
       class="w-full"
@@ -8,12 +8,17 @@
       @input="getModules"
     />
 
-    <Accordion :multiple="true" :activeIndex="[0,1]" class="mt-4">
+    <Accordion :multiple="true" :activeIndex="[0,1,2]" class="mt-4">
       <AccordionTab header="Categories">
-        <Categories></Categories>
+        <!-- <Categories></Categories> -->
+        <CheckBoxGroup :list="categories"></CheckBoxGroup>
       </AccordionTab>
       <AccordionTab header="Ratings">
         <Rating v-model="value" :cancel="false" />
+
+      </AccordionTab>
+      <AccordionTab header="Difficulty">
+        <CheckBoxGroup :list="difficulties"></CheckBoxGroup>
 
       </AccordionTab>
     </Accordion>
@@ -25,9 +30,18 @@
 
 <script setup>
 import { Module } from "../../api/Modules";
-import Categories from "./Categories.vue";
+import CheckBoxGroup from "../ui/CheckBoxGroup.vue";
 import { ref } from "vue";
 const props = defineProps(["page"]);
+let categories = ref([
+  { name: "Cat1", id: "1" },
+  { name: "Cat2", id: "2" },
+]);
+let difficulties = ref([
+  { name: "Easy", id: "1" },
+  { name: "Medium", id: "2" },
+  { name: "Hard", id: "3" },
+]);
 let modules = ref([]);
 let search = ref("");
 let value = ref("");

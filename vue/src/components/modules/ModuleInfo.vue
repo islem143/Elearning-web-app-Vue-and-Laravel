@@ -24,6 +24,7 @@
       @click="emit('add-course')"
       label="Add Course"
     />
+    
   </div>
 </template>
 

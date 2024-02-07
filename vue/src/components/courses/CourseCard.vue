@@ -35,7 +35,7 @@
       <div></div>
     </div>
   
-    <div class="p-5" v-if="course.is_taken == false && role != 'teacher'">
+    <div class="p-5" v-if="course.course_user == null && role != 'teacher'">
       <Button @click="startCourse">Start the course</Button>
     </div>
     <div v-else class="px-5 pb-3">
@@ -80,7 +80,7 @@
   <CourseQuiz
     
     v-if="(role == 'teacher' && quiz) || 
-    (quiz && role != 'teacher' && course.course_users  && course.quizzes)"
+    (quiz && role != 'teacher' && course.course_user  && course.quizzes)"
      
     
     @go-to-quiz="goToQuiz"

@@ -3,7 +3,7 @@
     <Toast />
  
     <AppTopBar @menu-toggle="onMenuToggle" />
-    <div class="layout-sidebar" @click="onSidebarClick">
+    <div v-if="$route.name!='module-list'" class="layout-sidebar" @click="onSidebarClick">
       <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
     </div>
 

@@ -79,7 +79,7 @@ export default {
         this.data = res.data.data;
 
         this.data.forEach((d) => {
-          axios.get("/api/module/" + d.id + "/completedCourses").then((res) => {
+          axios.get("/api/courses/" + d.id + "/completed").then((res) => {
             d.totalCourses = res.data.totalCourse;
             d.completedCourses = res.data.completedCourses;
           });

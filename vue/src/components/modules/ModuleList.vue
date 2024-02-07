@@ -1,10 +1,9 @@
 <template>
- 
-    <div class="flex " >
-      <SideBarFilter class="w-2" :page="page"></SideBarFilter>
-      <div class="card w-9 	surface-200 mx-auto">
+  <div class="flex">
+    <SideBarFilter class="w-2" :page="page"></SideBarFilter>
+    <div class="card w-9 surface-100 mx-auto">
       <h3>Modules</h3>
-      
+
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
           <Button
@@ -14,23 +13,22 @@
             @click="openNew"
           />
         </router-link>
-       
       </div>
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
         No match found for "{{ search }}".
       </p>
-      
-      <div class="grid gap-3 	  mt-4 	">
-      <module-cards
-        
-         :mylist="false"
-        @edit-module="editModule"
-        @confirm-delete-module="confirmDeleteModule"
-        @go-to="goTo"
-        @enroll="enroll"
-        :modules="data"
-      />
-    </div>
+
+      <div class="gap-3 mt-4">
+        <module-cards
+          :mylist="false"
+          @edit-module="editModule"
+          @confirm-delete-module="confirmDeleteModule"
+          :completedCourses="completedCourses"
+          @go-to="goTo"
+          @enroll="enroll"
+          :modules="data"
+        />
+      </div>
       <Dialog
         v-model:visible="deleteModuleDialog"
         :style="{ width: '450px' }"
@@ -56,9 +54,10 @@
           />
         </template>
       </Dialog>
-      <Paginator  :rows="10" @page="list" :totalRecords="count"></Paginator>
-    </div></div>
-
+      
+      <Paginator :rows="10" @page="list" :totalRecords="count"></Paginator>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -82,6 +81,7 @@ export default {
       sortOrder: null,
       sortField: null,
       page: 0,
+      completedCourses: [],
       count: 0,
       sortOptions: [
         { label: "Price High to Low", value: "!price" },
@@ -111,36 +111,37 @@ export default {
           life: 3000,
         });
         this.getModules();
-
       });
     },
     getModules() {
       let params = { title: this.search, page: this.page + 1 };
       if (!this.role) {
         axios.get("/api/modules", { params }).then((res) => {
+         
           this.data = res.data.data;
         });
         return;
       }
+
+
+      
       axios
         .get("/api/module", { params })
         .then((res) => {
-          console.log(res.status);
-          this.data = res.data.data;
-          if (this.role == "student") {
-            this.data.forEach((d) => {
-              axios
-                .get("/api/module/" + d.id + "/completedCourses")
-                .then((res) => {
-                  d.totalCourses = res.data.totalCourse;
-                  d.completedCourses = res.data.completedCourses;
-                });
-            });
+         
+          this.data = res.data.modules.data;
+          console.log(res);
+          if(this.role=='student'){
+
+            this.completedCourses=res.data.completed_courses;
           }
+
+
         })
         .catch((err) => {
-          console.log(err.message);
+          console.log(err);
         });
+      
     },
     src(info) {
       console.log(info);
