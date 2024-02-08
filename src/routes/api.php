@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginApiController;
 use App\Http\Controllers\Auth\LogoutApiController;
 use App\Http\Controllers\Auth\RegisterApiController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChoiceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ImageController;
@@ -16,8 +16,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VereficationController;
-use App\Models\Course;
-use App\Models\Log;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +29,7 @@ use App\Models\Log;
 |
 */
 
-Route::get("email-verification",[VereficationController::class,"verify"])->name("verification.verify");
+Route::get("email-verification", [VereficationController::class, "verify"])->name("verification.verify");
 
 Route::get("modules", [ModuleController::class, "getAllModules"])->name("module.getAllModules");
 Route::get("module/count", [ModuleController::class, "count"])->name("module.count");
@@ -56,7 +55,7 @@ Route::prefix("users")->middleware("auth:sanctum")->group(function () {
     Route::middleware("can:view-users")->get("/", [LogController::class, "index"])->name("logs.showusers");
 });
 
-Route::prefix("courses")->middleware("auth:sanctum")->group(function(){
+Route::prefix("courses")->middleware("auth:sanctum")->group(function () {
     Route::get("/completed", [CourseController::class, "compledtedCourses"])->name("course.compledtedCourses");
 });
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
@@ -66,6 +65,13 @@ Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function
     Route::get("/", [CourseController::class, "index"])->name("course.showall");
     Route::get("/{id2}", [CourseController::class, "show"])->name("course.showone");
     Route::post("/", [CourseController::class, "store"])->name("course.create");
+    Route::put("/{id2}", [CourseController::class, "update"])->name("course.update");
+    Route::delete("/{id2}", [CourseController::class, "destroy"])->name("course.delete");
+});
+Route::prefix("categories")->middleware("auth:sanctum")->group(function () {
+
+    Route::get("/", [CategoryController::class, "index"])->name("course.index");
+    Route::post("/{id2}/content", [CourseController::class, "storeContent"])->name("course.storeContent");
     Route::put("/{id2}", [CourseController::class, "update"])->name("course.update");
     Route::delete("/{id2}", [CourseController::class, "destroy"])->name("course.delete");
 });
@@ -130,11 +136,10 @@ Route::prefix("users")->middleware("auth:sanctum")->group(function () {
 
 
 
-Route::middleware("auth:sanctum")->group(function(){
+Route::middleware("auth:sanctum")->group(function () {
 
     Route::get('/admin/stats', [App\Http\Controllers\StatsController::class, 'AdminDashboardStats'])->middleware("auth:sanctum");
     Route::get('/teacher/stats', [App\Http\Controllers\StatsController::class, 'TeacherDashboardStats'])->middleware("auth:sanctum");
-    
 });
 Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index'])->middleware("auth:sanctum");
 Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages'])->middleware("auth:sanctum");

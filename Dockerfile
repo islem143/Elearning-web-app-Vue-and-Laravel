@@ -37,7 +37,7 @@ COPY ./src /var/www/html/
 COPY ./src/.env.dev /var/www/html/.env
 COPY --from=build /usr/bin/composer /usr/bin/composer
 RUN composer install --prefer-dist --no-interaction
-
+USER ${USERNAME}
 
 FROM php:8.2-fpm-alpine as production
 

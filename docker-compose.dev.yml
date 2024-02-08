@@ -2,31 +2,31 @@ version: '3'
 
 
 services:
-  nginxdev:
-    image: nginx:stable-alpine
-    #container_name: nginx
-    ports:
-     - "8081:80"
+  # nginxdev:
+  #   image: nginx:stable-alpine
+  #   #container_name: nginx
+  #   ports:
+  #    - "8081:80"
 
      
-    volumes:
+  #   volumes:
 
-      #- ./vue/dist:/var/www/frontend
-      - ./src:/var/www/html
-      - ./nginx/default.dev.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - phpdev
-      - mysql
+  #     #- ./vue/dist:/var/www/frontend
+  #     - ./src:/var/www/html
+  #     - ./nginx/default.dev.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - phpdev
+  #     - mysql
 
-    networks:
-     - laravel
+  #   networks:
+  #    - laravel
   mysql:
     image: mysql:8
     #container_name: mysql
     restart: unless-stopped
     tty: true
     ports:
-    - "4306:3306"
+    - "3306:3306"
     volumes:
     - mysql:/var/lib/mysql
     environment:
@@ -40,71 +40,71 @@ services:
     networks:
       - laravel
 
-  myapp-websocketsdev:
+  # myapp-websocketsdev:
    
-    build:
-     context: .
-     target: dev
-     dockerfile: Dockerfile
-     args:
-        - PUID=${HOST_PUID}
-        - PGID=${HOST_PGID}
-       # - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-        - USERNAME=${CONTAINER_USERNAME}
-    # dockerfile: DockerFile
-    command: ['php', 'artisan', 'websockets:serve']
-    container_name: myapp-websockets
-    restart: unless-stopped
+  #   build:
+  #    context: .
+  #    target: dev
+  #    dockerfile: Dockerfile
+  #    args:
+  #       - PUID=${HOST_PUID}
+  #       - PGID=${HOST_PGID}
+  #      # - APP_CODE_PATH=${APP_CODE_PATH_CONTAINER}
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #       - USERNAME=${CONTAINER_USERNAME}
+  #   # dockerfile: DockerFile
+  #   command: ['php', 'artisan', 'websockets:serve']
+  #   container_name: myapp-websockets
+  #   restart: unless-stopped
    
-    volumes:
-    - ./src:/var/www/html
-    - .env.dev:/var/www/html/.env
-    - vendor:/var/www/html/vendor
+  #   volumes:
+  #   - ./src:/var/www/html
+  #   - .env.dev:/var/www/html/.env
+  #   - vendor:/var/www/html/vendor
 
   
-    ports:
-      - "6001:6001"
-    depends_on:
-      - phpdev
+  #   ports:
+  #     - "6001:6001"
+  #   depends_on:
+  #     - phpdev
 
-    networks:
-      - laravel
-  redis:
-    build: ./redis
-    restart: unless-stopped
-    volumes:
-      - ${DATA_PATH_HOST}/redis:/data
-    expose:
-      - "6379"
-    ports:
-      - "${REDIS_PORT}:6379"
-    networks:
-      - laravel
-  phpdev:
+  #   networks:
+  #     - laravel
+  # redis:
+  #   build: ./redis
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ${DATA_PATH_HOST}/redis:/data
+  #   expose:
+  #     - "6379"
+  #   ports:
+  #     - "${REDIS_PORT}:6379"
+  #   networks:
+  #     - laravel
+  # phpdev:
    
-    build:
+  #   build:
      
-     context: .
-     target: dev
-     dockerfile: Dockerfile
-     args:
-      - UID=${UID:-1000}
-      - GID=${GID:-1000}
-      - USERNAME=${CONTAINER_USERNAME}
+  #    context: .
+  #    target: dev
+  #    dockerfile: Dockerfile
+  #    args:
+  #     - UID=${UID:-1000}
+  #     - GID=${GID:-1000}
+  #     - USERNAME=${CONTAINER_USERNAME}
     
-    volumes:
-     - ./src:/var/www/html
-     - .env.dev:/var/www/html/.env
-     - vendor:/var/www/html/vendor
+  #   volumes:
+  #    - ./src:/var/www/html
+  #    - .env.dev:/var/www/html/.env
+  #    - vendor:/var/www/html/vendor
     
-    ports:
-      - "9000:9000" 
+  #   ports:
+  #     - "9000:9000" 
 
 
-    networks:
-      - laravel  
+  #   networks:
+  #     - laravel  
 
   # frontdev:
   #   build:

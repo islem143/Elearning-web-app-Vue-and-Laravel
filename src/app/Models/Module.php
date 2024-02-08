@@ -12,10 +12,14 @@ class Module extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["title", "descprtion", "img_url", "user_id"];
+    protected $fillable = ["title", "rating","category_id","descprtion", "img_url", "user_id"];
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
     public function users()
     {
