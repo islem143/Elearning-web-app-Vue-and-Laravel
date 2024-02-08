@@ -8,11 +8,29 @@
           <InputText v-model="info.title" type="text" />
         </div>
         <div class="field">
-          <label for="Description">Description</label>
-          <InputText v-model="info.description" type="text" />
+          <label for="desc">Description</label>
+          <InputText v-model="info.description" type="text" name="desc" />
         </div>
-        <img width="200"  height="200" v-if="info.imgUrl" :src="info.imgUrl" alt="">
+
         <div class="field">
+          <label for="category">Category</label>
+          <Dropdown
+            v-model="category"
+            id="category"
+            editable
+            optionLabel="name"
+            :options="categories"
+            placeholder="Select a Category"
+          />
+        </div>
+        <img
+          width="200"
+          height="200"
+          v-if="info.imgUrl"
+          :src="info.imgUrl"
+          alt=""
+        />
+        <div class="field w-3">
           <label for="age1">Image</label>
           <FileUpload
             ref="image"
@@ -32,16 +50,19 @@
 import { required } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "../../http";
+import Category from "../../api/Category";
 export default {
-  created() {
+  async created() {
+    let res = await Category.getList();
+    this.categories=res;
     let id = parseInt(this.$route.params.moduleId);
     this.id = id;
     if (id) {
       axios.get("/api/module/" + id).then((res) => {
-        console.log(res.data);
         this.info.title = res.data.title;
         this.info.description = res.data.descprtion;
         this.info.imgUrl = res.data.img_url;
+        this.category=this.categories.find(c=>c.id==res.data.category_id);
       });
     }
   },
@@ -53,9 +74,12 @@ export default {
   data() {
     return {
       id: null,
+      category: null,
+      categories: [],
       info: {
         title: "",
         description: "",
+        category: null,
       },
     };
   },
@@ -78,6 +102,13 @@ export default {
     },
     async submit() {
       const isFormCorrect = await this.v$.$validate();
+      if (typeof this.category === "string") {
+        this.info.category = { name: this.category };
+      } else {
+        this.info.category = this.category;
+      }
+
+
       if (isFormCorrect) {
         if (this.id) {
           await axios

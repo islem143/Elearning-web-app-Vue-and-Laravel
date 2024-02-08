@@ -1,12 +1,12 @@
 <template>
   <div v-for="l of list" :key="l.id" class="flex align-items-center">
-
     <Checkbox
       class="m-2 text-xl"
       v-model="selectedCheckboxs"
       :inputId="l.id"
       name="list"
-      :value="l.name"
+      @change="$emit('set-checkboxs', selectedCheckboxs, type)"
+      :value="l.id"
     />
     <label :for="l.id">{{ l.name }}</label>
   </div>
@@ -14,11 +14,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
-const props = defineProps(["list"]);
+const props = defineProps(["list", "type"]);
 defineEmits(["set-selected-checkboxs"]);
-let selectedCheckboxs = ref([]);
+let selectedCheckboxs = ref();
 
-watch(selectedCheckboxs, (val) => {
-  //emit("set-selected-checkboxs");
-});
 </script>

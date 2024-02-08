@@ -95,7 +95,7 @@
       </div>
     </div> -->
     <div class="col-12 lg:col-6 xl:col-4" v-if="stats">
-      <div class="card mb-0 bg-white w-full shadow-5 hover:shadow-6">
+      <div class="card mb-0 p-4 bg-white w-full shadow-5 hover:shadow-6">
         <Chart
           type="pie"
           :data="chartData"
@@ -105,7 +105,7 @@
       </div>
     </div>
     <div class="col-12 lg:col-6 xl:col-8" v-if="stats">
-      <div class="card mb-0 bg-white w-full shadow-5 hover:shadow-6">
+      <div class="card mb-0  bg-white w-full shadow-5 hover:shadow-6">
         <Chart type="line" :data="chartData2" :options="chartOptions2" />
       </div>
     </div>

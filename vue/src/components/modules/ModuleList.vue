@@ -1,7 +1,11 @@
 <template>
   <div class="flex">
-    <SideBarFilter @search-modules="getModules" class="w-2" :page="page"></SideBarFilter>
-    <div class="card w-9 surface-100 mx-auto">
+    <SideBarFilter
+      @search-modules="getModules"
+      class="w-2"
+      :page="page"
+    ></SideBarFilter>
+    <div class="card w-9 mx-auto">
       <h3>Modules</h3>
 
       <div class="flex align-items-center">
@@ -14,9 +18,8 @@
           />
         </router-link>
       </div>
-  
+
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
-       
         No match found for "{{ search }}".
       </p>
 
@@ -56,7 +59,7 @@
           />
         </template>
       </Dialog>
-      
+
       <Paginator :rows="10" @page="list" :totalRecords="count"></Paginator>
     </div>
   </div>
@@ -93,7 +96,7 @@ export default {
   },
 
   created() {
-    this.getModules();
+    this.getModules({title:'',categories:[]});
     axios.get("/api/module/count").then((res) => {
       this.count = res.data.count;
     });
@@ -102,7 +105,7 @@ export default {
   methods: {
     list(e) {
       this.page = e.page;
-      this.getModules();
+      this.getModules({title:'',categories:[]});
     },
     enroll(module) {
       axios.post("/api/module/join", { moduleId: module.id }).then((res) => {
@@ -112,39 +115,32 @@ export default {
 
           life: 3000,
         });
-        this.getModules();
+        this.getModules({title:'',categories:[]});
       });
     },
-    getModules(search='') {
-      this.search=search
-      let params = { title: this.search, page: this.page + 1 };
+    getModules(params = {}) {
+      params = { ...params, page: this.page + 1 };
+      console.log(params,"----------");
+
       if (!this.role) {
         axios.get("/api/modules", { params }).then((res) => {
-         
           this.data = res.data.data;
         });
         return;
       }
 
-
-      
       axios
         .get("/api/module", { params })
         .then((res) => {
-         
           this.data = res.data.modules.data;
           console.log(res);
-          if(this.role=='student'){
-
-            this.completedCourses=res.data.completed_courses;
+          if (this.role == "student") {
+            this.completedCourses = res.data.completed_courses;
           }
-
-
         })
         .catch((err) => {
           console.log(err);
         });
-      
     },
     src(info) {
       console.log(info);

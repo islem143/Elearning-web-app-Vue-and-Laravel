@@ -1,9 +1,9 @@
 <template>
   <div :class="containerClass" @click="onWrapperClick">
     <Toast />
- 
+
     <AppTopBar @menu-toggle="onMenuToggle" />
-    <div v-if="$route.name!='module-list'" class="layout-sidebar" @click="onSidebarClick">
+    <div class="layout-sidebar" @click="onSidebarClick">
       <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
     </div>
 
@@ -46,6 +46,7 @@ export default {
     });
   },
   emits: ["change-theme"],
+
   data() {
     return {
       layoutMode: "static",
@@ -70,10 +71,23 @@ export default {
       ],
     };
   },
+  created(){
+    if (this.$route.name == "module-list") {
+
+this.staticMenuInactive = true;
+} 
+  },
   watch: {
     $route() {
       this.menuActive = false;
       this.$toast.removeAllGroups();
+      
+      if (this.$route.name == "module-list") {
+
+        this.staticMenuInactive = true;
+      } else {
+        this.staticMenuInactive = false;
+      }
     },
   },
   methods: {
