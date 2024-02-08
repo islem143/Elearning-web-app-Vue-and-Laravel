@@ -21,4 +21,9 @@ class Module extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class,"user_id");
+    }
+
 }

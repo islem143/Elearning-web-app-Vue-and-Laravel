@@ -16,6 +16,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VereficationController;
+use App\Models\Course;
 use App\Models\Log;
 
 /*
@@ -38,6 +39,7 @@ Route::prefix("module")->middleware("auth:sanctum")->group(function () {
     Route::get("/", [ModuleController::class, "index"])->name("module.showall");
     Route::get("/myModules", [ModuleController::class, "myModules"])->name("module.showmymodules");
     Route::get("/{id}/completedCourses", [ModuleController::class, "compledtedCourses"])->name("course.compledtedCourses");
+
     Route::post("/", [ModuleController::class, "store"])->name("module.create");
     Route::post("/join", [ModuleController::class, "join"])->name("module.join");
     Route::put("/{id}", [ModuleController::class, "update"])->name("module.update");
@@ -54,6 +56,9 @@ Route::prefix("users")->middleware("auth:sanctum")->group(function () {
     Route::middleware("can:view-users")->get("/", [LogController::class, "index"])->name("logs.showusers");
 });
 
+Route::prefix("courses")->middleware("auth:sanctum")->group(function(){
+    Route::get("/completed", [CourseController::class, "compledtedCourses"])->name("course.compledtedCourses");
+});
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
 
     Route::post("/{id2}/content", [CourseController::class, "storeContent"])->name("course.storeContent");

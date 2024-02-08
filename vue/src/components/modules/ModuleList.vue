@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <SideBarFilter class="w-2" :page="page"></SideBarFilter>
+    <SideBarFilter @search-modules="getModules" class="w-2" :page="page"></SideBarFilter>
     <div class="card w-9 surface-100 mx-auto">
       <h3>Modules</h3>
 
@@ -14,7 +14,9 @@
           />
         </router-link>
       </div>
+  
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
+       
         No match found for "{{ search }}".
       </p>
 
@@ -113,7 +115,8 @@ export default {
         this.getModules();
       });
     },
-    getModules() {
+    getModules(search='') {
+      this.search=search
       let params = { title: this.search, page: this.page + 1 };
       if (!this.role) {
         axios.get("/api/modules", { params }).then((res) => {

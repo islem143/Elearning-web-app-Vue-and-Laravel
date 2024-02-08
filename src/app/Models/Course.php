@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Module;
-
+use Illuminate\Support\Facades\Auth;
 class Course extends Model
 {
     use HasFactory;
@@ -21,6 +21,10 @@ class Course extends Model
     public function courseUsers()
     {
         return $this->hasMany(CourseUser::class);
+    }
+    public function courseUser()
+    {
+        return $this->hasOne(CourseUser::class)->where("user_id",Auth::user()->id);
     }
     public function coursesContent()
     {

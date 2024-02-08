@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use App\Modules\Course\CourseService;
 
 class ModuleController extends Controller
 {
@@ -17,8 +18,14 @@ class ModuleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $courseService;
+    public function __construct(CourseService $courseService)
+    {
+        $this->courseService = $courseService;
+    }
     public function getAllModules(Request $request)
-    {   
+    {
         return Module::where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
     }
     public function index(Request $request)
@@ -28,12 +35,18 @@ class ModuleController extends Controller
         $this->authorize("view", Module::class);
         if (Auth::user()->hasRole(["student", "super-admin"])) {
 
-            return Module::with(["courses", "users" => function ($query) {
+            $modules = Module::with(["courses", 'createdBy', "users" => function ($query) {
                 $query->where('id', Auth::user()->id);
-            }])->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
+            }])->withCount(["courses as total_courses"])
+                ->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
+            $modules_ids = $modules->pluck("id");
+            $compltedCourses=$this->courseService->getCompletedCourses($modules_ids);
+            
+            return response()->json(["modules"=>$modules,"completed_courses"=>$compltedCourses]);
         } else {
+            $modules=Module::withCount(["courses as total_courses", "users as total_users"])->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
+            return response()->json(["modules"=>$modules]);
 
-            return Module::withCount(["courses as total_courses", "users as total_users"])->where("user_id", Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
         }
     }
     public function count()
@@ -48,7 +61,10 @@ class ModuleController extends Controller
     {
 
         $totalCourses = Module::find($id)->courses->count();
-        $compltedCourses = DB::table("courses")->join("course_users", "courses.id", "=", "course_users.course_id")->where(["module_id" => $id, "course_users.user_id" => Auth::user()->id, "staus" => "completed"])->count();
+        $compltedCourses = DB::table("courses")
+            ->join("course_users", "courses.id", "=", "course_users.course_id")
+            ->where(["module_id" => $id, "course_users.user_id" => Auth::user()->id, "staus" => "completed"])
+            ->count();
         return response()->json(["totalCourse" => $totalCourses, "completedCourses" => $compltedCourses]);
     }
     public function joinModule($id)

@@ -65,7 +65,7 @@ class CourseController extends Controller
     }
     public function startCourse(Request $request, $id1, $id2)
     {
-       
+
         $this->authorize("startCourse", Course::class);
         $module = Module::findOrFail($id1);
         $course = Course::where(["id" => $id2])->first();
@@ -91,13 +91,13 @@ class CourseController extends Controller
         $this->authorize("view", Course::class);
         $course = Course::where(["id" => $id2])->with(["media"])->first();
         $quiz = DB::table("quizzes")
-        ->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")
-        ->where(["quizzes.course_id" => $course->id])
-        ->select("quizzes.*", "quiz_user.*")
-        ->first();
+            ->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")
+            ->where(["quizzes.course_id" => $course->id])
+            ->select("quizzes.*", "quiz_user.*")
+            ->first();
         $course->quiz = $quiz;
         $course->is_taken = true;
-        
+
         return $course;
     }
 
@@ -130,5 +130,18 @@ class CourseController extends Controller
         $this->authorize("delete", $course);
         $course->delete();
         return response()->json(["course deleted succesfully"]);
+    }
+
+    public function compledtedCourses(Request $request)
+    {
+
+        // $totalCourses = Module::find($id)->courses->count();
+        // $compltedCourses = DB::table("courses")
+        //     ->join("course_users", "courses.id", "=", "course_users.course_id")
+        //     ->where(["module_id" => $id, "course_users.user_id" => Auth::user()->id, "staus" => "completed"])
+        //     ->count();
+
+        
+        return response()->json(["completed_courses" => $compltedCourses]);
     }
 }

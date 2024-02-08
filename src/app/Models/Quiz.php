@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Quiz extends Model
 {
     use HasFactory;
@@ -25,7 +25,7 @@ class Quiz extends Model
         return $this->belongsTo(Course::class);
     }
     public function quizUser(){
-        return $this->hasOne(QuizUser::class);
+        return $this->hasOne(QuizUser::class)->where("user_id",Auth::user()->id);;
     }
 
 
