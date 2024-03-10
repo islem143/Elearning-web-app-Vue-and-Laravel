@@ -198,7 +198,7 @@ this.staticMenuInactive = true;
 <style lang="scss">
 @import "./App.scss";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap");
 body {
   font-family: "Roboto", sans-serif;
 }

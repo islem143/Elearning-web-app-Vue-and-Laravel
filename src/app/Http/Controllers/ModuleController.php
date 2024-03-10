@@ -20,7 +20,12 @@ class ModuleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+/**
+ * @OA\Get(
+ *     path="/api/users",
+ *     @OA\Response(response="200", description="An example endpoint")
+ * )
+ */
     protected $courseService;
     protected $categoryService;
     public function __construct(CourseService $courseService, CategoryService $categoryService)
