@@ -1,9 +1,12 @@
 <template>
-  <div class="app bg-indigo-100 h-full">
-   
-     <NavBar/>
+  <div class="app h-full pb-8">
+   <div class=" main ">
+    <NavBar/>
       <Hero/>
+   </div>
+    
   <Features/>
+  <Companies/>
   </div>
 </template>
 
@@ -11,14 +14,21 @@
 import NavBar from "./Navbar.vue";
 import Hero from "./Hero.vue"
 import Features from "./Features.vue"
+import Companies from "./Companies.vue";
 </script>
 
 
 <style type="text/css" scoped>
+.main{
+  border-radius: 26% 26% 26% 26% / 0% 0% 12% 12%;
 
-#btn{
-  background: #0056D2;
+background: #474bff;
+background: -webkit-linear-gradient(0deg, #474bff 0%, #bc48ff 100%);
+background: linear-gradient(0deg, #474bff 0%, #bc48ff 100%);
+color: white !important;
+
 }
+
 
 .list {
   color: #000;

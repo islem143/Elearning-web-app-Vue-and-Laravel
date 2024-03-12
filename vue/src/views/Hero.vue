@@ -1,31 +1,36 @@
 <template>
-    <div class="grid w-8 mx-auto ">
+    <div class="  hero flex flex-column mt-8	text-center  align-items-center	 w-8 mx-auto ">
         
-        <div class="col-4 w-5 main flex flex-column align-items-start">
+   
           <h1 class=" text-bold">
-          <span class="text-indigo-500 font-bold text-6xl	"> E-Learning platform </span> 
+          <span class="text-white font-bold text-8xl 	"> ELearning platform </span> 
             <br />
             Online courses at your time.
           </h1>
 
-          <p class="mt-4 w-9 text-xl font-medium			">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <p class="mt-2  text-2xl 			">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit  adipisicing elit.
            
           </p>
           <div class="flex align-items-center mt-5">
-            <Button id="btn" class="text-white mr-3 px-3 bg-indigo-600 text-xl ">Get Started</Button>
-            <Button  class=" text-900 bg-indigo-100 mr-3 px-3   hover:text-indigo-800">Learn more</Button>
+            <Button   class=" btn bg-white mr-3 px-4 border-round-lg 	  text-2xl ">Get Started</Button>
           </div>
         </div>
-        <div class="col-4">
-          <img width="500" height="500" src="http://localhost:8000/images/prof.svg" alt="">
-        </div>
-      </div>
+
+  
 </template>
 
 
 <style scoped>
-.main {
-  margin: 85px 0 0 100px;
+.hero {
+  padding: 50px 0 250px 0;
 }
+.btn{
+  color:black;
+}
+.btn:hover{
+  background: white;
+color:black;
+}
+
 </style>

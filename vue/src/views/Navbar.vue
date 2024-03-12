@@ -1,36 +1,41 @@
 <template>
-    <div class="bg-indigo-50 shadow-1">
-
+  <div class="border-bottom-1">
+    <div class="w-8  flex align-items-center	justify-content-between	  mx-auto">
+      <h1 class="m-0">Logo</h1>
    
-     <div class="list flex justify-content-end  w-8 mx-auto pt-3">
+     <div class="list flex      pt-3">
         <ul class="flex list-none">
           <li class="p-2 mr-1 text-xl hover:text-indigo-400 cursor-pointer">
             Home
+          </li>
+         
+          <li class="p-2 mr-1 text-xl hover:text-indigo-400 cursor-pointer">
+            <Router-link :to="{ name: 'module-list' }">
+              <a
+             
+                class="text-xl text-white  hover:text-indigo-400 cursor-pointer"
+              >
+                Courses
+            </a>
+            </Router-link>
           </li>
           <li class="p-2 mr-1 text-xl hover:text-indigo-400 cursor-pointer">
             About
           </li>
           <li class="p-2 mr-1 text-xl hover:text-indigo-400 cursor-pointer">
-            <Router-link :to="{ name: 'module-list' }">
-              <button
-                style="background: none"
-                class="text-xl border-none hover:text-indigo-400 cursor-pointer"
-              >
-                Courses
-              </button>
-            </Router-link>
+           Contact 
           </li>
           <li class="ml-6" v-if="!isAuth">
             <p class="text-3xl">|</p>
           </li>
-          <li class="p-2 ml-5" v-if="!isAuth">
+          <li class="p-2  ml-5" v-if="!isAuth">
             <Router-link :to="{ name: 'login' }">
-              <button
-                style="background: none"
+              <a
+              
                 class="text-xl border-none hover:text-indigo-400 cursor-pointer"
               >
                 Login
-              </button>
+            </a>
             </Router-link>
           </li>
 
@@ -44,11 +49,11 @@
               </button>
             </Router-link>
           </li>
-          <li class="p-1" v-if="isAuth">
+          <li class="" v-if="isAuth">
             <Router-link :to="{ name: 'modules' }">
               <button
               
-                class="text-xl bg-indigo-500 text-white p-2   hover:bg-indigo-600 px-2 cursor-pointer outline-none border-1 border-round-md border-500"
+                class="text-xl bg-white hover:bg-indigo-300   text-black p-2    px-2 cursor-pointer outline-none border-2 font-bold border-black-alpha-90	 border-round-md border-500"
               >
                 Dashbarod
               </button>
@@ -57,6 +62,7 @@
         </ul>
       </div>
     </div>
+  </div>
 </template>
 <script setup >
 import {useAuth} from "../store/authStore";
