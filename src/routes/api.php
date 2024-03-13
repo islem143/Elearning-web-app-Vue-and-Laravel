@@ -56,7 +56,7 @@ Route::prefix("users")->middleware("auth:sanctum")->group(function () {
 });
 
 Route::prefix("courses")->middleware("auth:sanctum")->group(function () {
-    Route::get("/completed", [CourseController::class, "compledtedCourses"])->name("course.compledtedCourses");
+    Route::get("/completed", [CourseController::class, "compledtedCourses"])->name("course.compledtedCourses2");
 });
 Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function () {
 
@@ -70,11 +70,11 @@ Route::prefix("module/{id1}/course")->middleware("auth:sanctum")->group(function
 });
 Route::prefix("categories")->middleware("auth:sanctum")->group(function () {
 
-    Route::get("/", [CategoryController::class, "index"])->name("course.index");
-    Route::post("/{id2}/content", [CourseController::class, "storeContent"])->name("course.storeContent");
-    Route::put("/{id2}", [CourseController::class, "update"])->name("course.update");
-    Route::delete("/{id2}", [CourseController::class, "destroy"])->name("course.delete");
+    Route::post("/{id2}/content", [CourseController::class, "storeContent"])->name("course.storeContent2");
+    Route::put("/{id2}", [CourseController::class, "update"])->name("category.update");
+    Route::delete("/{id2}", [CourseController::class, "destroy"])->name("category.delete");
 });
+Route::get("/categories", [CategoryController::class, "index"])->name("course.index");
 
 Route::prefix("course/{courseId}/quiz")->middleware("auth:sanctum")->group(function () {
 

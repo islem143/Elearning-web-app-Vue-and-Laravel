@@ -25,7 +25,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $this->authorize("view-category", Category::class);
+      //  $this->authorize("view-category", Category::class);
         $categoires=$this->categoryService->getCategories();
         return  response()->json(["categories"=>$categoires]);
     }

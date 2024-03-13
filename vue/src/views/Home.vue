@@ -1,13 +1,15 @@
 <template>
   <div class="app h-full pb-8">
+    
    <div class=" main ">
     <NavBar/>
       <Hero/>
    </div>
-    
+  
   <Features/>
   <Companies/>
-  <Teachers/>
+  <!-- <Teachers/> -->
+  
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 <template>
   <div class="flex">
+
     <SideBarFilter
       @search-modules="getModules"
       class="w-2"
@@ -7,6 +8,9 @@
     ></SideBarFilter>
     <div class="card w-9 mx-auto">
       <h3>Modules</h3>
+
+
+
 
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
@@ -69,11 +73,14 @@
 import axios from "../../http";
 import ModuleCards from "./ModulesCard.vue";
 import SideBarFilter from "../Filters/SideBarFilter.vue";
+import Module from "../../api/Module";
+
 export default {
   inject: ["role"],
   components: {
     ModuleCards,
     SideBarFilter,
+   
   },
   data() {
     return {
@@ -98,6 +105,7 @@ export default {
   created() {
     this.getModules({title:'',categories:[]});
     axios.get("/api/module/count").then((res) => {
+      
       this.count = res.data.count;
     });
   },
@@ -118,14 +126,14 @@ export default {
         this.getModules({title:'',categories:[]});
       });
     },
-    getModules(params = {}) {
+    async getModules(params = {}) {
       params = { ...params, page: this.page + 1 };
-      console.log(params,"----------");
 
       if (!this.role) {
-        axios.get("/api/modules", { params }).then((res) => {
-          this.data = res.data.data;
-        });
+        this.data=await Module.GetModules({ params });
+        // axios.get("/api/modules", { params }).then((res) => {
+        //   this.data = res.data.data;
+        // });
         return;
       }
 
@@ -133,7 +141,7 @@ export default {
         .get("/api/module", { params })
         .then((res) => {
           this.data = res.data.modules.data;
-          console.log(res);
+          
           if (this.role == "student") {
             this.completedCourses = res.data.completed_courses;
           }
@@ -143,7 +151,7 @@ export default {
         });
     },
     src(info) {
-      console.log(info);
+      
       return info.img_url.split("/")[2];
     },
     goTo(data) {
@@ -196,4 +204,4 @@ export default {
 
 <style scoped lang="scss">
 //@import '../assets/demo/badges.scss';
-</style>
+</style>../../api/Module
