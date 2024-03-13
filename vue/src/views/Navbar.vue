@@ -1,6 +1,6 @@
 <template>
-  <div class="border-bottom-1">
-    <div class="w-8  flex align-items-center	justify-content-between	  mx-auto">
+  <div class="border-bottom-1 border-50	">
+    <div class="w-8 font-semibold	  flex align-items-center	justify-content-between	  mx-auto">
       <h1 class="m-0">Logo</h1>
    
      <div class="list flex      pt-3">

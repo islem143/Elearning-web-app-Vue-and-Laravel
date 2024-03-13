@@ -13,7 +13,7 @@
            
           </p>
           <div class="flex align-items-center mt-5">
-            <Button   class=" btn bg-white mr-3 px-4 border-round-lg 	  text-2xl ">Get Started</Button>
+            <Button   class="transition-all	 font-semibold transition-duration-200 	 btn bg-white hover:bg-indigo-200	 mr-3 px-4 border-round-lg 	  text-2xl ">Get Started</Button>
           </div>
         </div>
 

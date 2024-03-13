@@ -7,6 +7,7 @@
     
   <Features/>
   <Companies/>
+  <Teachers/>
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import NavBar from "./Navbar.vue";
 import Hero from "./Hero.vue"
 import Features from "./Features.vue"
 import Companies from "./Companies.vue";
+import Teachers from "./Teachers.vue";
 </script>
 
 
