@@ -35,15 +35,18 @@ class ModuleController extends Controller
         $this->categoryService = $categoryService;
     }
     public function getAllModules(Request $request)
-    {   $categories = $request->query('categories');
+
+    {   
+        $categories = $request->query('categories');
         $title=$request->query("title");
-        return Module::where("title", 'like', "%" . $request->query("title") . "%")
+        $modules=Module::where("title", 'like', "%" . $request->query("title") . "%")
         ->withCount(["courses as total_courses"])
         ->with(["courses", 'createdBy'])
         ->when($categories,function($query,$categories){
             $query->whereIn("category_id", $categories);
         })
         ->paginate(10);
+        return response()->json(["modules"=>$modules]);
     }
     public function index(Request $request)
 

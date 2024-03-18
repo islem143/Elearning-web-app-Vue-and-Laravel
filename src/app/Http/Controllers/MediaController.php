@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
@@ -33,10 +34,13 @@ class MediaController extends Controller
         ]);
         $fileName = explode(".", $request->file('file')->getClientOriginalName())[0];
         //$extension = $request->file('file')->getClientOriginalExtension();
-
+        
         $filePath = $request->file('file')->store("public");
-
-        $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => $request->type, "url" => $filePath,'created_by'=>Auth::user()->id]);
+     
+        //Storage::put()
+      
+        
+        $media = Media::create(["course_id" => $request->courseId, 'name' => $fileName, "type" => $request->type, "url" => asset($filePath),'created_by'=>Auth::user()->id]);
         return response()->json(["File uploaded successfuly"], 201);
     }
 

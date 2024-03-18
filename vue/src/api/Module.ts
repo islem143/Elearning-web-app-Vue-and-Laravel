@@ -9,8 +9,9 @@ export default class Module {
 
     loadingStore.setLoading(ApiActions.GetModules);
     return axios.get("/api/modules", { params }).then((res) => {
+     
       loadingStore.setLoading(ApiActions.GetModules);
-      return res.data.data;
+      return res.data.modules;
     });
   }
   static GetModulesAuth(params) {

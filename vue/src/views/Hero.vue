@@ -3,7 +3,7 @@
         
    
           <h1 class=" text-bold">
-          <span class="text-white font-bold text-8xl 	"> ELearning platform </span> 
+          <span class="text-white font-bold text-8xl 	"> Elearning platform </span> 
             <br />
             Online courses at your time.
           </h1>

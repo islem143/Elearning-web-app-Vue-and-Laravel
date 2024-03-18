@@ -1,16 +1,18 @@
 <template>
   <div class="flex">
-
     <SideBarFilter
       @search-modules="getModules"
       class="w-2"
       :page="page"
     ></SideBarFilter>
     <div class="card w-9 mx-auto">
+      <ProgressBar
+        v-if="loading[ApiActions.GetModules]"
+        mode="indeterminate"
+        style="height: 6px"
+      ></ProgressBar>
+
       <h3>Modules</h3>
-
-
-
 
       <div class="flex align-items-center">
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
@@ -69,21 +71,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "../../http";
 import ModuleCards from "./ModulesCard.vue";
 import SideBarFilter from "../Filters/SideBarFilter.vue";
 import Module from "../../api/Module";
-
+import { mapState } from "pinia";
+import { useLoading } from "../../store/loadingStore";
+import { ApiActions } from "../../api/ApiActions";
 export default {
   inject: ["role"],
   components: {
     ModuleCards,
     SideBarFilter,
-   
   },
   data() {
     return {
+      ApiActions: ApiActions,
       selectedModule: null,
       deleteModuleDialog: false,
       data: [],
@@ -103,17 +107,18 @@ export default {
   },
 
   created() {
-    this.getModules({title:'',categories:[]});
+    this.getModules({ title: "", categories: [] });
     axios.get("/api/module/count").then((res) => {
-      
       this.count = res.data.count;
     });
   },
-
+  computed: {
+    ...mapState(useLoading, ["loading"]),
+  },
   methods: {
     list(e) {
       this.page = e.page;
-      this.getModules({title:'',categories:[]});
+      this.getModules({ title: "", categories: [] });
     },
     enroll(module) {
       axios.post("/api/module/join", { moduleId: module.id }).then((res) => {
@@ -123,35 +128,21 @@ export default {
 
           life: 3000,
         });
-        this.getModules({title:'',categories:[]});
+        this.getModules({ title: "", categories: [] });
       });
     },
     async getModules(params = {}) {
       params = { ...params, page: this.page + 1 };
+      
+      let res = await Module.GetModules( params );
+      this.data = res.data;
+     
 
-      if (!this.role) {
-        this.data=await Module.GetModules({ params });
-        // axios.get("/api/modules", { params }).then((res) => {
-        //   this.data = res.data.data;
-        // });
-        return;
+      if (this.role == "student") {
+        this.completedCourses = res.data.completed_courses;
       }
-
-      axios
-        .get("/api/module", { params })
-        .then((res) => {
-          this.data = res.data.modules.data;
-          
-          if (this.role == "student") {
-            this.completedCourses = res.data.completed_courses;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     src(info) {
-      
       return info.img_url.split("/")[2];
     },
     goTo(data) {
@@ -204,4 +195,5 @@ export default {
 
 <style scoped lang="scss">
 //@import '../assets/demo/badges.scss';
-</style>../../api/Module
+</style>
+../../api/Module

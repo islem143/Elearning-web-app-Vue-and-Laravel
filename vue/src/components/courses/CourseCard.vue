@@ -34,7 +34,7 @@
       </div>
       <div></div>
     </div>
-  
+
     <div class="p-5" v-if="course.course_user == null && role != 'teacher'">
       <Button @click="startCourse">Start the course</Button>
     </div>
@@ -44,7 +44,6 @@
       </div>
 
       <p v-for="media in course.media" :key="media.id">
-
         <i
           :class="
             icons[media.type] + ' mr-3 mt-2 border-1 p-1 surface-200 text-900'
@@ -52,44 +51,41 @@
           style="font-size: 1rem"
         >
         </i>
-        <a v-if="media.type=='video'"
-         @click="openDialog(media.url,media.name)"
+        <a
+          v-if="media.type == 'video'"
+          @click="openDialog(media.url, media.name)"
           class="text-900 text-lg hover:underline"
-        
-          >
-          {{ media.name }}
-          </a
         >
-        <a v-else
+          {{ media.name }}
+        </a>
+        <a
+          v-else
           class="text-900 text-lg hover:underline"
-          :href="'http://localhost:8081/' + media.url"
+          :href="media.url"
           >{{ media.name }}</a
         >
       </p>
 
-      <Dialog class="p-2" :header="this.title" v-model:visible="visible">
+      <Dialog class="p-2" :header="title" v-model:visible="visible">
         <video width="1200" height="700" controls>
-  <source :src="'http://localhost:8081/'+this.url" type="video/mp4">
-</video>
+          <source :src="url" type="video/mp4" />
+        </video>
       </Dialog>
-     
     </div>
   </div>
-<div  v-for="quiz in course.quizzes">
-
-  <CourseQuiz
-    
-    v-if="(role == 'teacher' && quiz) || 
-    (quiz && role != 'teacher' && course.course_user  && course.quizzes)"
-     
-    
-    @go-to-quiz="goToQuiz"
-    @edit-quiz="editQuiz"
-    @delete-quiz="deleteQuiz"
-    :quiz="quiz"
-    :course="course"
-  />
-</div>
+  <div v-for="quiz in course.quizzes">
+    <CourseQuiz
+      v-if="
+        (role == 'teacher' && quiz) ||
+        (quiz && role != 'teacher' && course.course_user && course.quizzes)
+      "
+      @go-to-quiz="goToQuiz"
+      @edit-quiz="editQuiz"
+      @delete-quiz="deleteQuiz"
+      :quiz="quiz"
+      :course="course"
+    />
+  </div>
 </template>
 
 <script>

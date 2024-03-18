@@ -21,7 +21,7 @@
             class="flex justify-content-between align-items-center p-card mb-2 p-2"
           >
             <i :class="icons[m.type]"></i>
-            <a class="block" :href="'http://localhost:8081/' + m.url">
+            <a class="block" :href="m.url">
               {{ m.name }}
             </a>
 
