@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Modules\Course\CourseService;
+use Exception;
 
 class CourseController extends Controller
 {
@@ -28,13 +29,16 @@ class CourseController extends Controller
     public function index($id1)
     {
 
+        try {
+            $this->authorize("view", Course::class);
+            if (Auth::user()->getRoleNames()[0] == "teacher") {
 
-        $this->authorize("view", Course::class);
-        if (Auth::user()->getRoleNames()[0] == "teacher") {
-
-            return $this->courseService->getTeacherCourses($id1);
-        } else {
-            return $this->courseService->getStudentCourses($id1);
+                return $this->courseService->getTeacherCourses($id1);
+            } else {
+                return $this->courseService->getStudentCourses($id1);
+            }
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
         }
     }
 
@@ -46,37 +50,47 @@ class CourseController extends Controller
      */
     public function store(Request $request, $id1)
     {
+        try {
+            $this->authorize("create", Course::class);
 
-        $this->authorize("create", Course::class);
-
-        return $this->courseService->createCourse($id1, $request->all());
+            return $this->courseService->createCourse($id1, $request->all());
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
     public function storeContent(Request $request, $id1, $id2)
     {
-        $course = Course::findOrFail($id2);
-        $this->validate($request, [
-            "content" => "required",
+        try {
+            $course = Course::findOrFail($id2);
+            $this->validate($request, [
+                "content" => "required",
 
-        ]);
-        $course->coursesContent()->create([
-            "content" =>    json_encode($request->content)
-        ]);
-        return response()->json("course content created", 201);
+            ]);
+            $course->coursesContent()->create([
+                "content" =>    json_encode($request->content)
+            ]);
+            return response()->json("course content created", 201);
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
     public function startCourse(Request $request, $id1, $id2)
     {
-
-        $this->authorize("startCourse", Course::class);
-        $module = Module::findOrFail($id1);
-        $course = Course::where(["id" => $id2])->first();
-        $s = Auth::user()->courses()->where("id", $id2)->first();
-        if ($s && $s->status = "in_progress") {
-            return response()->json(["message" => "course in progress"], 403);
-        } else if ($s && $s->status = "completed") {
-            return response()->json(["message" => "course already completed"], 403);
-        } else {
-            Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
-            return response()->json(["message" => "course started"], 201);
+        try {
+            $this->authorize("startCourse", Course::class);
+            $module = Module::findOrFail($id1);
+            $course = Course::where(["id" => $id2])->first();
+            $s = Auth::user()->courses()->where("id", $id2)->first();
+            if ($s && $s->status = "in_progress") {
+                return response()->json(["message" => "course in progress"], 403);
+            } else if ($s && $s->status = "completed") {
+                return response()->json(["message" => "course already completed"], 403);
+            } else {
+                Auth::user()->courses()->attach($course->id, ["staus" => "in_progress"]);
+                return response()->json(["message" => "course started"], 201);
+            }
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
         }
     }
 
@@ -88,17 +102,21 @@ class CourseController extends Controller
      */
     public function show($id1, $id2)
     {
-        $this->authorize("view", Course::class);
-        $course = Course::where(["id" => $id2])->with(["media"])->first();
-        $quiz = DB::table("quizzes")
-            ->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")
-            ->where(["quizzes.course_id" => $course->id])
-            ->select("quizzes.*", "quiz_user.*")
-            ->first();
-        $course->quiz = $quiz;
-        $course->is_taken = true;
+        try {
+            $this->authorize("view", Course::class);
+            $course = Course::where(["id" => $id2])->with(["media"])->first();
+            $quiz = DB::table("quizzes")
+                ->leftJoin("quiz_user", "quizzes.id", "=", "quiz_user.quiz_id")
+                ->where(["quizzes.course_id" => $course->id])
+                ->select("quizzes.*", "quiz_user.*")
+                ->first();
+            $course->quiz = $quiz;
+            $course->is_taken = true;
 
-        return $course;
+            return $course;
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -111,11 +129,15 @@ class CourseController extends Controller
     public function update(Request $request, $id1, $id2)
 
     {
-        Module::findOrFail($id1);
-        $course = Course::findOrFail($id2);
-        $this->authorize("update", $course);
-        $course->update($request->all());
-        return response()->json(["course updated succesfully"]);
+        try {
+            Module::findOrFail($id1);
+            $course = Course::findOrFail($id2);
+            $this->authorize("update", $course);
+            $course->update($request->all());
+            return response()->json(["course updated succesfully"]);
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -126,22 +148,14 @@ class CourseController extends Controller
      */
     public function destroy($id1, $id2)
     {
-        $course = Course::findOrFail($id2);
-        $this->authorize("delete", $course);
-        $course->delete();
-        return response()->json(["course deleted succesfully"]);
-    }
+        try {
 
-    public function compledtedCourses(Request $request)
-    {
-
-        // $totalCourses = Module::find($id)->courses->count();
-        // $compltedCourses = DB::table("courses")
-        //     ->join("course_users", "courses.id", "=", "course_users.course_id")
-        //     ->where(["module_id" => $id, "course_users.user_id" => Auth::user()->id, "staus" => "completed"])
-        //     ->count();
-
-        
-        return response()->json(["completed_courses" => $compltedCourses]);
+            $course = Course::findOrFail($id2);
+            $this->authorize("delete", $course);
+            $course->delete();
+            return response()->json(["course deleted succesfully"]);
+        } catch (Exception $e) {
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 }

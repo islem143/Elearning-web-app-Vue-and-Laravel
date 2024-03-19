@@ -133,10 +133,9 @@ export default {
     },
     async getModules(params = {}) {
       params = { ...params, page: this.page + 1 };
-      
-      let res = await Module.GetModules( params );
+
+      let res = await Module.GetModules(params);
       this.data = res.data;
-     
 
       if (this.role == "student") {
         this.completedCourses = res.data.completed_courses;

@@ -21,12 +21,12 @@ class ModuleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-/**
- * @OA\Get(
- *     path="/api/users",
- *     @OA\Response(response="200", description="An example endpoint")
- * )
- */
+    /**
+     * @OA\Get(
+     *     path="/api/users",
+     *     @OA\Response(response="200", description="An example endpoint")
+     * )
+     */
     protected $courseService;
     protected $categoryService;
     public function __construct(CourseService $courseService, CategoryService $categoryService)
@@ -36,55 +36,54 @@ class ModuleController extends Controller
     }
     public function getAllModules(Request $request)
 
-    {   
+    {
         $categories = $request->query('categories');
-        $title=$request->query("title");
-        $modules=Module::where("title", 'like', "%" . $request->query("title") . "%")
-        ->withCount(["courses as total_courses"])
-        ->with(["courses", 'createdBy'])
-        ->when($categories,function($query,$categories){
-            $query->whereIn("category_id", $categories);
-        })
-        ->paginate(10);
-        return response()->json(["modules"=>$modules]);
+        $title = $request->query("title");
+        $modules = Module::where("title", 'like', "%" . $request->query("title") . "%")
+            ->withCount(["courses as total_courses"])
+            ->with(["courses", 'createdBy'])
+            ->when($categories, function ($query, $categories) {
+                $query->whereIn("category_id", $categories);
+            })
+            ->paginate(10);
+        return response()->json(["modules" => $modules]);
     }
     public function index(Request $request)
 
     {
-       
+
         $this->authorize("view", Module::class);
         $categories = $request->query('categories');
-        $title=$request->query("title");
+        $title = $request->query("title");
 
         $modules = Module::with(["courses", 'createdBy'])
-            ->withCount(["courses as total_courses","users as total_users"])
+            ->withCount(["courses as total_courses", "users as total_users"])
             ->with(["category"])
             ->where("title", 'like', "%" . $title . "%")
-            ->when($categories,function($query,$categories){
+            ->when($categories, function ($query, $categories) {
                 $query->whereIn("category_id", $categories);
             });
-        
-        if (Auth::user()->hasRole(["student", "super-admin"])){
-            $modules=$modules->with(["users" => function ($query) {
-                $query->where('id', Auth::user()->id);}]);
-                $modules_ids = $modules->pluck("id");
-                $compltedCourses = $this->courseService->getCompletedCourses($modules_ids);    
+
+        if (Auth::user()->hasRole([Roles::STUDENT->value, Roles::SUPER_ADMIN->value])) {
+            $modules = $modules->with(["users" => function ($query) {
+                $query->where('id', Auth::user()->id);
+            }]);
+            $modules_ids = $modules->pluck("id");
+            $compltedCourses = $this->courseService->getCompletedCourses($modules_ids);
         }
-        if (Auth::user()->hasRole(["teacher"])){
-            $modules=$modules->where("user_id",Auth::user()->id);
-                
+        if (Auth::user()->hasRole([Roles::TEACHER->value])) {
+            $modules = $modules->where("user_id", Auth::user()->id);
         }
-        $modules=$modules->paginate(10);
-        $res=["modules" => $modules];
-        if (Auth::user()->hasRole(["student", "super-admin"])){
+        $modules = $modules->paginate(10);
+        $res = ["modules" => $modules];
+        if (Auth::user()->hasRole(["student", "super-admin"])) {
             $modules["completed_courses"] = $compltedCourses;
         }
         return response()->json($res);
-
     }
     public function count()
     {
-        if (!Auth::user() || Auth::user()->hasRole(["student", "super-admin"])) {
+        if (!Auth::user() || Auth::user()->hasRole([Roles::STUDENT->value, Roles::SUPER_ADMIN->value])) {
             return   response()->json(["count" => Module::count()]);
         } else {
             return   response()->json(["count" => Module::where("user_id", Auth::user()->id)->count()]);
@@ -204,12 +203,11 @@ class ModuleController extends Controller
     }
     public function myModules(Request $request)
     {
-        // if ($request->query("title")) {
 
-        //     return Module::with("courses")->where("title", 'like', "%" . $request->query("title") . "%")->get();
-        // }
-
-
-        return Module::with("courses")->join("module_user", 'modules.id', '=', 'module_user.module_id')->where('module_user.user_id', Auth::user()->id)->where("title", 'like', "%" . $request->query("title") . "%")->paginate(10);
+        return Module::with("courses")
+            ->join("module_user", 'modules.id', '=', 'module_user.module_id')
+            ->where('module_user.user_id', Auth::user()->id)
+            ->where("title", 'like', "%" . $request->query("title") . "%")
+            ->paginate(10);
     }
 }
