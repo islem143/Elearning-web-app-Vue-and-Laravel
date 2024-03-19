@@ -31,7 +31,7 @@ use App\Http\Controllers\VereficationController;
 
 Route::get("email-verification", [VereficationController::class, "verify"])->name("verification.verify");
 
-Route::get("modules", [ModuleController::class, "getAllModules"])->name("module.getAllModules");
+Route::middleware("auth:sanctum")->get("modules", [ModuleController::class, "getAllModules"])->name("module.getAllModules");
 Route::get("module/count", [ModuleController::class, "count"])->name("module.count");
 
 Route::prefix("module")->middleware("auth:sanctum")->group(function () {

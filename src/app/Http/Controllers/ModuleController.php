@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Modules\Course\CourseService;
+use App\Modules\Module\ModuleService;
+use Exception;
 
 class ModuleController extends Controller
 {
@@ -29,28 +31,31 @@ class ModuleController extends Controller
      */
     protected $courseService;
     protected $categoryService;
-    public function __construct(CourseService $courseService, CategoryService $categoryService)
+    protected $moduleService;
+    public function __construct(CourseService $courseService, CategoryService $categoryService, ModuleService $moduleService)
     {
         $this->courseService = $courseService;
         $this->categoryService = $categoryService;
+        $this->moduleService = $moduleService;
     }
     public function getAllModules(Request $request)
 
     {
-        $categories = $request->query('categories');
-        $title = $request->query("title");
-        $modules = Module::where("title", 'like', "%" . $request->query("title") . "%")
-            ->withCount(["courses as total_courses"])
-            ->with(["courses", 'createdBy'])
-            ->when($categories, function ($query, $categories) {
-                $query->whereIn("category_id", $categories);
-            })
-            ->paginate(10);
-        return response()->json(["modules" => $modules]);
+        try {
+          
+            $categories = $request->query('categories');
+            $title = $request->query("title");
+            $userId=Auth::user()->hasRole([Roles::STUDENT->value, Roles::SUPER_ADMIN->value])?Auth::user()->id:null;
+            $modules = $this->moduleService->getAll($categories, $title,$userId);
+            return response()->json(["modules" => $modules]);
+        } catch (Exception $e) {
+
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
     public function index(Request $request)
 
-    {
+    {    
 
         $this->authorize("view", Module::class);
         $categories = $request->query('categories');
@@ -64,10 +69,12 @@ class ModuleController extends Controller
                 $query->whereIn("category_id", $categories);
             });
 
+           
         if (Auth::user()->hasRole([Roles::STUDENT->value, Roles::SUPER_ADMIN->value])) {
             $modules = $modules->with(["users" => function ($query) {
                 $query->where('id', Auth::user()->id);
             }]);
+           
             $modules_ids = $modules->pluck("id");
             $compltedCourses = $this->courseService->getCompletedCourses($modules_ids);
         }
@@ -204,10 +211,16 @@ class ModuleController extends Controller
     public function myModules(Request $request)
     {
 
-        return Module::with("courses")
-            ->join("module_user", 'modules.id', '=', 'module_user.module_id')
-            ->where('module_user.user_id', Auth::user()->id)
-            ->where("title", 'like', "%" . $request->query("title") . "%")
-            ->paginate(10);
+        $filters = [
+            "title" => $request->query("title"),
+            "categories" => $request->query('categories'),
+        ];
+        $modules = $this->moduleService->getStudentModules(Auth::user()->id, $filters);
+        return $modules;
+        // return Module::with("courses")
+        //     ->join("module_user", 'modules.id', '=', 'module_user.module_id')
+        //     ->where('module_user.user_id', Auth::user()->id)
+        //     ->where("title", 'like', "%" . $request->query("title") . "%")
+        //     ->paginate(10);
     }
 }

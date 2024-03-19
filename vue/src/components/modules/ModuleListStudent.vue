@@ -25,7 +25,7 @@
       <p class="mt-4 text-2xl" v-if="data.length == 0 && search">
         No match found for "{{ search }}".
       </p>
-      <div class="flex flex-wrap 	 gap-2 mt-4 	">
+      <div class="	 gap-2 mt-4 	">
       <module-cards @go-to="goTo" :mylist="true" :modules="data" />
     </div>
     <Paginator :rows="3" @page="list" :totalRecords="count"></Paginator>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Quiz;
+use App\Modules\Quiz\QuizService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,9 +16,21 @@ class QuizController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $quizService;
+    public function __construct(QuizService $quizService)
+    {
+
+        $this->quizService = $quizService;
+    }
     public function index($courseId)
     {
-        return Quiz::where(["course_id" => $courseId])->with(["questions", "questions.choices"])->get();
+        try {
+            $quizzes = $this->quizService->getCourseQuizzes($courseId);
+            return $quizzes;
+        } catch (Exception $e) {
+
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 
 
@@ -28,27 +42,31 @@ class QuizController extends Controller
      */
     public function store(Request $request, $courseId)
     {
-        Course::FindOrFail($courseId);
-        $this->authorize("add-quiz", Quiz::class);
-        $this->validate(
-            $request,
-            [
-                "title" => "required",
-                // "description" => "required",
-                "duration" => "required|integer"
-            ]
-        );
-        $quiz = Quiz::create(
-            [
+        try {
+            $this->authorize("add-quiz", Quiz::class);
+            $this->validate(
+                $request,
+                [
+                    "title" => "required",
+                    // "description" => "required",
+                    "duration" => "required|integer"
+                ]
+            );
+
+            $data = [
                 "title" => $request->title,
                 "duration" => $request->duration,
                 "description" => $request->description,
                 "course_id" => $courseId,
                 "created_by" => Auth::user()->id
-            ]
-        );
+            ];
+            $quiz = $this->quizService->store($courseId, $data);
 
-        return $quiz;
+            return $quiz;
+        } catch (Exception $e) {
+
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -59,37 +77,52 @@ class QuizController extends Controller
      */
     public function show($courseId, $quizId)
     {
-        $this->authorize("view", Quiz::class);
-        return Quiz::where(["id" => $quizId])->with(["questions", "questions.choices"])->first();
+        try {
+            $this->authorize("view", Quiz::class);
+            $quiz = $this->quizService->get($quizId);
+            return $quiz;
+        } catch (Exception $e) {
+
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 
     public function doneQuiz($courseId, $quizId)
     {
-        return Auth::user()->quizzes()->where(["quiz_id" => $quizId])->first();
+        try {
+            $this->authorize("view", Quiz::class);
+            $quiz = $this->quizService->getCompleted($quizId);
+            return $quiz;
+        } catch (Exception $e) {
+
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
 
     public function saveResult(Request $request, $courseId, $quizId)
     {
-        $this->authorize("saveResult", Quiz::class);
-        $this->validate(
-            $request,
-            [
-                "mark" => "required",
+        try {
+            $this->authorize("saveResult", Quiz::class);
+            $this->validate(
+                $request,
+                [
+                    "mark" => "required",
 
-                "time" => "required|integer"
-            ]
-        );
-        $quiz = Quiz::where(["id" => $quizId])->first();
+                    "time" => "required|integer"
+                ]
+            );
+            $data = [
+                "mark" => $request->mark,
+                "time" => $request->time
+            ];
+            $this->quizService->saveResult($quizId, $courseId, $data);
 
-        Auth::user()->quizzes()->attach($quizId, [
-            "mark" => $request->mark,
-            "time" => $request->time
-        ]);
 
-        Auth::user()->courses()->updateExistingPivot($courseId, ["staus" => "completed"]);
-        $quiz->save();
+            return response()->json(["quiz saved"], 201);
+        } catch (Exception $e) {
 
-        return response()->json(["quiz saved"], 201);
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
     }
     /**
      * Update the specified resource in storage.
