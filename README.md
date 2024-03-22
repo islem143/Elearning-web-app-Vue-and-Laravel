@@ -47,21 +47,32 @@ The app is contains three types of users:
 
 ## Screenshots
 
-Admin users             |  Chat
-:-------------------------:|:-------------------------:
-![](images/admin-dashboard.png)  |  ![](images/chat.png)
+### Modules
+![](images/modules.png)
 
-Student history            |  Modules
-:-------------------------:|:-------------------------:
-![](images/history.png)  |  ![](images/modules.png)
+### Teacher courses       
+![](images/teacher-courses.png)
+
+### Chat
+![](images/chat.png)
+
+### Admin users               
+
+![](images/admin-dashboard.png)    
+### Student history            
+
+![](images/history.png)    
 
 
-Quiz                       |     Teacher courses        
-:-------------------------:|:-------------------------:
-![](images/quiz.png)  |  ![](images/teacher-courses.png)
+### Quiz                      
 
-Home
+![](images/quiz.png)   
+
+
+### Home
 
 ![](images/home.png)
+
+### Stats 
 
 ![](images/stats.png)
