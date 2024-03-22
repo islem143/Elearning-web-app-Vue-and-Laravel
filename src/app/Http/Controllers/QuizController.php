@@ -120,7 +120,7 @@ class QuizController extends Controller
 
             return response()->json(["quiz saved"], 201);
         } catch (Exception $e) {
-
+dd($e);
             return response()->json(["message" => $e->getMessage()], 500);
         }
     }

@@ -40,7 +40,7 @@ class ModuleController extends Controller
     }
     public function getAllModules(Request $request)
 
-    {
+    {   
         try {
           
             $categories = $request->query('categories');
@@ -84,7 +84,8 @@ class ModuleController extends Controller
         $modules = $modules->paginate(10);
         $res = ["modules" => $modules];
         if (Auth::user()->hasRole(["student", "super-admin"])) {
-            $modules["completed_courses"] = $compltedCourses;
+            $res["completed_courses"] = $compltedCourses;
+
         }
         return response()->json($res);
     }
@@ -180,6 +181,7 @@ class ModuleController extends Controller
     {
         $module = Module::findOrFail($id);
         $this->authorize("update", $module);
+    
         $module->update($request->all());
         return $module;
     }

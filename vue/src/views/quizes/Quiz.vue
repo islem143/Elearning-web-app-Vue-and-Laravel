@@ -1,13 +1,13 @@
 <template>
   <div >
-    <div class="mx-auto w-4">
-      <Message v-if="showError" severity="info">please select a choice</Message>
+    <div class="mx-auto w-4 h1">
+      <Message v-if="showError"  severity="info">Please select a choice</Message>
 
     </div>
 
     <div
       v-if="questions.length != 0 && !quizFinished && !quizDone"
-      class="flex w-9 mx-auto flex-column mt-8 justify-content-center align-items-center"
+      class="flex w-9 mx-auto flex-column justify-content-center align-items-center"
     >
       <div class="p-card p-3 mb-3 align-self-end">
         Time:
@@ -21,12 +21,15 @@
         :choices="questions[currentIndex].choices"
         :correctChoice="correctChoice"
       />
-      <Button class="align-self-end mb-2 surface-700" label="Confirm" @click="confirmChoice" />
+      <div class="w-full flex justify-content-end gap-1 align-end align-content-end">
+        <Button class=" " label="Confirm" @click="confirmChoice" />
       <Button
-        class="align-self-end"
+        
         :label="currentIndex < questions.length - 1 ? 'Next' : 'Finish Quiz'"
         @click="nextQuestion"
       />
+      </div>
+   
     </div>
     <div v-else-if="quizDone || quizFinished">
       <QuizStat :totalPoints="stats.totalPoints" :duration="stats.duration" />

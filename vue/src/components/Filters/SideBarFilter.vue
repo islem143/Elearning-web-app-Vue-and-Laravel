@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-input-icon-right col-4 border-round-lg p-4">
+  <div class=" p-input-icon-right col-4 border-round-lg p-4">
     <h3><i class="pi pi-filter" style="font-size: 1.4rem"></i> Filters</h3>
     <InputText
       type="text"

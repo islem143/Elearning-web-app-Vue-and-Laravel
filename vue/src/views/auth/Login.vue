@@ -127,8 +127,7 @@ export default {
 <style scoped>
 .app {
   background: #000f42;
-  font-family: "Montserrat", sans-serif;
-  height: 100vh;
+  font-family: "Poppins", sans-serif;  height: 100vh;
 }
 .st0{opacity:7.000000e-02;}
 	.st1{fill:#2A94F4;}

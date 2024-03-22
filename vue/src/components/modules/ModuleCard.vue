@@ -1,9 +1,13 @@
 <template>
   <Card
-    class="p-2 flex bg-white m-4 border-round-xl transition-all transition-duration-200 shadow-4 hover:shadow-6"
+
+    class="p-3 flex mx-auto w-9 bg-white m-2 border-round-3xl transition-all transition-duration-200 hover:bg-gray-100 shadow-4 hover:shadow-6"
   >
+  
     <template #header>
+
       <img
+  
         alt="user header"
         class="border-round-md"
         width="220"
@@ -17,12 +21,13 @@
 
         <div class="w-6">
           <ProgressBar
+          style="height: 1.3rem;"
             v-if="
               role &&
               role == 'student' &&
               (mylist || (module.users && module.users[0]))
             "
-            class="text-center flex h-1rem my-2"
+            class="text-center flex  my-2"
             :value="(completedCourses * 100) / module.total_courses"
           >
           </ProgressBar>
@@ -57,22 +62,24 @@
       <hr />
       <div class="flex gap-3">
         <p>
-          <i class="pi pi-book mr-2 mb-1 p-0" style="font-size: 1.2rem"></i>
+          <i class="pi pi-book mr-2 mb-0 p-0" style="font-size: 1.2rem"></i>
           <span>{{ module.total_courses }} Courses</span>
         </p>
         <p v-if="role == 'teacher'">
-          <i class="pi pi-user mr-2 mb-1 p-0" style="font-size: 1.2rem"></i>
+          <i class="pi pi-user mr-2 mb-0 p-0" style="font-size: 1.2rem"></i>
           <span>{{ module.total_users }} Students</span>
+        </p>
+        <p class="m-0" v-if="module.category">
+          <i class="pi pi-tag p-0 mb-0" style="font-size: 1.2rem"></i>
+          Category:
+          <Chip>{{ module.category.name }}</Chip>
         </p>
       </div>
 
-      <div class="flex gap-1 mt-1" v-if="module.category">
-        <p class="m-0">
-          <i class="pi pi-tag p-0 mb-0" style="font-size: 1.2rem"></i>
-          Category:
-        </p>
+      <div class="flex gap-1 mt-0" >
+       
         <div class="flex align-items-center gap-1 ml-2">
-          {{ module.category.name }}
+          
         </div>
       </div>
       <p v-if="module.created_by" class="mt-1 font-light">

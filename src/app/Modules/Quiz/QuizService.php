@@ -52,9 +52,10 @@ class QuizService
         $quiz = Quiz::where(["id" => $quizId])->first();
 
         Auth::user()->quizzes()->attach($quizId, [
-            $data
+            "mark"=>$data["mark"],
+            "time"=>$data["time"]
         ]);
-
+    
         Auth::user()->courses()->updateExistingPivot($courseId, ["staus" => "completed"]);
         $quiz->save();
 

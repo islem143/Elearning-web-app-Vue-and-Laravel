@@ -5,16 +5,18 @@
       class="w-2"
       :page="page"
     ></SideBarFilter>
-    <div class="card w-9 mx-auto">
+    <div class=" w-9 mx-auto">
+      <div style="height: 6px">
       <ProgressBar
         v-if="loading[ApiActions.GetModules]"
         mode="indeterminate"
         style="height: 6px"
       ></ProgressBar>
+    </div>
 
-      <h3>Modules</h3>
 
-      <div class="flex align-items-center">
+      <div class="flex flex-column  w-9 mx-auto">
+        <h3>Modules</h3>
         <router-link v-if="role == 'teacher'" :to="{ name: 'module-create' }">
           <Button
             label="New Module"
@@ -29,8 +31,9 @@
         No match found for "{{ search }}".
       </p>
 
-      <div class="gap-3 mt-4">
+      <div class="gap-1 flex flex-column justify-content-center align-content-center  mt-4">
         <module-cards
+         
           :mylist="false"
           @edit-module="editModule"
           @confirm-delete-module="confirmDeleteModule"
@@ -134,11 +137,16 @@ export default {
     async getModules(params = {}) {
       params = { ...params, page: this.page + 1 };
 
-      let res = await Module.GetModules(params);
-      this.data = res.data;
-
+      let res = await Module.GetModulesAuth(params);
+     
+      
+      this.data = res.modules.data;
+      
+      
       if (this.role == "student") {
-        this.completedCourses = res.data.completed_courses;
+        
+        
+        this.completedCourses = res.completed_courses;
       }
     },
     src(info) {
@@ -191,8 +199,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-//@import '../assets/demo/badges.scss';
-</style>
-../../api/Module

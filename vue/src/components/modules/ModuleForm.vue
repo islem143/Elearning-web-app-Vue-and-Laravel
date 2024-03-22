@@ -15,9 +15,10 @@
         <div class="field">
           <label for="category">Category</label>
           <Dropdown
-            v-model="category"
+            v-model="info.category_id"
             id="category"
             editable
+            optionValue="id"
             optionLabel="name"
             :options="categories"
             placeholder="Select a Category"
@@ -79,7 +80,7 @@ export default {
       info: {
         title: "",
         description: "",
-        category: null,
+        category_id: null,
       },
     };
   },
