@@ -1,3 +1,7 @@
 src/vendor
 .git
 .vscode/
+src/storage/app/public/*
+src/.env
+src/.env.dev
+.env

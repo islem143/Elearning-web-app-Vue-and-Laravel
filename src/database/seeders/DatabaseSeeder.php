@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
           $add=new AddUserQuizPermissions();
           $choice=new ChoicePermissionSeeder();
           $course=new CoursePermissionSeeder();
+          $categoryPermissionSeeder=new CategoryPermissionSeeder();
           $log=new LogPermissionSeeder();
           $media=new MediaSeeder();
           $Module=new ModulePermissionSeeder();
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
           $Module->run();
           $QuestionPermissionSeeder->run();
           $QuizPermissionSeeder->run();
+          $categoryPermissionSeeder->run();
 
         
 

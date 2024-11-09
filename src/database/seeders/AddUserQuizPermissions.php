@@ -15,8 +15,8 @@ class AddUserQuizPermissions extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => "save-quiz-result"]);
-        Permission::create(["name" => "attach-choice"]);
+        Permission::firstOrCreate(["name" => "save-quiz-result"]);
+        Permission::firstOrCreate(["name" => "attach-choice"]);
         
         
         $studentRole = Role::where('name', 'student')->first();

@@ -6,9 +6,10 @@ services:
     build:
      context: .
      dockerfile: ./nginx/Dockerfile
- 
+    volumes:
+      - laravel-storage:/var/www/html/storage  
     ports:
-     - "8081:80"
+     - "8001:80"
      - "6002:6002"
      - "81:81"
      
@@ -16,12 +17,12 @@ services:
     depends_on:
       - php
       - mysql
-      - myapp-websockets
+    #  - myapp-websockets
 
     networks:
      - laravel
   mysql:
-    image: mysql:8
+    image: mysql:8.0
    
     restart: unless-stopped
     tty: true
@@ -47,6 +48,8 @@ services:
     command: ['php', 'artisan', 'websockets:serve']
     container_name: myapp-websockets
     restart: unless-stopped
+    env_file:
+      - .env
     # volumes:
     #   - .env.prod:/var/www/html/.env
    
@@ -71,6 +74,7 @@ services:
       - laravel
   php:
     image: myphp
+    container_name: phpprod
     
     build:
      context: .
@@ -80,9 +84,11 @@ services:
       - UID=${UID:-1000}
       - GID=${GID:-1000}
       - USERNAME=${CONTAINER_USERNAME}
-    
+    env_file:
+      - .env
     volumes:
-      - .env.prod:/var/www/html/.env
+    - laravel-storage:/var/www/html/storage  
+    #   - .env.prod:/var/www/html/.env
     ports:
       - "9000:9000" 
    
@@ -91,14 +97,14 @@ services:
     networks:
       - laravel  
 
-  front:
-    build:
-      context: ./vue
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"   
-    networks:
-      - laravel    
+  # front:
+  #   build:
+  #     context: ./vue
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"   
+  #   networks:
+  #     - laravel    
    
    
   supervisor:
@@ -107,6 +113,11 @@ services:
     restart: unless-stopped
     networks:
       - laravel
+    env_file:
+      - .env
+    volumes:
+      - ./supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+      -  laravel-storage:/var/www/html/storage  
     command: "/usr/bin/supervisord -n -c  /etc/supervisor/conf.d/laravel-worker.conf" 
     depends_on:
       - php
@@ -122,6 +133,7 @@ services:
 
 volumes:
   mysql:
+  laravel-storage:
 
 networks:
     laravel:

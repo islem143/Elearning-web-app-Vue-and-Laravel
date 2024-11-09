@@ -2,37 +2,36 @@
 A simple e-learning platform made with laravel and vue.js.
 
 ## Features:
-The app is contains three types of users:
-### 1. **Admin** 
+The application  contains three types of users:
+# 1. **Admin** 
     + Crud operations on users
     + Dashboard containing simple stats
     + History log for the users 
 
-### 2. **Teacher** 
+# 2. **Teacher** 
     + Add Modules
     + Add Courses for each module
     + Add quizzes for each course
-    + attach media(text,vedio) to courses
+    + Attach media(text,video) to courses
     + Dashboard containing simple stats
     + History log for the students
      
-### 3. **Student**  
+# 3. **Student**  
     + View All modules
-    + entroll to modules
-    + take courses (vedio,text)
-    + take quizzzes
+    + Enroll to modules
+    + Take courses (video,text)
+    + Take quizzes
 
-### 4. **General Features** 
-    + A chat section where diffrent user can talk to each other.
+# 4. **General Features** 
+    + A chat section where different users can talk to each other.
 
-## Technologies used:
-   + Laravel for the api
-   + Larave websockets pakcage for the websockes server
-   + Laravel Spatie package for role and permission managements.
-   + Redis for messages event queue
-   + Docker for managing the containers
-   + Nginx as a web server
-
+# 5. **Technologies used**:
+    + Laravel for the api.
+    + Laravel websockets package for the websoket server.
+    + Laravel Spatie package for role and permission managements.
+    + Redis for messages event queue.
+    + Docker for managing the containers.
+    + Nginx as a web server.
 
   
 ## Back end Aritechure  

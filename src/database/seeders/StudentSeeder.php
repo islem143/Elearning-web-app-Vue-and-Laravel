@@ -14,7 +14,8 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create(["name" => "student1", "email" => "student1@el.com", "password" => bcrypt($password = "student1")]);
+      
+        $user = User::firstOrCreate(["name" => "student1", "email" => "student1@el.com", "password" => bcrypt($password = "student1")]);
         $user->assignRole("student");
     }
 }

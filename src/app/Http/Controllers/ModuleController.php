@@ -139,19 +139,20 @@ class ModuleController extends Controller
             "user_id" => Auth::user()->id,
             "rating" => 0
         ];
-        if ($request->has("category")) {
-            $this->authorize("create", Category::class);
+        $payload["category_id"] = 0;
+        // if ($request->has("category") ) {
+        //     $this->authorize("create", Category::class);
 
-            if (array_key_exists("id", $request["category"])) {
-                $category_id = $request["category"]["id"];
-                $category = $this->categoryService->getCategory($category_id);
-            } else {
-                $category_name = $request["category"]["name"];
-                $category = $this->categoryService->createCategory($category_name, Auth::user()->id);
-            }
+        //     if (  $request["category"] && array_key_exists("id", $request["category"])) {
+        //         $category_id = $request["category"]["id"];
+        //         $category = $this->categoryService->getCategory($category_id);
+        //     } else {
+        //         $category_name = $request["category"]["name"];
+        //         $category = $this->categoryService->createCategory($category_name, Auth::user()->id);
+        //     }
 
-            $payload["category_id"] = $category->id;
-        }
+        //     $payload["category_id"] = $category->id;
+        // }
 
         $module = Module::create($payload);
         return $module;

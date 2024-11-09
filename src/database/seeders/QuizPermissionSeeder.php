@@ -15,10 +15,10 @@ class QuizPermissionSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => "add-quiz"]);
-        Permission::create(["name" => "edit-quiz"]);
-        Permission::create(["name" => "delete-quiz"]);
-        Permission::create(["name" => "view-quiz"]);
+        Permission::firstOrCreate(["name" => "add-quiz"]);
+        Permission::firstOrCreate(["name" => "edit-quiz"]);
+        Permission::firstOrCreate(["name" => "delete-quiz"]);
+        Permission::firstOrCreate(["name" => "view-quiz"]);
         $teacherRole = Role::where('name', 'teacher')->first();
         $studentRole = Role::where('name', 'student')->first();
         $teacherRole->givePermissionTo(["add-quiz", "edit-quiz", "delete-quiz", "view-quiz"]);

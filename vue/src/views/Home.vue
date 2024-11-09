@@ -3,6 +3,7 @@
     
    <div class=" main ">
     <NavBar/>
+    
       <Hero/>
    </div>
   

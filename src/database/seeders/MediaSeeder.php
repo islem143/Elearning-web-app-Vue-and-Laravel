@@ -15,10 +15,10 @@ class MediaSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => "add-media"]);
-        Permission::create(["name" => "edit-media"]);
-        Permission::create(["name" => "delete-media"]);
-        Permission::create(["name" => "view-media"]);
+        Permission::firstOrCreate(["name" => "add-media"]);
+        Permission::firstOrCreate(["name" => "edit-media"]);
+        Permission::firstOrCreate(["name" => "delete-media"]);
+        Permission::firstOrCreate(["name" => "view-media"]);
         $teacherRole = Role::where('name', 'teacher')->first();
         $studentRole = Role::where('name', 'student')->first();
         $teacherRole->givePermissionTo(["add-media", "edit-media", "delete-media", "view-media"]);

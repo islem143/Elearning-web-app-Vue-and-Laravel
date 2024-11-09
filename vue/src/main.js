@@ -5,7 +5,7 @@ window.Pusher = Pusher;
 
 window.Echo = new Echo({
   broadcaster: "pusher",
-  key: "khjkjhk",
+  key: "aaa",
 
   wsHost: import.meta.env.VITE_SOCKET_HOST,
   wsPort: import.meta.env.VITE_SOCKET_PORT,
@@ -150,7 +150,7 @@ app.config.globalProperties.$appState = reactive({
 });
 
 app.config.unwrapInjectedRef = true;
-app.use(PrimeVue, { ripple: true, inputStyle: "outlined" });
+app.use(PrimeVue, { theme:'none',ripple: true, inputStyle: "outlined" });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);

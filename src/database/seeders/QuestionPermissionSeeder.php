@@ -15,10 +15,10 @@ class QuestionPermissionSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => "add-question"]);
-        Permission::create(["name" => "edit-question"]);
-        Permission::create(["name" => "delete-question"]);
-        Permission::create(["name" => "view-question"]);
+        Permission::firstOrCreate(["name" => "add-question"]);
+        Permission::firstOrCreate(["name" => "edit-question"]);
+        Permission::firstOrCreate(["name" => "delete-question"]);
+        Permission::firstOrCreate(["name" => "view-question"]);
         $teacherRole = Role::where('name', 'teacher')->first();
         $studentRole = Role::where('name', 'student')->first();
         $teacherRole->givePermissionTo(["add-question", "edit-question", "delete-question", "view-question"]);

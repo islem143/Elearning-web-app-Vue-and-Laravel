@@ -14,10 +14,10 @@ class CategoryPermissionSeeder extends Seeder
      */
     public function run()
     {
-        // Permission::create(["name" => "add-category"]);
-        // Permission::create(["name" => "edit-category"]);
-        // Permission::create(["name" => "delete-category"]);
-        // Permission::create(["name" => "view-category"]);
+        Permission::firstOrCreate(["name" => "add-category"]);
+        Permission::firstOrCreate(["name" => "edit-category"]);
+        Permission::firstOrCreate(["name" => "delete-category"]);
+        Permission::firstOrCreate(["name" => "view-category"]);
         $teacherRole = Role::where('name', 'teacher')->first();
         $studentRole = Role::where('name', 'student')->first();
         $teacherRole->givePermissionTo(["add-category", "edit-category", "delete-category", "view-category"]);

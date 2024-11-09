@@ -31,7 +31,7 @@
         No match found for "{{ search }}".
       </p>
 
-      <div class="gap-1 flex flex-column justify-content-center align-content-center  mt-4">
+      <div class="gap-1 grid  mt-4">
         <module-cards
          
           :mylist="false"

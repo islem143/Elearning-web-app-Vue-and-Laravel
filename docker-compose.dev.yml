@@ -21,7 +21,7 @@ services:
   #   networks:
   #    - laravel
   mysql:
-    image: mysql:8
+    image: mysql:8.0
     #container_name: mysql
     restart: unless-stopped
     tty: true
@@ -38,7 +38,7 @@ services:
        #SERVICE_NAME: mysql
 
     networks:
-      - laravel
+      - laravel-network
 
   # myapp-websocketsdev:
    
@@ -89,14 +89,16 @@ services:
   #    context: .
   #    target: dev
   #    dockerfile: Dockerfile
+    
   #    args:
   #     - UID=${UID:-1000}
   #     - GID=${GID:-1000}
   #     - USERNAME=${CONTAINER_USERNAME}
-    
+  #   env_file:
+  #      - .env
   #   volumes:
   #    - ./src:/var/www/html
-  #    - .env.dev:/var/www/html/.env
+  #    #- .env.dev:/var/www/html/.env
   #    - vendor:/var/www/html/vendor
     
   #   ports:
@@ -122,6 +124,10 @@ services:
   #      - node_modules:/app/node_modules
   #   ports:
   #     - "5173:5173"
+
+
+
+  
   # mailhog:
   #   image: mailhog/mailhog:latest
   #   restart: always
@@ -138,4 +144,4 @@ volumes:
   vendor:
 
 networks:
-    laravel:
+    laravel-network:

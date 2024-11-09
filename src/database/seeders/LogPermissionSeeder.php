@@ -16,7 +16,7 @@ class LogPermissionSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => "view-logs"]);
+        Permission::firstOrCreate(["name" => "view-logs"]);
        
         $teacherRole=Role::where('name', 'teacher')->first();
 
