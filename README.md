@@ -33,7 +33,7 @@ The application  contains three types of users:
     + Docker for managing the containers.
     + Nginx as a web server.
     + kubernetes.
-## Back end Aritechure  (Kubernetes version)
+## Back end Architecture  (Kubernetes version)
 
 ![Alt text](images/el-kuber.png "a title")
 
@@ -41,7 +41,7 @@ The application  contains three types of users:
 
 
 
-## Back end Aritechure  (compose version)
+## Back end Architecture  (compose version)
 
 ![Alt text](images/Host.png "a title")
 
