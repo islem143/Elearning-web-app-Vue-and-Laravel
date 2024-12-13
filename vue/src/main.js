@@ -2,16 +2,20 @@ import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 import axios from "./http";
 window.Pusher = Pusher;
+console.log(import.meta.env.VITE_SOCKET_HOST);
+console.log(import.meta.env.VITE_SOCKET_PORT);
 
 window.Echo = new Echo({
-  broadcaster: "pusher",
+  broadcaster: "reverb",
   key: "aaa",
-
+  activityTimeout:100000,
   wsHost: import.meta.env.VITE_SOCKET_HOST,
   wsPort: import.meta.env.VITE_SOCKET_PORT,
   forceTLS: false,
   disableStats: true,
   authorizer: (channel, options) => {
+   ;
+    
     return {
       authorize: (socketId, callback) => {
         axios
@@ -29,6 +33,7 @@ window.Echo = new Echo({
     };
   },
 });
+
 
 import "primevue/resources/primevue.min.css";
 import "primeflex/primeflex.css";

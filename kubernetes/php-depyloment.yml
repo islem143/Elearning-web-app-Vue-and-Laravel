@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-deployment
+  annotations:
+    kubernetes.io/change-cause: "update..."
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      securityContext:
+        fsGroup: 82
+      initContainers:
+        - name: database-migrations
+          image: islemdjennane/elearning-php:11
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: php-config-map
+            - secretRef:
+                name: php-secret
+          command:
+            - "php"
+          args:
+            - "artisan"
+            - "migrate:fresh"
+            #- "fresh"
+        - name: database-seeding
+          image: islemdjennane/elearning-php:11
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: php-config-map
+            - secretRef:
+                name: php-secret
+          command:
+            - "php"
+          args:
+            - "artisan"
+            - "db:seed"
+      containers:
+        - name: php-container
+          image: islemdjennane/elearning-php:11
+          imagePullPolicy: Never
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsUser: 82
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: 200m
+            limits:
+              memory: "512Mi"
+
+          ports:
+            - containerPort: 9000
+          envFrom:
+            - secretRef:
+                name: php-secret
+            - configMapRef:
+                name: php-config-map
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/storage/logs
+            - name: cache
+              mountPath: /var/www/html/storage/framework/cache
+            - name: sessions
+              mountPath: /var/www/html/storage/framework/sessions
+            - name: images
+              mountPath: /var/www/html/storage/app/public/images
+            - name: views
+              mountPath: /var/www/html/storage/framework/views
+            - name: testing
+              mountPath: /var/www/html/storage/framework/testing
+            - name: cache2
+              mountPath: /var/www/html/bootstrap/cache
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+        - name: testing
+          emptyDir: {}
+        - name: sessions
+          emptyDir: {}
+        - name: views
+          emptyDir: {}
+        - name: cache2
+          emptyDir: {}
+        - name: images
+          emptyDir: {}

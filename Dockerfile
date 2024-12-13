@@ -17,7 +17,7 @@ RUN composer dump-autoload --optimize
 
 
 
-FROM php:8.2-fpm-alpine AS dev
+FROM php:8.3-fpm-alpine AS dev
 
 
 ARG UID
@@ -41,7 +41,7 @@ WORKDIR /var/www/html
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN apk update && apk add  zip
+RUN apk update && apk add  zip && apk add php8-pcntl
 RUN docker-php-ext-install pdo pdo_mysql
 COPY ./src/php.ini /usr/local/etc/php/conf.d/
 COPY ./src /var/www/html/
@@ -61,7 +61,7 @@ USER ${USERNAME}
 
 
 
-FROM php:8.2-fpm-alpine AS production
+FROM php:8.3-fpm-alpine AS production
 
 
 
@@ -73,7 +73,10 @@ RUN docker-php-ext-install pdo pdo_mysql
 #COPY ./src/php.ini /usr/local/etc/php/conf.d/
 
 
-RUN apk add --update supervisor
+RUN apk update && apk add --update supervisor && apk add php83-pcntl
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+  && docker-php-ext-install \
+    pcntl
 COPY --from=build /app /var/www/html
 RUN php artisan config:cache && \
     php artisan route:cache 

@@ -1,5 +1,5 @@
 # Elearning-app-api
-A simple e-learning platform made with laravel and vue.js.
+A simple E learning platform made with laravel and vue.js.
 
 ## Features:
 The application  contains three types of users:
@@ -27,14 +27,21 @@ The application  contains three types of users:
 
 # 5. **Technologies used**:
     + Laravel for the api.
-    + Laravel websockets package for the websoket server.
+    + Laravel Reverb p for the websoket server.
     + Laravel Spatie package for role and permission managements.
     + Redis for messages event queue.
     + Docker for managing the containers.
     + Nginx as a web server.
+    + kubernetes.
+## Back end Aritechure  (Kubernetes version)
 
-  
-## Back end Aritechure  
+![Alt text](images/el-kuber.png "a title")
+
+
+
+
+
+## Back end Aritechure  (compose version)
 
 ![Alt text](images/Host.png "a title")
 

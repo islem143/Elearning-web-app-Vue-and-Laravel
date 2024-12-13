@@ -43,9 +43,9 @@ services:
 
   myapp-websockets:
    
-    image: myphp
-   
-    command: ['php', 'artisan', 'websockets:serve']
+    image: islemdjennane/elearning-php:11
+ 
+    command: ['php', 'artisan', 'reverb:start','--debug']
     container_name: myapp-websockets
     restart: unless-stopped
     env_file:
@@ -73,7 +73,7 @@ services:
     networks:
       - laravel
   php:
-    image: myphp
+    image: islemdjennane/elearning-php:11
     container_name: phpprod
     
     build:
@@ -108,7 +108,7 @@ services:
    
    
   supervisor:
-    image: myphp 
+    image: islemdjennane/elearning-php:11
     container_name: supervisor
     restart: unless-stopped
     networks:

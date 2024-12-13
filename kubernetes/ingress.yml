@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    nginx.org/websocket-services: "nginx-socket-service"
+
+    nginx.org/enable-websockets: "true"
+
+
+  labels:
+    name: nginx-ingress
+spec:
+  rules:
+    - host: api.el.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: nginx-service
+                port:
+                  number: 80
+    - host: socket.el.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: nginx-socket-service
+                port:
+                  number: 80

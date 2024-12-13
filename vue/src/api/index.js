@@ -10,7 +10,7 @@ let client = axios.create({
       : null,
   },
 });
-//axios.defaults.withCredentials = true;
+client.defaults.withCredentials = true;
 client.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;

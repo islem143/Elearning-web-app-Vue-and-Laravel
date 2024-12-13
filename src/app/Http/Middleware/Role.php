@@ -18,7 +18,7 @@ class Role
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next, ...$roles)
-    {
+    {   dd("s");
         $rolesMap = [
             "admin" => RoleMod::IS_ADMIN,
             "delevery" => RoleMod::IS_TEACHER,

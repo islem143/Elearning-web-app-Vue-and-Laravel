@@ -53,9 +53,11 @@ export default {
           this.messages = res.data;
         });
     });
-
+    
     this.userId = authStore.user.data.id;
      window.Echo.private("chat." + this.userId).listen("MessageSent", (e) => {
+      console.log("sssssssssssssssssss");
+      
       // console.log("message reciedv", e.message);
       let msg = { message: e.message, user_id: e.sender_id };
       this.messages.push(msg);

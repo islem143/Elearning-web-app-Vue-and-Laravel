@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-deployment
+  annotations:
+    kubernetes.io/change-cause: "update..."
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket-php
+  template:
+    metadata:
+      labels:
+        app: websocket-php
+    spec:
+      securityContext:
+        fsGroup: 82
+
+      containers:
+        - name: websocket-container
+          image: islemdjennane/elearning-php:11
+          command:
+            - php
+          args:
+            - artisan
+            - reverb:start
+            - --debug
+          imagePullPolicy: Never
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsUser: 82
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: 200m
+            # limits:
+            #   memory: "512Mi"
+
+          ports:
+            - containerPort: 6001
+          envFrom:
+            - secretRef:
+                name: php-secret
+            - configMapRef:
+                name: php-config-map
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/storage/logs
+            - name: cache
+              mountPath: /var/www/html/storage/framework/cache
+            - name: sessions
+              mountPath: /var/www/html/storage/framework/sessions
+            - name: views
+              mountPath: /var/www/html/storage/framework/views
+            - name: testing
+              mountPath: /var/www/html/storage/framework/testing
+            - name: cache2
+              mountPath: /var/www/html/bootstrap/cache
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+        - name: testing
+          emptyDir: {}
+        - name: sessions
+          emptyDir: {}
+        - name: views
+          emptyDir: {}
+        - name: cache2
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocket-service
+spec:
+  selector:
+    app: websocket-php
+  ports:
+    - port: 80
+      targetPort: 6001

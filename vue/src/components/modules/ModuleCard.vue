@@ -1,7 +1,7 @@
 <template>
   <Card
 
-    class="p-3 flex mx-auto w-9 bg-white m-2 border-round-3xl transition-all transition-duration-200 hover:bg-gray-100 shadow-4 hover:shadow-6"
+    class="p-3 flex mx-auto w-9 bg-white m-2 border-round-2xl transition-all transition-duration-200 hover:bg-gray-100 shadow-4 hover:shadow-6"
   >
   
     <template #header>
