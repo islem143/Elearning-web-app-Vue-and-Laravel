@@ -33,6 +33,14 @@ The application  contains three types of users:
     + Docker for managing the containers.
     + Nginx as a web server.
     + kubernetes.
+
+## Missing:
+
++ Add Tls/SSl support : use Kubernetes cert Manager/Docker cerbot with let's encrypt for example.
+
+
+
+
 ## Back end Architecture  (Kubernetes version)
 
 ![Alt text](images/el-kuber.png "a title")
